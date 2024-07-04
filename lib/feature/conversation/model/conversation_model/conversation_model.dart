@@ -27,4 +27,22 @@ class ConversationModel {
   final DateTime? updatedAt;
 
   Map<String, dynamic> toJson() => _$ConversationModelToJson(this);
+
+  ConversationModel copyWith({
+    Id? id,
+    String? title,
+    String? createdBy,
+    String? llmId,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return ConversationModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      createdBy: createdBy ?? this.createdBy,
+      llmId: llmId ?? this.llmId,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }

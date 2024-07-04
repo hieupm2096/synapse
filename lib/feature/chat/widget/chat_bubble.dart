@@ -51,7 +51,11 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return Container(
+      padding: EdgeInsets.only(
+        left: isLeft ? 0 : 24,
+        right: isLeft ? 24 : 0,
+      ),
       alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
       child: ShadButton(
         onPressed: onPressed,
@@ -61,9 +65,10 @@ class ChatBubble extends StatelessWidget {
             isLeft ? context.shadColor.background : context.shadColor.secondary,
         foregroundColor: context.shadColor.primary,
         hoverBackgroundColor: isLeft
-            ? context.shadColor.secondary.withOpacity(0.2)
+            ? context.shadColor.background
             : context.shadColor.secondary.withOpacity(0.5),
-        hoverForegroundColor: context.shadColor.primary.withOpacity(0.5),
+        // hoverForegroundColor: context.shadColor.primary.withOpacity(0.5),
+
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: ShadDecoration(
           border: ShadBorder(

@@ -44,4 +44,10 @@ class ChatAppBar extends AppBar {
           onPressed: onSettingPressed,
         ),
       ];
+
+  @override
+  PreferredSizeWidget? get bottom => const PreferredSize(
+        preferredSize: Size.fromHeight(0.1),
+        child: Divider(height: 0.1),
+      );
 }

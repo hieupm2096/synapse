@@ -170,7 +170,7 @@ packages:
     source: hosted
     version: "4.10.0"
   collection:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: collection
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
@@ -765,6 +765,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  simple_result:
+    dependency: "direct main"
+    description:
+      name: simple_result
+      sha256: e5506edf84a24f5acd6375f6022bd194fe28bdb613b94b71beafad3d26d5290d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   sky_engine:
     dependency: transitive
     description: flutter

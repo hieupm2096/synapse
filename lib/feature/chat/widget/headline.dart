@@ -45,7 +45,7 @@ class _HeadlineState extends State<Headline> {
               displayFullTextOnTap: true,
               stopPauseOnTap: true,
             ),
-          )
+          ),
       ],
     );
   }

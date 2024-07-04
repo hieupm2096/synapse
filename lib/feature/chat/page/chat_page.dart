@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:loggy/loggy.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/widget/chat_bubble.dart';
 import 'package:synapse/feature/chat/widget/headline.dart';
+import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/shared/widget/chat_app_bar.dart';
 
 class ChatPage extends StatelessWidget {
@@ -18,9 +20,9 @@ class ChatPage extends StatelessWidget {
           'New Chat',
           style: context.shadTextTheme.h4,
         ),
-        onLeadingPressed: () {
-          logDebug('onLeadingPressed');
-        },
+        onLeadingPressed: () => context.go(
+          '$route${ListConversationPage.route}',
+        ),
         onSettingPressed: () {
           logDebug('onSettingPressed');
         },
@@ -33,7 +35,7 @@ class ChatPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Headline(),
+            const Headline(),
             ChatBubble.right(
               content: 'Yes of course, could you do that for me?',
             ),
