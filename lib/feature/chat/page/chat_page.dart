@@ -14,6 +14,16 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final widgets = [
+      const Headline(),
+      ChatBubble.right(
+        content: 'Yes of course, could you do that for me?',
+      ),
+      ChatBubble.left(
+        content: 'Sure, here is the instruction for you to solve it',
+      ),
+    ];
+
     return Scaffold(
       appBar: ChatAppBar(
         title: Text(
@@ -30,17 +40,16 @@ class ChatPage extends StatelessWidget {
           logDebug('onModelPressed');
         },
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Headline(),
-            ChatBubble.right(
-              content: 'Yes of course, could you do that for me?',
-            ),
-          ],
+      body: ListView.separated(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 12,
         ),
+        itemBuilder: (context, index) {
+          return widgets[index];
+        },
+        separatorBuilder: (context, index) => const SizedBox(height: 8),
+        itemCount: widgets.length,
       ),
     );
   }

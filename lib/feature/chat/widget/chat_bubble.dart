@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:loggy/loggy.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -51,36 +51,46 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: isLeft ? 0 : 24,
-        right: isLeft ? 24 : 0,
-      ),
-      alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
-      child: ShadButton(
-        onPressed: onPressed,
-        onLongPress: onLongPressed,
-        size: ShadButtonSize.lg,
-        backgroundColor:
-            isLeft ? context.shadColor.background : context.shadColor.secondary,
-        foregroundColor: context.shadColor.primary,
-        hoverBackgroundColor: isLeft
-            ? context.shadColor.background
-            : context.shadColor.secondary.withOpacity(0.5),
-        // hoverForegroundColor: context.shadColor.primary.withOpacity(0.5),
-
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-        decoration: ShadDecoration(
-          border: ShadBorder(
-            color: context.shadColor.border,
-            radius: BorderRadius.circular(20),
+    return GestureDetector(
+      onLongPress: () {
+        logDebug('onLongPressed');
+        // TODO(hieupm): show popover with copy action
+      },
+      child: CupertinoButton(
+        padding: EdgeInsets.zero,
+        minSize: 0,
+        onPressed: () {},
+        child: Container(
+          padding: EdgeInsets.only(
+            left: isLeft ? 0 : 24,
+            right: isLeft ? 24 : 0,
+          ),
+          alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: isLeft
+                  ? context.shadColor.background
+                  : context.shadColor.primary,
+              border: Border.all(
+                color: isLeft
+                    ? context.shadColor.border
+                    : context.shadColor.primary,
+              ),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: contentWidget ??
+                Text(
+                  content ?? '',
+                  style: context.shadTextTheme.list.copyWith(
+                    color: isLeft
+                        ? context.shadColor.primary
+                        : context.shadColor.background,
+                  ),
+                  textAlign: isLeft ? TextAlign.start : TextAlign.end,
+                ),
           ),
         ),
-        text: contentWidget ??
-            Text(
-              content ?? '',
-              style: context.shadTextTheme.list,
-            ),
       ),
     );
   }
