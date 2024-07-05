@@ -29,7 +29,6 @@ class ChatAppBar extends AppBar {
             size: 24,
           ),
         ),
-        size: ShadButtonSize.icon,
         onPressed: onLeadingPressed,
       );
 
@@ -40,7 +39,6 @@ class ChatAppBar extends AppBar {
             LucideIcons.settings,
             size: 24,
           ),
-          size: ShadButtonSize.icon,
           onPressed: onSettingPressed,
         ),
       ];

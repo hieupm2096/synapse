@@ -6,4 +6,5 @@ extension BuildContextExt on BuildContext {
   ShadTextTheme get shadTextTheme => ShadTheme.of(this).textTheme;
   ShadColorScheme get shadColor => ShadTheme.of(this).colorScheme;
   ShadToasterState get shadToaster => ShadToaster.of(this);
+  MediaQueryData get mediaQuery => MediaQuery.of(this);
 }

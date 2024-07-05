@@ -6,6 +6,9 @@ import 'package:synapse/feature/conversation/provider/current_conversation_provi
 import 'package:synapse/feature/conversation/provider/current_llm_provider.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation.dart';
+import 'package:synapse/feature/conversation/widget/list_conversation_empty.dart';
+import 'package:synapse/feature/conversation/widget/list_conversation_error.dart';
+import 'package:synapse/feature/conversation/widget/list_conversation_loading.dart';
 
 class ListConversationContainer extends ConsumerWidget {
   const ListConversationContainer({super.key});
@@ -44,13 +47,13 @@ class ListConversationContainer extends ConsumerWidget {
     );
 
     return asyncConversations.when(
-      data: (data) => ListConversation(conversations: data),
-      error: (error, stackTrace) {
-        return const SizedBox.shrink();
+      data: (data) {
+        if (data.isEmpty) return const ListConversationEmpty();
+
+        return ListConversation(conversations: data);
       },
-      loading: () {
-        return const SizedBox.shrink();
-      },
+      error: (error, stackTrace) => const ListConversationError(),
+      loading: () => const ListConversationLoading(),
     );
   }
 }

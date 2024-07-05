@@ -23,4 +23,40 @@ class ListConversationAsyncNotifier extends _$ListConversationAsyncNotifier {
       failure: (failure) => throw failure,
     );
   }
+
+  Future<void> removeConversation({required int id}) async {
+    final res = await ref
+        .read(conversationRepositoryProvider)
+        .removeConversation(id: id);
+
+    res.when(
+      success: (success) {
+        (state.value ?? []).removeWhere((element) => element.id == id);
+        state = AsyncData(state.value ?? []);
+      },
+      failure: (failure) => throw failure,
+    );
+  }
+
+  Future<void> updateConversation({
+    required ConversationModel data,
+  }) async {
+    final res = await ref
+        .read(conversationRepositoryProvider)
+        .updateConversation(data: data);
+
+    res.when(
+      success: (success) {
+        final foundIndex =
+            (state.value ?? []).indexWhere((element) => element.id == data.id);
+
+        if (foundIndex == -1) return;
+
+        (state.value ?? [])[foundIndex] = data;
+
+        state = AsyncData(state.value ?? []);
+      },
+      failure: (failure) => throw failure,
+    );
+  }
 }

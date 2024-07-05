@@ -7,8 +7,9 @@ import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 import 'package:synapse/feature/conversation/provider/current_conversation_provider.dart';
 import 'package:synapse/feature/conversation/provider/current_llm_provider.dart';
+import 'package:synapse/feature/conversation/widget/conversation_item_action.dart';
 
-class ConversationItem extends ConsumerWidget {
+class ConversationItem extends ConsumerStatefulWidget {
   const ConversationItem({
     required this.conversation,
     super.key,
@@ -17,7 +18,20 @@ class ConversationItem extends ConsumerWidget {
   final ConversationModel conversation;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConversationItem> createState() => _ConversationItemState();
+}
+
+class _ConversationItemState extends ConsumerState<ConversationItem> {
+  final _popoverController = ShadPopoverController();
+
+  @override
+  void dispose() {
+    _popoverController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentLLM = ref.watch(currentLLMNotifierProvider);
 
     final currentConversationNotifier =
@@ -54,16 +68,16 @@ class ConversationItem extends ConsumerWidget {
             onPressed: () {
               ref
                   .read(currentConversationNotifier.notifier)
-                  .setCurrentConversation(data: conversation);
+                  .setCurrentConversation(data: widget.conversation);
             },
             padding: const EdgeInsets.only(left: 10),
             size: ShadButtonSize.lg,
-            backgroundColor: currentConversationId == conversation.id
+            backgroundColor: currentConversationId == widget.conversation.id
                 ? context.shadColor.secondary
                 : null,
             text: Expanded(
               child: Text(
-                conversation.title ?? 'New chat',
+                widget.conversation.title ?? 'New chat',
                 style: context.shadTextTheme.list,
                 overflow: TextOverflow.fade,
                 textAlign: TextAlign.start,
@@ -72,14 +86,15 @@ class ConversationItem extends ConsumerWidget {
             ),
           ),
         ),
-        ShadButton.ghost(
-          onPressed: () {
-            // TODO(hieupm): show popover with rename and remove action
-          },
-          size: ShadButtonSize.icon,
-          icon: const Icon(
-            LucideIcons.ellipsis,
-            size: 16,
+        ConversationItemAction(
+          controller: _popoverController,
+          data: widget.conversation,
+          child: ShadButton.ghost(
+            onPressed: _popoverController.toggle,
+            icon: const Icon(
+              LucideIcons.ellipsis,
+              size: 16,
+            ),
           ),
         ),
       ],

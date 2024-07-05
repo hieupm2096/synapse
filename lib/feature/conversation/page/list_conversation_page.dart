@@ -23,7 +23,6 @@ class ListConversationPage extends StatelessWidget {
               size: 24,
             ),
           ),
-          size: ShadButtonSize.icon,
           onPressed: () {
             if (context.canPop()) context.pop();
           },
@@ -37,9 +36,8 @@ class ListConversationPage extends StatelessWidget {
           ShadButton.ghost(
             icon: const Icon(
               LucideIcons.squarePen,
-              size: 24,
+              size: 20,
             ),
-            size: ShadButtonSize.icon,
             onPressed: () => context.go(ChatPage.route),
           ),
         ],

@@ -61,6 +61,20 @@ final class ConversationRepository {
     }
   }
 
+  Future<Result<ConversationModel, Exception>> updateConversation({
+    required ConversationModel data,
+  }) async {
+    try {
+      final res = await ref
+          .read(conversationLDSProvider)
+          .updateConversation(data: data);
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
   Future<Result<ConversationModel, Exception>> createConversation({
     required String llmId,
   }) async {
