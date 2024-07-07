@@ -20,3 +20,4 @@ jobs:
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
     with:
       flutter_channel: stable
+      coverage_excludes: '**/*_observer.dart **/*.g.dart **/model/** **/data_source/**'
