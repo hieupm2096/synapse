@@ -58,7 +58,6 @@ class ListConversationPage extends StatelessWidget {
               ),
             ),
             SliverFillRemaining(
-              
               child: ListConversationContainer(),
             ),
           ],
