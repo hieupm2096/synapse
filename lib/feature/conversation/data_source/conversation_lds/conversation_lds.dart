@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synapse/core/core.dart';
-import 'package:synapse/feature/conversation/data_source/conversation/fixture_conversation_lds.dart';
-import 'package:synapse/feature/conversation/data_source/conversation/isar_conversation_lds.dart';
+import 'package:synapse/feature/conversation/data_source/conversation_lds/fixture_conversation_lds.dart';
+import 'package:synapse/feature/conversation/data_source/conversation_lds/isar_conversation_lds.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 
 part 'conversation_lds.g.dart';

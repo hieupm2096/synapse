@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:synapse/app/app.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
-import 'package:synapse/feature/conversation/provider/current_llm_provider.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
 
 class ConversationItemAction extends ConsumerWidget {
@@ -22,11 +22,11 @@ class ConversationItemAction extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLLM = ref.watch(currentLLMNotifierProvider);
+    final currentLlmId =
+        ref.watch(currentLlmModelProvider.select((value) => value.value?.id));
 
-    final listConversationAsyncNotifier = listConversationAsyncNotifierProvider(
-      llmId: currentLLM,
-    );
+    final listConversationAsyncNotifier =
+        listConversationAsyncNotifierProvider(llmId: currentLlmId);
 
     void onRename() {
       controller.toggle();

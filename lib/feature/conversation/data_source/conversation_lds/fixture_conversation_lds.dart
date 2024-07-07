@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:synapse/feature/conversation/data_source/conversation/conversation_lds.dart';
+import 'package:synapse/feature/conversation/data_source/conversation_lds/conversation_lds.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 
 final class FixtureConversationLDS implements IConversationLDS {
@@ -51,14 +51,12 @@ final class FixtureConversationLDS implements IConversationLDS {
   }
 
   @override
-  Future<ConversationModel> getRecentConversation({
+  Future<ConversationModel?> getRecentConversation({
     required String llmId,
   }) async {
     _data ??= await getConversations();
 
     final res = _data?.firstWhereOrNull((e) => e.llmId == llmId);
-
-    if (res == null) throw Exception('not_found');
 
     return res;
   }

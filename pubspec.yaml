@@ -9,6 +9,7 @@ environment:
 dependencies:
   animated_text_kit: ^4.2.2
   collection: ^1.18.0
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -45,3 +46,4 @@ flutter:
   generate: true
   assets:
     - assets/fixture/
+    - assets/json/

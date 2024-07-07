@@ -1,27 +1,28 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:simple_result/simple_result.dart';
-import 'package:synapse/feature/conversation/data_source/conversation/conversation_lds.dart';
+import 'package:synapse/feature/conversation/data_source/conversation_lds/conversation_lds.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 
 part 'conversation_repository.g.dart';
 
 @Riverpod(keepAlive: true)
-ConversationRepository conversationRepository(ConversationRepositoryRef ref) =>
-    ConversationRepository(ref);
+ConversationRepository conversationRepository(ConversationRepositoryRef ref) {
+  return ConversationRepository(
+    conversationLDS: ref.read(conversationLDSProvider),
+  );
+}
 
 final class ConversationRepository {
-  const ConversationRepository(this.ref);
+  const ConversationRepository({required IConversationLDS conversationLDS})
+      : _conversationLDS = conversationLDS;
 
-  final Ref ref;
+  final IConversationLDS _conversationLDS;
 
   Future<Result<List<ConversationModel>, Exception>> getConversations({
     String? llmId,
   }) async {
     try {
-      final res = await ref
-          .read(conversationLDSProvider)
-          .getConversations(llmId: llmId);
+      final res = await _conversationLDS.getConversations(llmId: llmId);
 
       return Result.success(res);
     } on Exception catch (e) {
@@ -33,9 +34,7 @@ final class ConversationRepository {
     required String llmId,
   }) async {
     try {
-      final res = await ref
-          .read(conversationLDSProvider)
-          .getRecentConversation(llmId: llmId);
+      final res = await _conversationLDS.getRecentConversation(llmId: llmId);
 
       return Result.success(res);
     } on Exception catch (e) {
@@ -51,9 +50,7 @@ final class ConversationRepository {
         updatedAt: DateTime.now(),
       );
 
-      final res = await ref
-          .read(conversationLDSProvider)
-          .updateConversation(data: newData);
+      final res = await _conversationLDS.updateConversation(data: newData);
 
       return Result.success(res);
     } on Exception catch (e) {
@@ -65,9 +62,7 @@ final class ConversationRepository {
     required ConversationModel data,
   }) async {
     try {
-      final res = await ref
-          .read(conversationLDSProvider)
-          .updateConversation(data: data);
+      final res = await _conversationLDS.updateConversation(data: data);
 
       return Result.success(res);
     } on Exception catch (e) {
@@ -82,13 +77,13 @@ final class ConversationRepository {
       // TODO(hieupm): get current login user or anonymous user and apply to
       // created by field
 
-      final res = await ref.read(conversationLDSProvider).createConversation(
-            data: ConversationModel(
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-              llmId: llmId,
-            ),
-          );
+      final res = await _conversationLDS.createConversation(
+        data: ConversationModel(
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+          llmId: llmId,
+        ),
+      );
 
       return Result.success(res);
     } on Exception catch (e) {
@@ -100,8 +95,7 @@ final class ConversationRepository {
     required int id,
   }) async {
     try {
-      final res =
-          await ref.read(conversationLDSProvider).removeConversation(id: id);
+      final res = await _conversationLDS.removeConversation(id: id);
 
       return Result.success(res);
     } on Exception catch (e) {

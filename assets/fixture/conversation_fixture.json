@@ -4,7 +4,7 @@
     "title": "Meeting about next quarter's goals",
     "createdAt": "2024-07-04T00:00:00Z",
     "updatedAt": "2024-07-04T00:00:00Z",
-    "llmId": "microsoft/phi-2",
+    "llmId": "microsoft/Phi-3-mini-4k-instruct-gguf",
     "createdBy": "f81d4fae-7dec-11e4-bd1d-64009172cf00"
   },
   {
@@ -12,7 +12,7 @@
     "title": "Brainstorming session for new product ideas",
     "createdAt": "2024-07-03T15:30:00Z",
     "updatedAt": "2024-07-03T15:30:00Z",
-    "llmId": "microsoft/phi-2",
+    "llmId": "bartowski/gemma-2-9b-it-GGUF",
     "createdBy": "9c6f4ea2-7dec-11e4-98bd-64009172cf00"
   },
   {
@@ -20,7 +20,7 @@
     "title": "Casual chat with colleagues",
     "createdAt": "2024-07-02T10:00:00Z",
     "updatedAt": "2024-07-02T10:00:00Z",
-    "llmId": "unsloth/Phi-3-mini-4k-instruct",
+    "llmId": "bartowski/gemma-2-9b-it-GGUF",
     "createdBy": "e2c14bad-7dec-11e4-a29d-64009172cf00"
   }
 ]

@@ -41,6 +41,8 @@ class ListConversationAsyncNotifier extends _$ListConversationAsyncNotifier {
   Future<void> updateConversation({
     required ConversationModel data,
   }) async {
+    state = const AsyncLoading();
+
     final res = await ref
         .read(conversationRepositoryProvider)
         .updateConversation(data: data);

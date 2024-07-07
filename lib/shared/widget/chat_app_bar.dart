@@ -21,6 +21,9 @@ class ChatAppBar extends AppBar {
   bool? get centerTitle => false;
 
   @override
+  double? get scrolledUnderElevation => 0;
+
+  @override
   Widget? get leading => ShadButton.ghost(
         icon: const Padding(
           padding: EdgeInsets.only(top: 6),

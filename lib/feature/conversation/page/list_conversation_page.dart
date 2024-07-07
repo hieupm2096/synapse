@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_container.dart';
+import 'package:synapse/feature/conversation/widget/llm_select.dart';
 
 class ListConversationPage extends StatelessWidget {
   const ListConversationPage({super.key});
@@ -46,7 +47,23 @@ class ListConversationPage extends StatelessWidget {
           child: Divider(height: 0.1),
         ),
       ),
-      body: const ListConversationContainer(),
+      body: GestureDetector(
+        onTap: FocusScope.of(context).unfocus,
+        child: const CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(8, 12, 8, 0),
+                child: LlmSelect(),
+              ),
+            ),
+            SliverFillRemaining(
+              
+              child: ListConversationContainer(),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -7,7 +7,7 @@ part of 'current_conversation_provider.dart';
 // **************************************************************************
 
 String _$currentConversationHash() =>
-    r'0bdd07991a1ae0bba853d05dc69003927efb70dc';
+    r'e78246d426abbfaf25fd77dd83e314ffebb4b9f5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,10 +32,10 @@ class _SystemHash {
 
 abstract class _$CurrentConversation
     extends BuildlessAsyncNotifier<ConversationModel?> {
-  late final String llmId;
+  late final String? llmId;
 
   FutureOr<ConversationModel?> build({
-    required String llmId,
+    String? llmId,
   });
 }
 
@@ -50,7 +50,7 @@ class CurrentConversationFamily extends Family<AsyncValue<ConversationModel?>> {
 
   /// See also [CurrentConversation].
   CurrentConversationProvider call({
-    required String llmId,
+    String? llmId,
   }) {
     return CurrentConversationProvider(
       llmId: llmId,
@@ -86,7 +86,7 @@ class CurrentConversationProvider
     extends AsyncNotifierProviderImpl<CurrentConversation, ConversationModel?> {
   /// See also [CurrentConversation].
   CurrentConversationProvider({
-    required String llmId,
+    String? llmId,
   }) : this._internal(
           () => CurrentConversation()..llmId = llmId,
           from: currentConversationProvider,
@@ -111,7 +111,7 @@ class CurrentConversationProvider
     required this.llmId,
   }) : super.internal();
 
-  final String llmId;
+  final String? llmId;
 
   @override
   FutureOr<ConversationModel?> runNotifierBuild(
@@ -160,7 +160,7 @@ class CurrentConversationProvider
 
 mixin CurrentConversationRef on AsyncNotifierProviderRef<ConversationModel?> {
   /// The parameter `llmId` of this provider.
-  String get llmId;
+  String? get llmId;
 }
 
 class _CurrentConversationProviderElement extends AsyncNotifierProviderElement<
@@ -168,7 +168,7 @@ class _CurrentConversationProviderElement extends AsyncNotifierProviderElement<
   _CurrentConversationProviderElement(super.provider);
 
   @override
-  String get llmId => (origin as CurrentConversationProvider).llmId;
+  String? get llmId => (origin as CurrentConversationProvider).llmId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

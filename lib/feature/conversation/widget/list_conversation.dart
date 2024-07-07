@@ -13,7 +13,7 @@ class ListConversation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       itemBuilder: (context, index) {
         return ConversationItem(conversation: conversations[index]);
       },

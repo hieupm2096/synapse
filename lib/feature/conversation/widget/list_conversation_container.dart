@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:synapse/app/app.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/conversation/provider/current_conversation_provider.dart';
-import 'package:synapse/feature/conversation/provider/current_llm_provider.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_empty.dart';
@@ -15,11 +15,11 @@ class ListConversationContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLLM = ref.watch(currentLLMNotifierProvider);
+    final currentLlmId =
+        ref.watch(currentLlmModelProvider.select((value) => value.value?.id));
 
-    final listConversationAsyncNotifier = listConversationAsyncNotifierProvider(
-      llmId: currentLLM,
-    );
+    final listConversationAsyncNotifier =
+        listConversationAsyncNotifierProvider(llmId: currentLlmId);
 
     final asyncConversations = ref.watch(listConversationAsyncNotifier);
 
@@ -41,8 +41,8 @@ class ListConversationContainer extends ConsumerWidget {
     );
 
     final _ = ref.watch(
-      currentConversationProvider(llmId: currentLLM ?? '').select(
-        (asyncData) => asyncData.value?.id,
+      currentConversationProvider(llmId: currentLlmId).select(
+        (asyncValue) => asyncValue.value?.id,
       ),
     );
 

@@ -7,9 +7,9 @@ part 'current_conversation_provider.g.dart';
 @Riverpod(keepAlive: true)
 class CurrentConversation extends _$CurrentConversation {
   @override
-  FutureOr<ConversationModel?> build({
-    required String llmId,
-  }) async {
+  FutureOr<ConversationModel?> build({String? llmId}) async {
+    if (llmId == null) return null;
+
     final result = await ref
         .read(conversationRepositoryProvider)
         .getRecentConversation(llmId: llmId);
