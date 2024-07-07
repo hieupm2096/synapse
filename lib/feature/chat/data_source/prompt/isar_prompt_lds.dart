@@ -9,19 +9,19 @@ final class IsarPromptLDS implements IPromptLDS {
 
   @override
   Future<PromptModel> createPrompt({required PromptModel data}) {
-    // TODO: implement createPrompt
+    // TODO(hieupm): implement createPrompt
     throw UnimplementedError();
   }
 
   @override
   Future<List<PromptModel>> getExamplePrompts() {
-    // TODO: implement getExamplePrompts
+    // TODO(hieupm): implement getExamplePrompts
     throw UnimplementedError();
   }
 
   @override
   Future<List<PromptModel>> getPrompts({required int conversationId}) {
-    // TODO: implement getPrompts
+    // TODO(hieupm): implement getPrompts
     throw UnimplementedError();
   }
 }

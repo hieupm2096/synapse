@@ -52,7 +52,11 @@ class ListConversationContainer extends ConsumerWidget {
 
         return ListConversation(conversations: data);
       },
-      error: (error, stackTrace) => const ListConversationError(),
+      error: (error, stackTrace) => ListConversationError(
+        onRefresh: () {
+          ref.invalidate(listConversationAsyncNotifier);
+        },
+      ),
       loading: () => const ListConversationLoading(),
     );
   }

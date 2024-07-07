@@ -35,7 +35,6 @@ final class IsarLlmLDS implements ILlmLDS {
 
   @override
   Future<void> createLlmModels({required List<LlmModel> data}) async {
-    // TODO: implement createLlmModels
     await _client.writeTxn(
       () async {
         await _client.llmModels.putAll(data);
