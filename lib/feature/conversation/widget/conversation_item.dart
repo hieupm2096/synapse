@@ -36,18 +36,20 @@ class _ConversationItemState extends ConsumerState<ConversationItem> {
       currentLlmModelProvider.select((asyncValue) => asyncValue.value?.id),
     );
 
-    final currentConversationNotifier =
+    final currentConversationAsyncNotifier =
         currentConversationProvider(llmId: currentLlmId);
 
     final currentConversationId = ref.watch(
-      currentConversationNotifier.select((asyncData) => asyncData.value?.id),
+      currentConversationAsyncNotifier.select(
+        (asyncData) => asyncData.value?.id,
+      ),
     );
 
     ref.listen(
-      currentConversationNotifier,
+      currentConversationAsyncNotifier,
       (previous, next) {
         if (next.isLoading) {
-          // TODO(hieupm): show full screen loading or what?
+          // DO NOTHING
         } else if (next.hasValue && next.value != null) {
           context.go(ChatPage.route);
         } else {
@@ -69,7 +71,7 @@ class _ConversationItemState extends ConsumerState<ConversationItem> {
           child: ShadButton.ghost(
             onPressed: () {
               ref
-                  .read(currentConversationNotifier.notifier)
+                  .read(currentConversationAsyncNotifier.notifier)
                   .setCurrentConversation(data: widget.conversation);
             },
             padding: const EdgeInsets.only(left: 10),

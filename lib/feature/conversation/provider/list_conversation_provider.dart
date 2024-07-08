@@ -61,4 +61,12 @@ class ListConversationAsyncNotifier extends _$ListConversationAsyncNotifier {
       failure: (failure) => throw failure,
     );
   }
+
+  Future<void> addConversation({
+    required ConversationModel conversation,
+  }) async {
+    state = const AsyncLoading();
+
+    state = AsyncData([conversation, ...state.value ?? []]);
+  }
 }

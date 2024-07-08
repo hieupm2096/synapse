@@ -5,6 +5,7 @@ import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_container.dart';
 import 'package:synapse/feature/conversation/widget/llm_select.dart';
+import 'package:synapse/feature/conversation/widget/new_conversation_button.dart';
 
 class ListConversationPage extends StatelessWidget {
   const ListConversationPage({super.key});
@@ -33,14 +34,8 @@ class ListConversationPage extends StatelessWidget {
           style: context.shadTextTheme.h4,
         ),
         centerTitle: false,
-        actions: [
-          ShadButton.ghost(
-            icon: const Icon(
-              LucideIcons.squarePen,
-              size: 20,
-            ),
-            onPressed: () => context.go(ChatPage.route),
-          ),
+        actions: const [
+          NewConversationIconButton(),
         ],
         bottom: const PreferredSize(
           preferredSize: Size.fromHeight(0.1),

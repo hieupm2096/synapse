@@ -11,13 +11,11 @@ final class IsarConversationLDS implements IConversationLDS {
   Future<ConversationModel> createConversation({
     required ConversationModel data,
   }) async {
-    await _client.writeTxn(
-      () async {
-        await _client.conversationModels.put(data);
-      },
+    final id = await _client.writeTxn(
+      () async => _client.conversationModels.put(data),
     );
 
-    return data;
+    return data.copyWith(id: id);
   }
 
   @override
@@ -60,7 +58,11 @@ final class IsarConversationLDS implements IConversationLDS {
   @override
   Future<ConversationModel> removeConversation({required int id}) async {
     final conversation = await getConversation(id: id);
-    final res = await _client.conversationModels.delete(id);
+    final res = await _client.writeTxn(
+      () async {
+        return _client.conversationModels.delete(id);
+      },
+    );
     if (!res) throw Exception('unexpected');
     return conversation;
   }

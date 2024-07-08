@@ -79,6 +79,7 @@ final class ConversationRepository {
 
       final res = await _conversationLDS.createConversation(
         data: ConversationModel(
+          title: 'New chat',
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           llmId: llmId,

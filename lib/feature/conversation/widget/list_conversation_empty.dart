@@ -4,7 +4,12 @@ import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/gen/assets.gen.dart';
 
 class ListConversationEmpty extends StatelessWidget {
-  const ListConversationEmpty({super.key});
+  const ListConversationEmpty({
+    super.key,
+    this.onCreateConversation,
+  });
+
+  final VoidCallback? onCreateConversation;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class ListConversationEmpty extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         ShadButton.outline(
-          onPressed: () {},
+          onPressed: onCreateConversation,
           icon: const Padding(
             padding: EdgeInsets.only(right: 8),
             child: Icon(LucideIcons.squarePen, size: 16),
