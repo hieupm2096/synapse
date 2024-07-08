@@ -18,9 +18,6 @@ class ChatAppBar extends AppBar {
   double? get leadingWidth => 50;
 
   @override
-  bool? get centerTitle => false;
-
-  @override
   double? get scrolledUnderElevation => 0;
 
   @override

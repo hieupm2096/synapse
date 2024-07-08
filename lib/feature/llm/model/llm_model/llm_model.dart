@@ -6,7 +6,7 @@ import 'package:synapse/core/core.dart';
 part 'llm_model.g.dart';
 
 @JsonSerializable()
-@Collection(ignore: {'props'})
+@Collection(ignore: {'props', 'isAvailable', 'isExternal'})
 @Name('llm_model')
 class LlmModel extends Equatable {
   const LlmModel({
@@ -16,12 +16,12 @@ class LlmModel extends Equatable {
     this.sha,
     this.createdAt,
     this.modelId,
-    this.modelSize,
+    this.parameters,
+    this.size,
     this.architecture,
     this.url,
     this.downloadUrl,
     this.path,
-    this.available,
   });
 
   factory LlmModel.fromJson(Map<String, dynamic> json) {
@@ -35,12 +35,15 @@ class LlmModel extends Equatable {
   final String? sha;
   final DateTime? createdAt;
   final String? modelId;
-  final String? modelSize;
+  final String? parameters;
+  final String? size;
   final String? architecture;
   final String? url;
   final String? downloadUrl;
   final String? path;
-  final bool? available;
+
+  bool get isAvailable => path != null;
+  bool get isExternal => url != null;
 
   Map<String, dynamic> toJson() => _$LlmModelToJson(this);
 

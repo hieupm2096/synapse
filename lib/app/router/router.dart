@@ -5,6 +5,7 @@ import 'package:loggy/loggy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
+import 'package:synapse/feature/llm/llm.dart';
 import 'package:synapse/feature/onboard/onboard.dart';
 
 part 'router.g.dart';
@@ -42,6 +43,10 @@ Raw<GoRouter> goRouter(GoRouterRef ref) {
           GoRoute(
             path: ListConversationPage.route,
             builder: (context, state) => const ListConversationPage(),
+          ),
+          GoRoute(
+            path: ListLlmPage.route,
+            builder: (context, state) => const ListLlmPage(),
           ),
         ],
       ),

@@ -27,54 +27,54 @@ const LlmModelSchema = CollectionSchema(
       name: r'author',
       type: IsarType.string,
     ),
-    r'available': PropertySchema(
-      id: 2,
-      name: r'available',
-      type: IsarType.bool,
-    ),
     r'createdAt': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'downloadUrl': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'downloadUrl',
       type: IsarType.string,
     ),
     r'hashCode': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'id': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'id',
       type: IsarType.string,
     ),
     r'lastModified': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'lastModified',
       type: IsarType.dateTime,
     ),
     r'modelId': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'modelId',
       type: IsarType.string,
     ),
-    r'modelSize': PropertySchema(
-      id: 9,
-      name: r'modelSize',
+    r'parameters': PropertySchema(
+      id: 8,
+      name: r'parameters',
       type: IsarType.string,
     ),
     r'path': PropertySchema(
-      id: 10,
+      id: 9,
       name: r'path',
       type: IsarType.string,
     ),
     r'sha': PropertySchema(
-      id: 11,
+      id: 10,
       name: r'sha',
+      type: IsarType.string,
+    ),
+    r'size': PropertySchema(
+      id: 11,
+      name: r'size',
       type: IsarType.string,
     ),
     r'stringify': PropertySchema(
@@ -139,7 +139,7 @@ int _llmModelEstimateSize(
     }
   }
   {
-    final value = object.modelSize;
+    final value = object.parameters;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -152,6 +152,12 @@ int _llmModelEstimateSize(
   }
   {
     final value = object.sha;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.size;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -173,16 +179,16 @@ void _llmModelSerialize(
 ) {
   writer.writeString(offsets[0], object.architecture);
   writer.writeString(offsets[1], object.author);
-  writer.writeBool(offsets[2], object.available);
-  writer.writeDateTime(offsets[3], object.createdAt);
-  writer.writeString(offsets[4], object.downloadUrl);
-  writer.writeLong(offsets[5], object.hashCode);
-  writer.writeString(offsets[6], object.id);
-  writer.writeDateTime(offsets[7], object.lastModified);
-  writer.writeString(offsets[8], object.modelId);
-  writer.writeString(offsets[9], object.modelSize);
-  writer.writeString(offsets[10], object.path);
-  writer.writeString(offsets[11], object.sha);
+  writer.writeDateTime(offsets[2], object.createdAt);
+  writer.writeString(offsets[3], object.downloadUrl);
+  writer.writeLong(offsets[4], object.hashCode);
+  writer.writeString(offsets[5], object.id);
+  writer.writeDateTime(offsets[6], object.lastModified);
+  writer.writeString(offsets[7], object.modelId);
+  writer.writeString(offsets[8], object.parameters);
+  writer.writeString(offsets[9], object.path);
+  writer.writeString(offsets[10], object.sha);
+  writer.writeString(offsets[11], object.size);
   writer.writeBool(offsets[12], object.stringify);
   writer.writeString(offsets[13], object.url);
 }
@@ -196,15 +202,15 @@ LlmModel _llmModelDeserialize(
   final object = LlmModel(
     architecture: reader.readStringOrNull(offsets[0]),
     author: reader.readStringOrNull(offsets[1]),
-    available: reader.readBoolOrNull(offsets[2]),
-    createdAt: reader.readDateTimeOrNull(offsets[3]),
-    downloadUrl: reader.readStringOrNull(offsets[4]),
-    id: reader.readStringOrNull(offsets[6]),
-    lastModified: reader.readDateTimeOrNull(offsets[7]),
-    modelId: reader.readStringOrNull(offsets[8]),
-    modelSize: reader.readStringOrNull(offsets[9]),
-    path: reader.readStringOrNull(offsets[10]),
-    sha: reader.readStringOrNull(offsets[11]),
+    createdAt: reader.readDateTimeOrNull(offsets[2]),
+    downloadUrl: reader.readStringOrNull(offsets[3]),
+    id: reader.readStringOrNull(offsets[5]),
+    lastModified: reader.readDateTimeOrNull(offsets[6]),
+    modelId: reader.readStringOrNull(offsets[7]),
+    parameters: reader.readStringOrNull(offsets[8]),
+    path: reader.readStringOrNull(offsets[9]),
+    sha: reader.readStringOrNull(offsets[10]),
+    size: reader.readStringOrNull(offsets[11]),
     url: reader.readStringOrNull(offsets[13]),
   );
   return object;
@@ -222,17 +228,17 @@ P _llmModelDeserializeProp<P>(
     case 1:
       return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readBoolOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 3:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
-    case 5:
       return (reader.readLong(offset)) as P;
-    case 6:
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
-    case 7:
+    case 6:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 7:
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readStringOrNull(offset)) as P;
     case 9:
@@ -632,32 +638,6 @@ extension LlmModelQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'author',
         value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> availableIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'available',
-      ));
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> availableIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'available',
-      ));
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> availableEqualTo(
-      bool? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'available',
-        value: value,
       ));
     });
   }
@@ -1365,36 +1345,37 @@ extension LlmModelQueryFilter
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeIsNull() {
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'modelSize',
+        property: r'parameters',
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeIsNotNull() {
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition>
+      parametersIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'modelSize',
+        property: r'parameters',
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeEqualTo(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeGreaterThan(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1402,14 +1383,14 @@ extension LlmModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeLessThan(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1417,14 +1398,14 @@ extension LlmModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeBetween(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1433,7 +1414,7 @@ extension LlmModelQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'modelSize',
+        property: r'parameters',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1443,70 +1424,70 @@ extension LlmModelQueryFilter
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeStartsWith(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeEndsWith(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeContains(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'modelSize',
+        property: r'parameters',
         value: value,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeMatches(
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'modelSize',
+        property: r'parameters',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> modelSizeIsEmpty() {
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> parametersIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'modelSize',
+        property: r'parameters',
         value: '',
       ));
     });
   }
 
   QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition>
-      modelSizeIsNotEmpty() {
+      parametersIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'modelSize',
+        property: r'parameters',
         value: '',
       ));
     });
@@ -1804,6 +1785,152 @@ extension LlmModelQueryFilter
     });
   }
 
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'size',
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'size',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'size',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'size',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'size',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> sizeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'size',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<LlmModel, LlmModel, QAfterFilterCondition> stringifyIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -2008,18 +2135,6 @@ extension LlmModelQuerySortBy on QueryBuilder<LlmModel, LlmModel, QSortBy> {
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByAvailable() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'available', Sort.asc);
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByAvailableDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'available', Sort.desc);
-    });
-  }
-
   QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -2092,15 +2207,15 @@ extension LlmModelQuerySortBy on QueryBuilder<LlmModel, LlmModel, QSortBy> {
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByModelSize() {
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByParameters() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'modelSize', Sort.asc);
+      return query.addSortBy(r'parameters', Sort.asc);
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByModelSizeDesc() {
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByParametersDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'modelSize', Sort.desc);
+      return query.addSortBy(r'parameters', Sort.desc);
     });
   }
 
@@ -2125,6 +2240,18 @@ extension LlmModelQuerySortBy on QueryBuilder<LlmModel, LlmModel, QSortBy> {
   QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortByShaDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sha', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> sortBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
     });
   }
 
@@ -2176,18 +2303,6 @@ extension LlmModelQuerySortThenBy
   QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByAuthorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'author', Sort.desc);
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByAvailable() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'available', Sort.asc);
-    });
-  }
-
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByAvailableDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'available', Sort.desc);
     });
   }
 
@@ -2275,15 +2390,15 @@ extension LlmModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByModelSize() {
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByParameters() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'modelSize', Sort.asc);
+      return query.addSortBy(r'parameters', Sort.asc);
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByModelSizeDesc() {
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByParametersDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'modelSize', Sort.desc);
+      return query.addSortBy(r'parameters', Sort.desc);
     });
   }
 
@@ -2308,6 +2423,18 @@ extension LlmModelQuerySortThenBy
   QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenByShaDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sha', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenBySize() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QAfterSortBy> thenBySizeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'size', Sort.desc);
     });
   }
 
@@ -2352,12 +2479,6 @@ extension LlmModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QDistinct> distinctByAvailable() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'available');
-    });
-  }
-
   QueryBuilder<LlmModel, LlmModel, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -2397,10 +2518,10 @@ extension LlmModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<LlmModel, LlmModel, QDistinct> distinctByModelSize(
+  QueryBuilder<LlmModel, LlmModel, QDistinct> distinctByParameters(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'modelSize', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'parameters', caseSensitive: caseSensitive);
     });
   }
 
@@ -2415,6 +2536,13 @@ extension LlmModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'sha', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<LlmModel, LlmModel, QDistinct> distinctBySize(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'size', caseSensitive: caseSensitive);
     });
   }
 
@@ -2449,12 +2577,6 @@ extension LlmModelQueryProperty
   QueryBuilder<LlmModel, String?, QQueryOperations> authorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'author');
-    });
-  }
-
-  QueryBuilder<LlmModel, bool?, QQueryOperations> availableProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'available');
     });
   }
 
@@ -2494,9 +2616,9 @@ extension LlmModelQueryProperty
     });
   }
 
-  QueryBuilder<LlmModel, String?, QQueryOperations> modelSizeProperty() {
+  QueryBuilder<LlmModel, String?, QQueryOperations> parametersProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'modelSize');
+      return query.addPropertyName(r'parameters');
     });
   }
 
@@ -2509,6 +2631,12 @@ extension LlmModelQueryProperty
   QueryBuilder<LlmModel, String?, QQueryOperations> shaProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'sha');
+    });
+  }
+
+  QueryBuilder<LlmModel, String?, QQueryOperations> sizeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'size');
     });
   }
 
@@ -2540,12 +2668,12 @@ LlmModel _$LlmModelFromJson(Map<String, dynamic> json) => LlmModel(
           ? null
           : DateTime.parse(json['createdAt'] as String),
       modelId: json['modelId'] as String?,
-      modelSize: json['modelSize'] as String?,
+      parameters: json['parameters'] as String?,
+      size: json['size'] as String?,
       architecture: json['architecture'] as String?,
       url: json['url'] as String?,
       downloadUrl: json['downloadUrl'] as String?,
       path: json['path'] as String?,
-      available: json['available'] as bool?,
     );
 
 Map<String, dynamic> _$LlmModelToJson(LlmModel instance) => <String, dynamic>{
@@ -2555,10 +2683,10 @@ Map<String, dynamic> _$LlmModelToJson(LlmModel instance) => <String, dynamic>{
       'sha': instance.sha,
       'createdAt': instance.createdAt?.toIso8601String(),
       'modelId': instance.modelId,
-      'modelSize': instance.modelSize,
+      'parameters': instance.parameters,
+      'size': instance.size,
       'architecture': instance.architecture,
       'url': instance.url,
       'downloadUrl': instance.downloadUrl,
       'path': instance.path,
-      'available': instance.available,
     };

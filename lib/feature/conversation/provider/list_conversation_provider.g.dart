@@ -7,7 +7,7 @@ part of 'list_conversation_provider.dart';
 // **************************************************************************
 
 String _$listConversationAsyncNotifierHash() =>
-    r'85999bc9accb5615f5e798797c4b9b209986afb2';
+    r'af80189d39bcc0eb626b5fa3a9cd9604c3514fb0';
 
 /// Copied from Dart SDK
 class _SystemHash {
