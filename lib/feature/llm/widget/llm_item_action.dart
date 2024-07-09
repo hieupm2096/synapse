@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LlmItemAction extends ConsumerStatefulWidget {
   const LlmItemAction({
@@ -35,7 +36,7 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
       decoration: ShadDecoration(
         border: ShadBorder(radius: BorderRadius.circular(12)),
       ),
-      popover: (context) {
+      popover: (popoverContext) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -61,7 +62,30 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
             if (widget.data.isExternal)
               // INFO BUTTON
               ShadButton.ghost(
-                onPressed: () {},
+                onPressed: () async {
+                  _controller.toggle();
+
+                  final url = widget.data.url;
+                  if (url == null) return;
+                  var res = false;
+                  try {
+                    res = await launchUrlString(url);
+                  } on Exception {
+                    res = false;
+                  }
+                  if (!res) {
+                    if (!context.mounted) return;
+
+                    context.shadToaster.show(
+                      const ShadToast.destructive(
+                        title: Text('Uh oh! Something went wrong'),
+                        description:
+                            Text('There was a problem opening the link'),
+                        showCloseIconOnlyWhenHovered: false,
+                      ),
+                    );
+                  }
+                },
                 width: 125,
                 text: const Expanded(
                   child: Text(
@@ -82,8 +106,8 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
               ShadButton.ghost(
                 onPressed: () {},
                 width: 125,
-                foregroundColor: context.shadColor.destructive,
-                hoverForegroundColor: context.shadColor.destructive,
+                foregroundColor: popoverContext.shadColor.destructive,
+                hoverForegroundColor: popoverContext.shadColor.destructive,
                 text: const Expanded(
                   child: Text(
                     'Delete',
@@ -103,8 +127,8 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
               ShadButton.ghost(
                 onPressed: () {},
                 width: 125,
-                foregroundColor: context.shadColor.destructive,
-                hoverForegroundColor: context.shadColor.destructive,
+                foregroundColor: popoverContext.shadColor.destructive,
+                hoverForegroundColor: popoverContext.shadColor.destructive,
                 text: const Expanded(
                   child: Text(
                     'Clear',
