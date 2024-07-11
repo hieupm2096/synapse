@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   animated_text_kit: ^4.2.2
+  background_downloader: ^8.5.2
   collection: ^1.18.0
   equatable: ^2.0.5
   flutter:
@@ -31,7 +32,6 @@ dependencies:
   shimmer: ^3.0.0
   simple_result: ^1.1.0
   url_launcher: ^6.3.0
-
 dev_dependencies:
   build_runner:
   flutter_test:

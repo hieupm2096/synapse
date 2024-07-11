@@ -46,11 +46,29 @@ final class IsarLlmLDS implements ILlmLDS {
   Future<LlmModel> removeLlmModel({required String llmId}) async {
     try {
       final llmModel = await getLlmModel(llmId: llmId);
-      final res = await _client.llmModels.delete(llmId.fastHash);
+      final res = await _client.writeTxn(
+        () => _client.llmModels.delete(llmId.fastHash),
+      );
+
       if (!res) throw Exception('unexpected');
       return llmModel;
     } on Exception {
       rethrow;
     }
+  }
+
+  @override
+  Future<LlmModel> updateLlmModel({required LlmModel data}) async {
+    final id = data.id;
+
+    if (id == null) throw Exception('unexpected');
+
+    final _ = await getLlmModel(llmId: id);
+
+    await _client.writeTxn(
+      () => _client.llmModels.put(data),
+    );
+
+    return data;
   }
 }

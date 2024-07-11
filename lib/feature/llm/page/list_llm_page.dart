@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/widget/list_llm_container.dart';
 import 'package:synapse/shared/widget/widget.dart';
@@ -14,6 +15,15 @@ class ListLlmPage extends StatelessWidget {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         leading: const ShadBackButton(),
+        actions: [
+          ShadButton.ghost(
+            onPressed: () {},
+            icon: const Icon(
+              LucideIcons.folderPlus,
+              size: 20,
+            ),
+          ),
+        ],
         title: Text(
           'Models',
           style: context.shadTextTheme.h4,

@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'router.dart';
+part of 'download_llm_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$goRouterHash() => r'd26010528f816b575ee56e5c05b2d856bb9f0486';
+String _$downloadLlmHash() => r'f040568ba0b3a58cb3f481b9d6c4e5f74006033e';
 
-/// See also [goRouter].
-@ProviderFor(goRouter)
-final goRouterProvider = Provider<Raw<GoRouter>>.internal(
-  goRouter,
-  name: r'goRouterProvider',
+/// See also [DownloadLlm].
+@ProviderFor(DownloadLlm)
+final downloadLlmProvider =
+    AsyncNotifierProvider<DownloadLlm, DownloadLlmState>.internal(
+  DownloadLlm.new,
+  name: r'downloadLlmProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$goRouterHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$downloadLlmHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef GoRouterRef = ProviderRef<Raw<GoRouter>>;
+typedef _$DownloadLlm = AsyncNotifier<DownloadLlmState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

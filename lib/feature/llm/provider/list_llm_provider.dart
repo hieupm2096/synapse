@@ -21,4 +21,18 @@ class ListLLMAsyncNotifier extends _$ListLLMAsyncNotifier {
       failure: (failure) => throw failure,
     );
   }
+
+  Future<void> updateLlmModel({required LlmModel data}) async {
+    state = const AsyncLoading();
+
+    final listLlm = state.value ?? [];
+
+    final foundIndex = listLlm.indexWhere((element) => element.id == data.id);
+
+    if (foundIndex == -1) return;
+
+    listLlm[foundIndex] = data;
+
+    state = AsyncData(listLlm);
+  }
 }

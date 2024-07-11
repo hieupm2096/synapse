@@ -80,4 +80,26 @@ final class LlmRepository {
       return Result.failure(e);
     }
   }
+
+  Future<Result<LlmModel, Exception>> getLlmModel({required String id}) async {
+    try {
+      final res = await _llmLDS.getLlmModel(llmId: id);
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  Future<Result<LlmModel, Exception>> updateLlmModel({
+    required LlmModel data,
+  }) async {
+    try {
+      final res = await _llmLDS.updateLlmModel(data: data);
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

@@ -35,4 +35,9 @@ final class JsonLlmLds implements ILlmLDS {
   Future<void> createLlmModels({required List<LlmModel> data}) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<LlmModel> updateLlmModel({required LlmModel data}) {
+    throw UnimplementedError();
+  }
 }
