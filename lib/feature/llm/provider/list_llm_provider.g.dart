@@ -7,7 +7,7 @@ part of 'list_llm_provider.dart';
 // **************************************************************************
 
 String _$listLLMAsyncNotifierHash() =>
-    r'3ab54cb71efd1f4d31021cbd169465ff8be910e6';
+    r'20cb3e4313c6dd0e204c624bfb3fd4e73d8736f8';
 
 /// See also [ListLLMAsyncNotifier].
 @ProviderFor(ListLLMAsyncNotifier)

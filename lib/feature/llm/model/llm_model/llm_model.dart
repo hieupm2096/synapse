@@ -29,6 +29,7 @@ class LlmModel extends Equatable {
   }
 
   final String? id;
+
   Id? get isarId => id?.fastHash;
   final String? author;
   final DateTime? lastModified;
@@ -43,10 +44,41 @@ class LlmModel extends Equatable {
   final String? path;
 
   bool get isAvailable => path != null;
+
   bool get isExternal => url != null;
 
   Map<String, dynamic> toJson() => _$LlmModelToJson(this);
 
   @override
   List<Object?> get props => [id];
+
+  LlmModel copyWith({
+    String? id,
+    String? author,
+    DateTime? lastModified,
+    String? sha,
+    DateTime? createdAt,
+    String? modelId,
+    String? parameters,
+    String? size,
+    String? architecture,
+    String? url,
+    String? downloadUrl,
+    String? path,
+  }) {
+    return LlmModel(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      lastModified: lastModified ?? this.lastModified,
+      sha: sha ?? this.sha,
+      createdAt: createdAt ?? this.createdAt,
+      modelId: modelId ?? this.modelId,
+      parameters: parameters ?? this.parameters,
+      size: size ?? this.size,
+      architecture: architecture ?? this.architecture,
+      url: url ?? this.url,
+      downloadUrl: downloadUrl ?? this.downloadUrl,
+      path: path ?? this.path,
+    );
+  }
 }
