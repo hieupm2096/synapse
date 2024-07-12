@@ -58,9 +58,9 @@ class LlmSelect extends ConsumerWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
-              ...(asyncLlm.value ?? []).map(
-                (e) => ShadOption(value: e, child: Text(e.id ?? 'N/A')),
-              ),
+              ...(asyncLlm.value ?? [])
+                  .where((e) => e.isAvailable)
+                  .map((e) => ShadOption(value: e, child: Text(e.id ?? 'N/A'))),
             ],
             selectedOptionBuilder: (context, value) {
               return Text(
