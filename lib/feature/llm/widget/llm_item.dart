@@ -24,8 +24,29 @@ class LlmItem extends StatelessWidget {
               RichText(
                 text: TextSpan(
                   children: [
+                    if (model.isAvailable)
+                      WidgetSpan(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 1),
+                          child: Icon(
+                            LucideIcons.badgeCheck,
+                            color: context.shadColor.success,
+                            size: 16,
+                          ),
+                        ),
+                      ),
+                    if (model.isAvailable)
+                      TextSpan(
+                        text: ' ',
+                        style: context.shadTextTheme.list.copyWith(
+                          fontWeight: context.shadTextTheme.large.fontWeight,
+                          color: model.isAvailable
+                              ? context.shadColor.primary
+                              : context.shadColor.mutedForeground,
+                        ),
+                      ),
                     TextSpan(
-                      text: '${model.modelId ?? 'N/A'} ',
+                      text: model.modelId ?? 'N/A',
                       style: context.shadTextTheme.list.copyWith(
                         fontWeight: context.shadTextTheme.large.fontWeight,
                         color: model.isAvailable
@@ -33,17 +54,6 @@ class LlmItem extends StatelessWidget {
                             : context.shadColor.mutedForeground,
                       ),
                     ),
-                    if (model.isAvailable)
-                      WidgetSpan(
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 1),
-                          child: Icon(
-                            LucideIcons.circleCheckBig,
-                            color: context.shadColor.success,
-                            size: 16,
-                          ),
-                        ),
-                      ),
                   ],
                 ),
                 maxLines: 3,

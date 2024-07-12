@@ -14,8 +14,8 @@ extension GetKVPModelCollection on Isar {
 }
 
 const KVPModelSchema = CollectionSchema(
-  name: r'KVPModel',
-  id: -2684102749750814595,
+  name: r'kvp',
+  id: 3578370664945140810,
   properties: {
     r'createdAt': PropertySchema(
       id: 0,

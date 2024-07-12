@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:simple_result/simple_result.dart';
 import 'package:synapse/app/constant/constant.dart';
@@ -59,7 +60,18 @@ final class LlmRepository {
     try {
       final kvp = await _kvpLDS.getKVP(Constant.kCurrentLLM);
 
-      if (kvp == null) return const Result.success(null);
+      if (kvp == null) {
+        final models = await _llmLDS.getLlmModels();
+
+        final defaultModel =
+            models.firstWhereOrNull((element) => element.isAvailable);
+
+        if (defaultModel == null) return const Result.success(null);
+
+        await _kvpLDS.setKVP(Constant.kCurrentLLM, defaultModel.id!);
+
+        return Result.success(defaultModel);
+      }
 
       final res = await _llmLDS.getLlmModel(llmId: kvp.value);
 

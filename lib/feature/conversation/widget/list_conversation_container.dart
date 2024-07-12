@@ -85,7 +85,7 @@ class ListConversationContainer extends ConsumerWidget {
             // DO NOTHING
           } else if (next.hasValue && next.value != null) {
             context.go(ChatPage.route);
-          } else {
+          } else if (next.hasError && next.error != null) {
             context.shadToaster.show(
               const ShadToast.destructive(
                 title: Text('Uh oh! Something went wrong'),

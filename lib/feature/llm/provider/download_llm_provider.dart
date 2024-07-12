@@ -17,14 +17,23 @@ final class DownloadLlmInitial extends DownloadLlmState {
   const DownloadLlmInitial({required super.taskSet});
 }
 
-final class DownloadLlmSuccess extends DownloadLlmState {
-  const DownloadLlmSuccess({required super.taskSet});
+final class EnqueueLlmSuccess extends DownloadLlmState {
+  const EnqueueLlmSuccess({required super.taskSet});
 }
 
-final class DownloadLlmFailure extends DownloadLlmState {
-  const DownloadLlmFailure({required this.error, required super.taskSet});
+final class EnqueueLlmFailure extends DownloadLlmState {
+  const EnqueueLlmFailure({required this.error, required super.taskSet});
 
   final Exception error;
+}
+
+final class DownloadLlmSuccess extends DownloadLlmState {
+  const DownloadLlmSuccess({
+    required super.taskSet,
+    required this.llmId,
+  });
+
+  final String llmId;
 }
 
 final class CancelDownloadLlmSuccess extends DownloadLlmState {
@@ -60,7 +69,7 @@ class DownloadLlm extends _$DownloadLlm {
         final taskSet = (state.value?.taskSet ?? {})..remove(taskId);
 
         // update UI
-        state = AsyncData(DownloadLlmInitial(taskSet: taskSet));
+        state = AsyncData(DownloadLlmSuccess(taskSet: taskSet, llmId: taskId));
 
         // update repository data
         final getLlmModelRes =
@@ -125,7 +134,7 @@ class DownloadLlm extends _$DownloadLlm {
 
     final taskSet = (state.value?.taskSet ?? {})..add(llmId);
 
-    state = AsyncData(DownloadLlmSuccess(taskSet: taskSet));
+    state = AsyncData(EnqueueLlmSuccess(taskSet: taskSet));
   }
 
   Future<void> cancelDownload({

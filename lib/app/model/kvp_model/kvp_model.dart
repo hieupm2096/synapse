@@ -4,6 +4,7 @@ import 'package:synapse/core/core.dart';
 part 'kvp_model.g.dart';
 
 @collection
+@Name('kvp')
 class KVPModel {
   const KVPModel({
     required this.key,
