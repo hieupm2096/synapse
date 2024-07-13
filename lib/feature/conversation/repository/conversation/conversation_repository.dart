@@ -71,18 +71,17 @@ final class ConversationRepository {
   }
 
   Future<Result<ConversationModel, Exception>> createConversation({
+    required String userId,
     required String llmId,
   }) async {
     try {
-      // TODO(hieupm): get current login user or anonymous user and apply to
-      // created by field
-
       final res = await _conversationLDS.createConversation(
         data: ConversationModel(
           title: 'New chat',
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           llmId: llmId,
+          createdBy: userId,
         ),
       );
 

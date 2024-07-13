@@ -61,7 +61,8 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
               ),
             );
 
-            context.go('/${ListConversationPage.route}');
+            // go to ListConversationPage
+            context.go(ListConversationPage.route);
           }
         }
       },
@@ -70,14 +71,13 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
     return ShadPopover(
       controller: _controller,
       padding: EdgeInsets.zero,
-      showDuration: const Duration(milliseconds: 100),
-      waitDuration: const Duration(milliseconds: 100),
       decoration: ShadDecoration(
         border: ShadBorder(radius: BorderRadius.circular(12)),
       ),
       popover: (popoverContext) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             if (!widget.data.isAvailable &&
                 widget.data.isExternal &&

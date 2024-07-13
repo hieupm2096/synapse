@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/llm.dart';
 import 'package:synapse/feature/splash/provider/splash_page_provider.dart';
 
@@ -16,10 +17,13 @@ class SplashPage extends ConsumerWidget {
     ref.listen(
       splashPageProvider,
       (previous, next) {
-        if (next.value is SplashLoadedSuccess) {
-          context.go('/');
-        } else if (next.value is NoLlm) {
-          context.go(ListLlmPage.route);
+        switch (next.valueOrNull) {
+          case SplashLoadedSuccess(:final conversationId):
+            context.go('${ListConversationPage.route}/$conversationId');
+          case NoConversation():
+            context.go(ListConversationPage.route);
+          case _:
+            context.go(ListLlmPage.route);
         }
       },
     );

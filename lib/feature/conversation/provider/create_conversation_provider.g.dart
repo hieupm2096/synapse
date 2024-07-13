@@ -6,8 +6,8 @@ part of 'create_conversation_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createConversationAsyncNotifierHash() =>
-    r'81e4ac41799ad4c1164e282a1e8904f9ac9cd05f';
+String _$createConversationHash() =>
+    r'bc61cfa01ac3b399d85afc9f43f6d94dedc275a0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +30,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$CreateConversationAsyncNotifier
+abstract class _$CreateConversation
     extends BuildlessAutoDisposeAsyncNotifier<ConversationModel?> {
   late final String? llmId;
 
@@ -39,29 +39,27 @@ abstract class _$CreateConversationAsyncNotifier
   });
 }
 
-/// See also [CreateConversationAsyncNotifier].
-@ProviderFor(CreateConversationAsyncNotifier)
-const createConversationAsyncNotifierProvider =
-    CreateConversationAsyncNotifierFamily();
+/// See also [CreateConversation].
+@ProviderFor(CreateConversation)
+const createConversationProvider = CreateConversationFamily();
 
-/// See also [CreateConversationAsyncNotifier].
-class CreateConversationAsyncNotifierFamily
-    extends Family<AsyncValue<ConversationModel?>> {
-  /// See also [CreateConversationAsyncNotifier].
-  const CreateConversationAsyncNotifierFamily();
+/// See also [CreateConversation].
+class CreateConversationFamily extends Family<AsyncValue<ConversationModel?>> {
+  /// See also [CreateConversation].
+  const CreateConversationFamily();
 
-  /// See also [CreateConversationAsyncNotifier].
-  CreateConversationAsyncNotifierProvider call({
+  /// See also [CreateConversation].
+  CreateConversationProvider call({
     String? llmId,
   }) {
-    return CreateConversationAsyncNotifierProvider(
+    return CreateConversationProvider(
       llmId: llmId,
     );
   }
 
   @override
-  CreateConversationAsyncNotifierProvider getProviderOverride(
-    covariant CreateConversationAsyncNotifierProvider provider,
+  CreateConversationProvider getProviderOverride(
+    covariant CreateConversationProvider provider,
   ) {
     return call(
       llmId: provider.llmId,
@@ -80,31 +78,30 @@ class CreateConversationAsyncNotifierFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'createConversationAsyncNotifierProvider';
+  String? get name => r'createConversationProvider';
 }
 
-/// See also [CreateConversationAsyncNotifier].
-class CreateConversationAsyncNotifierProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<
-        CreateConversationAsyncNotifier, ConversationModel?> {
-  /// See also [CreateConversationAsyncNotifier].
-  CreateConversationAsyncNotifierProvider({
+/// See also [CreateConversation].
+class CreateConversationProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    CreateConversation, ConversationModel?> {
+  /// See also [CreateConversation].
+  CreateConversationProvider({
     String? llmId,
   }) : this._internal(
-          () => CreateConversationAsyncNotifier()..llmId = llmId,
-          from: createConversationAsyncNotifierProvider,
-          name: r'createConversationAsyncNotifierProvider',
+          () => CreateConversation()..llmId = llmId,
+          from: createConversationProvider,
+          name: r'createConversationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$createConversationAsyncNotifierHash,
-          dependencies: CreateConversationAsyncNotifierFamily._dependencies,
+                  : _$createConversationHash,
+          dependencies: CreateConversationFamily._dependencies,
           allTransitiveDependencies:
-              CreateConversationAsyncNotifierFamily._allTransitiveDependencies,
+              CreateConversationFamily._allTransitiveDependencies,
           llmId: llmId,
         );
 
-  CreateConversationAsyncNotifierProvider._internal(
+  CreateConversationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -118,7 +115,7 @@ class CreateConversationAsyncNotifierProvider
 
   @override
   FutureOr<ConversationModel?> runNotifierBuild(
-    covariant CreateConversationAsyncNotifier notifier,
+    covariant CreateConversation notifier,
   ) {
     return notifier.build(
       llmId: llmId,
@@ -126,10 +123,10 @@ class CreateConversationAsyncNotifierProvider
   }
 
   @override
-  Override overrideWith(CreateConversationAsyncNotifier Function() create) {
+  Override overrideWith(CreateConversation Function() create) {
     return ProviderOverride(
       origin: this,
-      override: CreateConversationAsyncNotifierProvider._internal(
+      override: CreateConversationProvider._internal(
         () => create()..llmId = llmId,
         from: from,
         name: null,
@@ -142,15 +139,14 @@ class CreateConversationAsyncNotifierProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<CreateConversationAsyncNotifier,
+  AutoDisposeAsyncNotifierProviderElement<CreateConversation,
       ConversationModel?> createElement() {
-    return _CreateConversationAsyncNotifierProviderElement(this);
+    return _CreateConversationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CreateConversationAsyncNotifierProvider &&
-        other.llmId == llmId;
+    return other is CreateConversationProvider && other.llmId == llmId;
   }
 
   @override
@@ -162,21 +158,19 @@ class CreateConversationAsyncNotifierProvider
   }
 }
 
-mixin CreateConversationAsyncNotifierRef
+mixin CreateConversationRef
     on AutoDisposeAsyncNotifierProviderRef<ConversationModel?> {
   /// The parameter `llmId` of this provider.
   String? get llmId;
 }
 
-class _CreateConversationAsyncNotifierProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<
-        CreateConversationAsyncNotifier,
-        ConversationModel?> with CreateConversationAsyncNotifierRef {
-  _CreateConversationAsyncNotifierProviderElement(super.provider);
+class _CreateConversationProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<CreateConversation,
+        ConversationModel?> with CreateConversationRef {
+  _CreateConversationProviderElement(super.provider);
 
   @override
-  String? get llmId =>
-      (origin as CreateConversationAsyncNotifierProvider).llmId;
+  String? get llmId => (origin as CreateConversationProvider).llmId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

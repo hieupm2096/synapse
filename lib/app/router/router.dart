@@ -43,12 +43,14 @@ Raw<GoRouter> goRouter(GoRouterRef ref) {
         builder: (context, state) => const SplashPage(),
       ),
       GoRoute(
-        path: ChatPage.route,
-        builder: (context, state) => const ChatPage(),
+        path: ListConversationPage.route,
+        builder: (context, state) => const ListConversationPage(),
         routes: [
           GoRoute(
-            path: ListConversationPage.route,
-            builder: (context, state) => const ListConversationPage(),
+            path: ChatPage.route,
+            builder: (context, state) => ChatPage(
+              conversationId: int.parse(state.pathParameters['id']!),
+            ),
           ),
         ],
       ),

@@ -6,8 +6,7 @@ part of 'list_conversation_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listConversationAsyncNotifierHash() =>
-    r'af80189d39bcc0eb626b5fa3a9cd9604c3514fb0';
+String _$listConversationHash() => r'5865725f9a29a49e1a1984633639ccb23b1b14cd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -30,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$ListConversationAsyncNotifier
+abstract class _$ListConversation
     extends BuildlessAutoDisposeAsyncNotifier<List<ConversationModel>> {
   late final String? llmId;
 
@@ -39,29 +38,28 @@ abstract class _$ListConversationAsyncNotifier
   });
 }
 
-/// See also [ListConversationAsyncNotifier].
-@ProviderFor(ListConversationAsyncNotifier)
-const listConversationAsyncNotifierProvider =
-    ListConversationAsyncNotifierFamily();
+/// See also [ListConversation].
+@ProviderFor(ListConversation)
+const listConversationProvider = ListConversationFamily();
 
-/// See also [ListConversationAsyncNotifier].
-class ListConversationAsyncNotifierFamily
+/// See also [ListConversation].
+class ListConversationFamily
     extends Family<AsyncValue<List<ConversationModel>>> {
-  /// See also [ListConversationAsyncNotifier].
-  const ListConversationAsyncNotifierFamily();
+  /// See also [ListConversation].
+  const ListConversationFamily();
 
-  /// See also [ListConversationAsyncNotifier].
-  ListConversationAsyncNotifierProvider call({
+  /// See also [ListConversation].
+  ListConversationProvider call({
     String? llmId,
   }) {
-    return ListConversationAsyncNotifierProvider(
+    return ListConversationProvider(
       llmId: llmId,
     );
   }
 
   @override
-  ListConversationAsyncNotifierProvider getProviderOverride(
-    covariant ListConversationAsyncNotifierProvider provider,
+  ListConversationProvider getProviderOverride(
+    covariant ListConversationProvider provider,
   ) {
     return call(
       llmId: provider.llmId,
@@ -80,31 +78,30 @@ class ListConversationAsyncNotifierFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'listConversationAsyncNotifierProvider';
+  String? get name => r'listConversationProvider';
 }
 
-/// See also [ListConversationAsyncNotifier].
-class ListConversationAsyncNotifierProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<ListConversationAsyncNotifier,
-        List<ConversationModel>> {
-  /// See also [ListConversationAsyncNotifier].
-  ListConversationAsyncNotifierProvider({
+/// See also [ListConversation].
+class ListConversationProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    ListConversation, List<ConversationModel>> {
+  /// See also [ListConversation].
+  ListConversationProvider({
     String? llmId,
   }) : this._internal(
-          () => ListConversationAsyncNotifier()..llmId = llmId,
-          from: listConversationAsyncNotifierProvider,
-          name: r'listConversationAsyncNotifierProvider',
+          () => ListConversation()..llmId = llmId,
+          from: listConversationProvider,
+          name: r'listConversationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$listConversationAsyncNotifierHash,
-          dependencies: ListConversationAsyncNotifierFamily._dependencies,
+                  : _$listConversationHash,
+          dependencies: ListConversationFamily._dependencies,
           allTransitiveDependencies:
-              ListConversationAsyncNotifierFamily._allTransitiveDependencies,
+              ListConversationFamily._allTransitiveDependencies,
           llmId: llmId,
         );
 
-  ListConversationAsyncNotifierProvider._internal(
+  ListConversationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -118,7 +115,7 @@ class ListConversationAsyncNotifierProvider
 
   @override
   FutureOr<List<ConversationModel>> runNotifierBuild(
-    covariant ListConversationAsyncNotifier notifier,
+    covariant ListConversation notifier,
   ) {
     return notifier.build(
       llmId: llmId,
@@ -126,10 +123,10 @@ class ListConversationAsyncNotifierProvider
   }
 
   @override
-  Override overrideWith(ListConversationAsyncNotifier Function() create) {
+  Override overrideWith(ListConversation Function() create) {
     return ProviderOverride(
       origin: this,
-      override: ListConversationAsyncNotifierProvider._internal(
+      override: ListConversationProvider._internal(
         () => create()..llmId = llmId,
         from: from,
         name: null,
@@ -142,15 +139,14 @@ class ListConversationAsyncNotifierProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<ListConversationAsyncNotifier,
+  AutoDisposeAsyncNotifierProviderElement<ListConversation,
       List<ConversationModel>> createElement() {
-    return _ListConversationAsyncNotifierProviderElement(this);
+    return _ListConversationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is ListConversationAsyncNotifierProvider &&
-        other.llmId == llmId;
+    return other is ListConversationProvider && other.llmId == llmId;
   }
 
   @override
@@ -162,20 +158,19 @@ class ListConversationAsyncNotifierProvider
   }
 }
 
-mixin ListConversationAsyncNotifierRef
+mixin ListConversationRef
     on AutoDisposeAsyncNotifierProviderRef<List<ConversationModel>> {
   /// The parameter `llmId` of this provider.
   String? get llmId;
 }
 
-class _ListConversationAsyncNotifierProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<
-        ListConversationAsyncNotifier,
-        List<ConversationModel>> with ListConversationAsyncNotifierRef {
-  _ListConversationAsyncNotifierProviderElement(super.provider);
+class _ListConversationProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<ListConversation,
+        List<ConversationModel>> with ListConversationRef {
+  _ListConversationProviderElement(super.provider);
 
   @override
-  String? get llmId => (origin as ListConversationAsyncNotifierProvider).llmId;
+  String? get llmId => (origin as ListConversationProvider).llmId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

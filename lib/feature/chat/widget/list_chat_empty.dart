@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ListChatLoading extends StatelessWidget {
-  const ListChatLoading({super.key});
+class ListChatEmpty extends StatelessWidget {
+  const ListChatEmpty({super.key});
 
   @override
   Widget build(BuildContext context) {

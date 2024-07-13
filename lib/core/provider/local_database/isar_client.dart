@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synapse/app/model/kvp_model/kvp_model.dart';
 import 'package:synapse/app/model/user_model/user_model.dart';
+import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
 
@@ -19,6 +20,7 @@ Future<Isar> initIsarClient() async {
       LlmModelSchema,
       KVPModelSchema,
       UserModelSchema,
+      PromptModelSchema,
     ],
     directory: dir.path,
   );

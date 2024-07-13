@@ -7,7 +7,7 @@ import 'package:synapse/feature/conversation/repository/conversation/conversatio
 part 'list_conversation_provider.g.dart';
 
 @Riverpod(keepAlive: false)
-class ListConversationAsyncNotifier extends _$ListConversationAsyncNotifier {
+class ListConversation extends _$ListConversation {
   @override
   FutureOr<List<ConversationModel>> build({String? llmId}) async {
     final res = await ref

@@ -7,26 +7,33 @@ import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/shared/widget/page/chat_app_bar.dart';
 
 class ChatPage extends StatelessWidget {
-  const ChatPage({super.key});
+  const ChatPage({
+    required this.conversationId,
+    super.key,
+  });
 
-  static String route = '/';
+  static String route = ':id';
+
+  final int conversationId;
 
   @override
   Widget build(BuildContext context) {
-    final listConversationRoute = '$route${ListConversationPage.route}';
-
-    return Scaffold(
-      appBar: ChatAppBar(
-        title: Text(
-          'New Chat',
-          style: context.shadTextTheme.h4,
+    return GestureDetector(
+      onTap: FocusScope.of(context).unfocus,
+      child: Scaffold(
+        appBar: ChatAppBar(
+          title: Text(
+            'New Chat',
+            style: context.shadTextTheme.h4,
+          ),
+          onLeadingPressed: () => context.go(ListConversationPage.route),
+          onSettingPressed: () {
+            logDebug('onSettingPressed');
+          },
         ),
-        onLeadingPressed: () => context.go(listConversationRoute),
-        onSettingPressed: () {
-          logDebug('onSettingPressed');
-        },
+        body: ListChatContainer(conversationId: conversationId),
+        // bottomSheet: ,
       ),
-      body: const ListChatContainer(),
     );
   }
 }
