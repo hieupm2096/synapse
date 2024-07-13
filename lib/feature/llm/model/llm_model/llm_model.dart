@@ -6,7 +6,7 @@ import 'package:synapse/core/core.dart';
 part 'llm_model.g.dart';
 
 @JsonSerializable()
-@Collection(ignore: {'props'})
+@Collection(ignore: {'props', 'isAvailable', 'isExternal'})
 @Name('llm_model')
 class LlmModel extends Equatable {
   const LlmModel({
@@ -16,12 +16,12 @@ class LlmModel extends Equatable {
     this.sha,
     this.createdAt,
     this.modelId,
-    this.modelSize,
+    this.parameters,
+    this.size,
     this.architecture,
     this.url,
     this.downloadUrl,
     this.path,
-    this.available,
   });
 
   factory LlmModel.fromJson(Map<String, dynamic> json) {
@@ -29,21 +29,56 @@ class LlmModel extends Equatable {
   }
 
   final String? id;
+
   Id? get isarId => id?.fastHash;
   final String? author;
   final DateTime? lastModified;
   final String? sha;
   final DateTime? createdAt;
   final String? modelId;
-  final String? modelSize;
+  final String? parameters;
+  final String? size;
   final String? architecture;
   final String? url;
   final String? downloadUrl;
   final String? path;
-  final bool? available;
+
+  bool get isAvailable => path != null;
+
+  bool get isExternal => url != null;
 
   Map<String, dynamic> toJson() => _$LlmModelToJson(this);
 
   @override
   List<Object?> get props => [id];
+
+  LlmModel copyWith({
+    String? id,
+    String? author,
+    DateTime? lastModified,
+    String? sha,
+    DateTime? createdAt,
+    String? modelId,
+    String? parameters,
+    String? size,
+    String? architecture,
+    String? url,
+    String? downloadUrl,
+    String? path,
+  }) {
+    return LlmModel(
+      id: id ?? this.id,
+      author: author ?? this.author,
+      lastModified: lastModified ?? this.lastModified,
+      sha: sha ?? this.sha,
+      createdAt: createdAt ?? this.createdAt,
+      modelId: modelId ?? this.modelId,
+      parameters: parameters ?? this.parameters,
+      size: size ?? this.size,
+      architecture: architecture ?? this.architecture,
+      url: url ?? this.url,
+      downloadUrl: downloadUrl ?? this.downloadUrl,
+      path: path ?? this.path,
+    );
+  }
 }

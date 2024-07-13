@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/router/router.dart';
+import 'package:synapse/app/view/app_downloader.dart';
 import 'package:synapse/l10n/l10n.dart';
 
 class App extends ConsumerWidget {
@@ -24,6 +25,9 @@ class App extends ConsumerWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
+      builder: (context, child) {
+        return AppDownloaderWrapper(child: child);
+      },
     );
   }
 }

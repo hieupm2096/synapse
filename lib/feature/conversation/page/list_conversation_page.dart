@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
-import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_container.dart';
 import 'package:synapse/feature/conversation/widget/llm_select.dart';
 import 'package:synapse/feature/conversation/widget/new_conversation_button.dart';
+import 'package:synapse/shared/widget/widget.dart';
 
 class ListConversationPage extends StatelessWidget {
   const ListConversationPage({super.key});
@@ -17,23 +15,11 @@ class ListConversationPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        leading: ShadButton.ghost(
-          icon: const Padding(
-            padding: EdgeInsets.only(top: 6, left: 6),
-            child: Icon(
-              LucideIcons.arrowLeft,
-              size: 24,
-            ),
-          ),
-          onPressed: () {
-            if (context.canPop()) context.pop();
-          },
-        ),
+        leading: const ShadBackButton(),
         title: Text(
           'Recent',
           style: context.shadTextTheme.h4,
         ),
-        centerTitle: false,
         actions: const [
           NewConversationIconButton(),
         ],

@@ -16,6 +16,7 @@ class _HeadlineState extends State<Headline> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (!_hiAnimDone)
           AnimatedTextKit(
@@ -25,7 +26,7 @@ class _HeadlineState extends State<Headline> {
             isRepeatingAnimation: false,
             animatedTexts: [
               TypewriterAnimatedText(
-                'Hi!',
+                'Hi there 👋',
                 textStyle: context.shadTextTheme.h1,
                 speed: const Duration(milliseconds: 200),
               ),

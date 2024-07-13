@@ -8,20 +8,31 @@ import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
 
-class ConversationItemAction extends ConsumerWidget {
+class ConversationItemAction extends ConsumerStatefulWidget {
   const ConversationItemAction({
-    required this.controller,
-    required this.child,
     required this.data,
     super.key,
   });
 
-  final ShadPopoverController controller;
-  final Widget child;
   final ConversationModel data;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConversationItemAction> createState() =>
+      _ConversationItemActionState();
+}
+
+class _ConversationItemActionState
+    extends ConsumerState<ConversationItemAction> {
+  final _controller = ShadPopoverController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentLlmId =
         ref.watch(currentLlmModelProvider.select((value) => value.value?.id));
 
@@ -29,9 +40,9 @@ class ConversationItemAction extends ConsumerWidget {
         listConversationAsyncNotifierProvider(llmId: currentLlmId);
 
     void onRename() {
-      controller.toggle();
+      _controller.toggle();
 
-      final titleController = TextEditingController(text: data.title);
+      final titleController = TextEditingController(text: widget.data.title);
 
       showShadDialog<dynamic>(
         context: context,
@@ -56,7 +67,7 @@ class ConversationItemAction extends ConsumerWidget {
 
                 dialogContext.pop();
 
-                final newData = data.copyWith(title: newTitle);
+                final newData = widget.data.copyWith(title: newTitle);
 
                 ref
                     .read(listConversationAsyncNotifier.notifier)
@@ -69,7 +80,7 @@ class ConversationItemAction extends ConsumerWidget {
     }
 
     void onRemove() {
-      controller.toggle();
+      _controller.toggle();
 
       showShadDialog<dynamic>(
         context: context,
@@ -104,7 +115,7 @@ class ConversationItemAction extends ConsumerWidget {
 
                 ref
                     .read(listConversationAsyncNotifier.notifier)
-                    .removeConversation(id: data.id!);
+                    .removeConversation(id: widget.data.id!);
               },
             ),
           ],
@@ -113,7 +124,7 @@ class ConversationItemAction extends ConsumerWidget {
     }
 
     return ShadPopover(
-      controller: controller,
+      controller: _controller,
       padding: EdgeInsets.zero,
       showDuration: const Duration(milliseconds: 100),
       waitDuration: const Duration(milliseconds: 100),
@@ -152,7 +163,13 @@ class ConversationItemAction extends ConsumerWidget {
           ],
         );
       },
-      child: child,
+      child: ShadButton.ghost(
+        onPressed: _controller.toggle,
+        icon: const Icon(
+          LucideIcons.ellipsisVertical,
+          size: 16,
+        ),
+      ),
     );
   }
 }

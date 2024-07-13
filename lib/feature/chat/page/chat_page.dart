@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loggy/loggy.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
-import 'package:synapse/feature/chat/widget/chat_bubble.dart';
-import 'package:synapse/feature/chat/widget/headline.dart';
+import 'package:synapse/feature/chat/widget/list_chat_container.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/shared/widget/page/chat_app_bar.dart';
 
@@ -14,15 +13,7 @@ class ChatPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widgets = [
-      const Headline(),
-      ChatBubble.right(
-        content: 'Yes of course, could you do that for me?',
-      ),
-      ChatBubble.left(
-        content: 'Sure, here is the instruction for you to solve it',
-      ),
-    ];
+    final listConversationRoute = '$route${ListConversationPage.route}';
 
     return Scaffold(
       appBar: ChatAppBar(
@@ -30,27 +21,12 @@ class ChatPage extends StatelessWidget {
           'New Chat',
           style: context.shadTextTheme.h4,
         ),
-        onLeadingPressed: () => context.go(
-          '$route${ListConversationPage.route}',
-        ),
+        onLeadingPressed: () => context.go(listConversationRoute),
         onSettingPressed: () {
           logDebug('onSettingPressed');
         },
-        onModelPressed: () {
-          logDebug('onModelPressed');
-        },
       ),
-      body: ListView.separated(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 12,
-        ),
-        itemBuilder: (context, index) {
-          return widgets[index];
-        },
-        separatorBuilder: (context, index) => const SizedBox(height: 8),
-        itemCount: widgets.length,
-      ),
+      body: const ListChatContainer(),
     );
   }
 }

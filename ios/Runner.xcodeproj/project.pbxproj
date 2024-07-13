@@ -121,7 +121,6 @@
 				EDCE5EC448B507D74FFA0895 /* Pods-RunnerTests.profile-staging.xcconfig */,
 				D75DBEC39E007D5D2AF8CA67 /* Pods-RunnerTests.profile-development.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -501,6 +500,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = Synapse;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -595,6 +595,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = Synapse;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -684,6 +685,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = Synapse;
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -778,6 +780,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -870,6 +873,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -961,6 +965,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[DEV] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1055,6 +1060,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1149,6 +1155,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1238,6 +1245,7 @@
 				ENABLE_BITCODE = NO;
 				FLAVOR_APP_NAME = "[STG] Synapse";
 				INFOPLIST_FILE = Runner/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

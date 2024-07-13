@@ -22,4 +22,6 @@ abstract interface class ILlmLDS {
   Future<void> createLlmModels({required List<LlmModel> data});
 
   Future<LlmModel> removeLlmModel({required String llmId});
+
+  Future<LlmModel> updateLlmModel({required LlmModel data});
 }

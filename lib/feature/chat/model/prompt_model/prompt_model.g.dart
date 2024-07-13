@@ -14,26 +14,31 @@ extension GetPromptModelCollection on Isar {
 }
 
 const PromptModelSchema = CollectionSchema(
-  name: r'Prompt',
-  id: 7460840380091728732,
+  name: r'prompt',
+  id: -1213917865015735015,
   properties: {
-    r'createdAt': PropertySchema(
+    r'conversationId': PropertySchema(
       id: 0,
+      name: r'conversationId',
+      type: IsarType.long,
+    ),
+    r'createdAt': PropertySchema(
+      id: 1,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'createdBy': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'createdBy',
       type: IsarType.string,
     ),
     r'repliedId': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'repliedId',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'text',
       type: IsarType.string,
     )
@@ -85,10 +90,11 @@ void _promptModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeString(offsets[1], object.createdBy);
-  writer.writeString(offsets[2], object.repliedId);
-  writer.writeString(offsets[3], object.text);
+  writer.writeLong(offsets[0], object.conversationId);
+  writer.writeDateTime(offsets[1], object.createdAt);
+  writer.writeString(offsets[2], object.createdBy);
+  writer.writeString(offsets[3], object.repliedId);
+  writer.writeString(offsets[4], object.text);
 }
 
 PromptModel _promptModelDeserialize(
@@ -98,11 +104,12 @@ PromptModel _promptModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PromptModel(
-    createdAt: reader.readDateTimeOrNull(offsets[0]),
-    createdBy: reader.readStringOrNull(offsets[1]),
+    conversationId: reader.readLongOrNull(offsets[0]),
+    createdAt: reader.readDateTimeOrNull(offsets[1]),
+    createdBy: reader.readStringOrNull(offsets[2]),
     id: id,
-    repliedId: reader.readStringOrNull(offsets[2]),
-    text: reader.readStringOrNull(offsets[3]),
+    repliedId: reader.readStringOrNull(offsets[3]),
+    text: reader.readStringOrNull(offsets[4]),
   );
   return object;
 }
@@ -115,12 +122,14 @@ P _promptModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -218,6 +227,80 @@ extension PromptModelQueryWhere
 
 extension PromptModelQueryFilter
     on QueryBuilder<PromptModel, PromptModel, QFilterCondition> {
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'conversationId',
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'conversationId',
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'conversationId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'conversationId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'conversationId',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      conversationIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'conversationId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
       createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -826,6 +909,19 @@ extension PromptModelQueryLinks
 
 extension PromptModelQuerySortBy
     on QueryBuilder<PromptModel, PromptModel, QSortBy> {
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> sortByConversationId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'conversationId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy>
+      sortByConversationIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'conversationId', Sort.desc);
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -877,6 +973,19 @@ extension PromptModelQuerySortBy
 
 extension PromptModelQuerySortThenBy
     on QueryBuilder<PromptModel, PromptModel, QSortThenBy> {
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> thenByConversationId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'conversationId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy>
+      thenByConversationIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'conversationId', Sort.desc);
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -940,6 +1049,12 @@ extension PromptModelQuerySortThenBy
 
 extension PromptModelQueryWhereDistinct
     on QueryBuilder<PromptModel, PromptModel, QDistinct> {
+  QueryBuilder<PromptModel, PromptModel, QDistinct> distinctByConversationId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'conversationId');
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -976,6 +1091,12 @@ extension PromptModelQueryProperty
     });
   }
 
+  QueryBuilder<PromptModel, int?, QQueryOperations> conversationIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'conversationId');
+    });
+  }
+
   QueryBuilder<PromptModel, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
@@ -1007,6 +1128,7 @@ extension PromptModelQueryProperty
 
 PromptModel _$PromptModelFromJson(Map<String, dynamic> json) => PromptModel(
       id: (json['id'] as num?)?.toInt(),
+      conversationId: (json['conversationId'] as num?)?.toInt(),
       createdBy: json['createdBy'] as String?,
       text: json['text'] as String?,
       repliedId: json['repliedId'] as String?,
@@ -1018,6 +1140,7 @@ PromptModel _$PromptModelFromJson(Map<String, dynamic> json) => PromptModel(
 Map<String, dynamic> _$PromptModelToJson(PromptModel instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'conversationId': instance.conversationId,
       'createdBy': instance.createdBy,
       'text': instance.text,
       'repliedId': instance.repliedId,

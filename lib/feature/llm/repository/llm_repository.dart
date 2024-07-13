@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:simple_result/simple_result.dart';
 import 'package:synapse/app/constant/constant.dart';
@@ -59,7 +60,18 @@ final class LlmRepository {
     try {
       final kvp = await _kvpLDS.getKVP(Constant.kCurrentLLM);
 
-      if (kvp == null) return const Result.success(null);
+      if (kvp == null) {
+        final models = await _llmLDS.getLlmModels();
+
+        final defaultModel =
+            models.firstWhereOrNull((element) => element.isAvailable);
+
+        if (defaultModel == null) return const Result.success(null);
+
+        await _kvpLDS.setKVP(Constant.kCurrentLLM, defaultModel.id!);
+
+        return Result.success(defaultModel);
+      }
 
       final res = await _llmLDS.getLlmModel(llmId: kvp.value);
 
@@ -76,6 +88,28 @@ final class LlmRepository {
       await _kvpLDS.setKVP(Constant.kCurrentLLM, model.id!);
 
       return Result.success(model);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  Future<Result<LlmModel, Exception>> getLlmModel({required String id}) async {
+    try {
+      final res = await _llmLDS.getLlmModel(llmId: id);
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  Future<Result<LlmModel, Exception>> updateLlmModel({
+    required LlmModel data,
+  }) async {
+    try {
+      final res = await _llmLDS.updateLlmModel(data: data);
+
+      return Result.success(res);
     } on Exception catch (e) {
       return Result.failure(e);
     }

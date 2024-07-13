@@ -10,8 +10,8 @@ import 'package:synapse/feature/conversation/provider/current_conversation_provi
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_empty.dart';
-import 'package:synapse/feature/conversation/widget/list_conversation_error.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_loading.dart';
+import 'package:synapse/shared/widget/misc/common_error_widget.dart';
 
 class ListConversationContainer extends ConsumerWidget {
   const ListConversationContainer({super.key});
@@ -74,7 +74,25 @@ class ListConversationContainer extends ConsumerWidget {
                 .setCurrentConversation(data: next.value!);
 
             // routing
+            // context.go(ChatPage.route);
+          }
+        },
+      )
+      ..listen(
+        currentConversationAsyncNotifier,
+        (previous, next) {
+          if (next.isLoading) {
+            // DO NOTHING
+          } else if (next.hasValue && next.value != null) {
             context.go(ChatPage.route);
+          } else if (next.hasError && next.error != null) {
+            context.shadToaster.show(
+              const ShadToast.destructive(
+                title: Text('Uh oh! Something went wrong'),
+                description: Text('There was a problem with your request'),
+                showCloseIconOnlyWhenHovered: false,
+              ),
+            );
           }
         },
       );
@@ -93,8 +111,8 @@ class ListConversationContainer extends ConsumerWidget {
 
         return ListConversation(conversations: data);
       },
-      error: (error, stackTrace) => ListConversationError(
-        onRefresh: () => ref.invalidate(listConversationAsyncNotifier),
+      error: (error, stackTrace) => CommonErrorWidget(
+        onRetry: () => ref.invalidate(listConversationAsyncNotifier),
       ),
       loading: () => const ListConversationLoading(),
     );

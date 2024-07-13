@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loggy/loggy.dart';
@@ -18,7 +19,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   // The platform's loading screen will be used while awaiting if you omit this.
   // runApp(const LoadingScreen());
 
+  // init isar
   final isar = await initIsarClient();
+
+  // init downloader
+  await FileDownloader().trackTasks();
 
   runApp(
     ProviderScope(
