@@ -74,7 +74,7 @@ class LlmSelect extends ConsumerWidget {
         ),
         ShadButton.ghost(
           onPressed: () {
-            context.push('/${ListLlmPage.route}');
+            context.push(ListLlmPage.route);
           },
           icon: const Icon(
             LucideIcons.chevronRight,

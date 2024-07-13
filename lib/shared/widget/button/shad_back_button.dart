@@ -7,6 +7,8 @@ class ShadBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!context.canPop()) return const SizedBox.shrink();
+
     return ShadButton.ghost(
       icon: const Padding(
         padding: EdgeInsets.only(top: 6, left: 6),

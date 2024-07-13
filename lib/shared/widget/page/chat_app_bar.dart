@@ -7,12 +7,10 @@ class ChatAppBar extends AppBar {
     this.onLeadingPressed,
     super.title,
     this.onSettingPressed,
-    this.onModelPressed,
   });
 
   final VoidCallback? onLeadingPressed;
   final VoidCallback? onSettingPressed;
-  final VoidCallback? onModelPressed;
 
   @override
   double? get leadingWidth => 50;

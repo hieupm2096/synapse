@@ -5,10 +5,11 @@ part 'prompt_model.g.dart';
 
 @JsonSerializable()
 @collection
-@Name('Prompt')
+@Name('prompt')
 class PromptModel {
   const PromptModel({
     this.id,
+    this.conversationId,
     this.createdBy,
     this.text,
     this.repliedId,
@@ -19,6 +20,7 @@ class PromptModel {
       _$PromptModelFromJson(json);
 
   final Id? id;
+  final int? conversationId;
   final String? createdBy;
   final String? text;
   final String? repliedId;

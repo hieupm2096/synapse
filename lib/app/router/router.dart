@@ -7,6 +7,7 @@ import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/llm.dart';
 import 'package:synapse/feature/onboard/onboard.dart';
+import 'package:synapse/feature/splash/splash.dart';
 
 part 'router.g.dart';
 
@@ -32,10 +33,15 @@ final class GoNavigationObserver extends NavigatorObserver {
 Raw<GoRouter> goRouter(GoRouterRef ref) {
   return GoRouter(
     debugLogDiagnostics: true,
+    initialLocation: SplashPage.route,
     observers: [
       if (kDebugMode) GoNavigationObserver(),
     ],
     routes: [
+      GoRoute(
+        path: SplashPage.route,
+        builder: (context, state) => const SplashPage(),
+      ),
       GoRoute(
         path: ChatPage.route,
         builder: (context, state) => const ChatPage(),
@@ -44,15 +50,15 @@ Raw<GoRouter> goRouter(GoRouterRef ref) {
             path: ListConversationPage.route,
             builder: (context, state) => const ListConversationPage(),
           ),
-          GoRoute(
-            path: ListLlmPage.route,
-            builder: (context, state) => const ListLlmPage(),
-          ),
         ],
       ),
       GoRoute(
         path: OnboardPage.route,
         builder: (context, state) => const OnboardPage(),
+      ),
+      GoRoute(
+        path: ListLlmPage.route,
+        builder: (context, state) => const ListLlmPage(),
       ),
     ],
   );

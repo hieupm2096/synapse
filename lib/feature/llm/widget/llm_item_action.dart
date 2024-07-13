@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
 import 'package:synapse/feature/llm/provider/download_llm_provider.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -33,22 +35,33 @@ class _LlmItemActionState extends ConsumerState<LlmItemAction> {
       downloadLlmProvider,
       (previous, next) {
         if (next.hasValue && next.value != null) {
-          if (next.value is DownloadLlmSuccess) {
+          final value = next.value;
+          if (value is EnqueueLlmSuccess) {
             context.shadToaster.show(
               const ShadToast(
-                title: Text('Added model to download queue'),
+                description: Text('Added model to download queue'),
                 duration: Duration(seconds: 2),
                 showCloseIconOnlyWhenHovered: false,
               ),
             );
-          } else if (next.value is CancelDownloadLlmSuccess) {
+          } else if (value is CancelDownloadLlmSuccess) {
             context.shadToaster.show(
               const ShadToast.destructive(
-                title: Text('Removed model from download queue'),
+                description: Text('Removed model from download queue'),
                 duration: Duration(seconds: 2),
                 showCloseIconOnlyWhenHovered: false,
               ),
             );
+          } else if (value is DownloadLlmSuccess) {
+            context.shadToaster.show(
+              ShadToast(
+                description: Text('${value.llmId} downloaded successfully'),
+                duration: 2.seconds,
+                showCloseIconOnlyWhenHovered: false,
+              ),
+            );
+
+            context.go('/${ListConversationPage.route}');
           }
         }
       },
@@ -236,6 +249,7 @@ class _InfoButton extends StatelessWidget {
             const ShadToast.destructive(
               title: Text('Uh oh! Something went wrong'),
               description: Text('There was a problem opening the link'),
+              duration: Duration(seconds: 5),
               showCloseIconOnlyWhenHovered: false,
             ),
           );
