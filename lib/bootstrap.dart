@@ -27,6 +27,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   runApp(
     ProviderScope(
+      observers: [MyObserver()],
       overrides: [
         isarProvider.overrideWithValue(isar),
       ],

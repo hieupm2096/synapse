@@ -1,7 +1,7 @@
 import 'package:background_downloader/background_downloader.dart';
 import 'package:loggy/loggy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:synapse/core/service/download_manager.dart';
+import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/provider/list_llm_provider.dart';
 import 'package:synapse/feature/llm/repository/llm_repository.dart';
 
@@ -84,9 +84,11 @@ class DownloadLlm extends _$DownloadLlm {
           return;
         }
 
-        final path = await task.filePath();
+        final absolutePath = await task.filePath();
 
-        final newLlmModel = llmModel.copyWith(path: path);
+        final relativePath = absolutePath.split('/').last;
+
+        final newLlmModel = llmModel.copyWith(path: relativePath);
 
         final updateLlmModelRes = await ref
             .read(llmRepositoryProvider)

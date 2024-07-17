@@ -18,19 +18,19 @@ class TypeAndSend extends ConsumerStatefulWidget {
 }
 
 class _TypeAndSendState extends ConsumerState<TypeAndSend> {
-  bool _isTextEmpty = true;
+  // bool _isTextEmpty = true;
 
   final TextEditingController _controller = TextEditingController();
 
-  @override
-  void initState() {
-    _controller.addListener(
-      () {
-        _onChange(_controller.text);
-      },
-    );
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _controller.addListener(
+  //     () {
+  //       _onChange(_controller.text);
+  //     },
+  //   );
+  //   super.initState();
+  // }
 
   @override
   void dispose() {
@@ -60,24 +60,29 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
                   child: ChatInput(controller: _controller),
                 ),
               ),
+              // ShadButton.ghost(
+              //   onPressed: () {},
+              //   icon: const Icon(
+              //     LucideIcons.paperclip,
+              //     size: 22,
+              //   ),
+              // ),
+              // if (_isTextEmpty)
+              //   ShadButton.ghost(
+              //     onPressed: () {},
+              //     icon: const Icon(LucideIcons.mic),
+              //   )
+              // else
+              //   ShadButton.ghost(
+              //     onPressed: _onSend,
+              //     icon: const Icon(LucideIcons.sendHorizontal, size: 22),
+              //     size: ShadButtonSize.lg,
+              //   ),
               ShadButton.ghost(
-                onPressed: () {},
-                icon: const Icon(
-                  LucideIcons.paperclip,
-                  size: 22,
-                ),
+                onPressed: _onSend,
+                icon: const Icon(LucideIcons.sendHorizontal, size: 22),
+                size: ShadButtonSize.lg,
               ),
-              if (_isTextEmpty)
-                ShadButton.ghost(
-                  onPressed: () {},
-                  icon: const Icon(LucideIcons.mic),
-                )
-              else
-                ShadButton.ghost(
-                  onPressed: _onSend,
-                  icon: const Icon(LucideIcons.sendHorizontal, size: 22),
-                  size: ShadButtonSize.lg,
-                ),
             ],
           ),
         ),
@@ -85,11 +90,11 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
     );
   }
 
-  void _onChange(String v) {
-    setState(() {
-      _isTextEmpty = v.isEmpty;
-    });
-  }
+  // void _onChange(String v) {
+  //   setState(() {
+  //     _isTextEmpty = v.isEmpty;
+  //   });
+  // }
 
   void _onSend() {
     logDebug('onSend');
@@ -103,8 +108,9 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
     if (text.isEmpty) return;
 
     final currentLlmId = ref.read(currentLlmProvider).value?.id;
+    final currentLlmPath = ref.read(currentLlmProvider).value?.path;
 
-    if (currentLlmId == null) return;
+    if (currentLlmId == null || currentLlmPath == null) return;
 
     final currentConversationId =
         ref.read(currentConversationProvider(llmId: currentLlmId)).value?.id;

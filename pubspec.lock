@@ -265,6 +265,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  fllama:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "711df2e7af49988ca5c804cb2e086917262f374c"
+      url: "https://github.com/Telosnex/fllama.git"
+    source: git
+    version: "0.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -373,6 +382,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  html_unescape:
+    dependency: transitive
+    description:
+      name: html_unescape
+      sha256: "15362d7a18f19d7b742ef8dcb811f5fd2a2df98db9f80ea393c075189e0b61e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   http:
     dependency: transitive
     description:
@@ -437,6 +454,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0+1"
+  jinja:
+    dependency: transitive
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "64ae6b873223203c1843b1d62561174908761d3c"
+      url: "https://github.com/Telosnex/jinja.dart.git"
+    source: git
+    version: "0.6.0-dev.16"
   js:
     dependency: transitive
     description:
@@ -850,6 +876,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  textwrap:
+    dependency: transitive
+    description:
+      name: textwrap
+      sha256: "780b164d83dfed30b475b1310d288145c5e0109193c3c507cf015d38e4adc844"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   time:
     dependency: transitive
     description:

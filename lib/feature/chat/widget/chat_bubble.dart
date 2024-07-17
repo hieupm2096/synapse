@@ -90,7 +90,7 @@ class ChatBubble extends StatelessWidget {
                         ? context.shadColor.primary
                         : context.shadColor.background,
                   ),
-                  textAlign: isLeft ? TextAlign.start : TextAlign.end,
+                  textAlign: TextAlign.start,
                 ),
           ),
         ),

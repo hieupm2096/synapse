@@ -28,11 +28,35 @@ final class PromptRepository {
     }
   }
 
+  Future<Result<PromptModel, Exception>> getPrompt({required int id}) async {
+    try {
+      final res = await _promptLDS.getPrompt(id: id);
+
+      if (res == null) return Result.failure(Exception('not_found'));
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
   Future<Result<PromptModel, Exception>> createPrompt({
     required PromptModel data,
   }) async {
     try {
       final res = await _promptLDS.createPrompt(data: data);
+
+      return Result.success(res);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  Future<Result<PromptModel, Exception>> updatePrompt({
+    required PromptModel data,
+  }) async {
+    try {
+      final res = await _promptLDS.updatePrompt(data: data);
 
       return Result.success(res);
     } on Exception catch (e) {

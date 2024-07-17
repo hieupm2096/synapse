@@ -31,4 +31,16 @@ class ListPrompt extends _$ListPrompt {
 
     state = AsyncData(prompts);
   }
+
+  void updatePrompt({required PromptModel data}) {
+    state = const AsyncLoading();
+
+    final prompts = state.value ?? [];
+
+    final foundIndex = prompts.indexWhere((e) => e.id == data.id);
+
+    prompts[foundIndex] = data;
+
+    state = AsyncData(prompts);
+  }
 }

@@ -11,6 +11,10 @@ dependencies:
   background_downloader: ^8.5.2
   collection: ^1.18.0
   equatable: ^2.0.5
+  fllama:
+    git:
+      url: https://github.com/Telosnex/fllama.git
+      ref: main
   flutter:
     sdk: flutter
   flutter_animate: ^4.5.0

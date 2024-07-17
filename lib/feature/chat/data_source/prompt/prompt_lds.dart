@@ -14,5 +14,9 @@ abstract interface class IPromptLDS {
 
   Future<List<PromptModel>> getExamplePrompts();
 
+  Future<PromptModel?> getPrompt({required int id});
+
   Future<PromptModel> createPrompt({required PromptModel data});
+
+  Future<PromptModel> updatePrompt({required PromptModel data});
 }

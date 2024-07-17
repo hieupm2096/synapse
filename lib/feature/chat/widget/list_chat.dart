@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:synapse/app/constant/constant.dart';
-import 'package:synapse/app/provider/current_conversation/current_conversation_provider.dart';
-import 'package:synapse/app/provider/current_llm/current_llm_provider.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
-import 'package:synapse/feature/chat/provider/create_prompt_provider.dart';
 import 'package:synapse/feature/chat/widget/chat_bubble.dart';
 import 'package:synapse/feature/chat/widget/headline.dart';
 
@@ -20,53 +15,56 @@ class ListChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (data.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(16),
-        child: Consumer(
-          builder: (context, ref, child) {
-            return Headline(
-              onFinished: ({message}) {
-                final currentLlmId = ref.read(currentLlmProvider).value?.id;
-
-                if (currentLlmId == null) return;
-
-                final conversationId = ref
-                    .read(currentConversationProvider(llmId: currentLlmId))
-                    .value
-                    ?.id;
-
-                if (conversationId == null) return;
-
-                final mess = message ?? Constant.defaultMessage;
-
-                ref.read(createPromptProvider.notifier).createPrompt(
-                      text: mess,
-                      createdBy: currentLlmId,
-                      conversationId: conversationId,
-                      isHuman: false,
-                    );
-              },
-            );
-          },
-        ),
+      return const Padding(
+        padding: EdgeInsets.all(16),
+        child: Headline(),
       );
     }
 
+    final reversedData = data.reversed.toList();
+
     return ListView.separated(
+      reverse: true,
       padding: EdgeInsets.fromLTRB(
         16,
         16,
         16,
         88 + context.mediaQuery.viewPadding.bottom,
       ),
-      itemCount: data.length,
+      itemCount: reversedData.length,
       itemBuilder: (context, index) {
-        final prompt = data[index];
+        final prompt = reversedData[index];
+
+        final isHuman = prompt.isHuman ?? true;
 
         return ChatBubble(
           content: prompt.text,
-          isLeft: !(prompt.isHuman ?? true),
+          isLeft: !isHuman,
         );
+
+        // if (isHuman) {
+        //   return ChatBubble(
+        //     content: prompt.text,
+        //     isLeft: false,
+        //   );
+        // }
+
+        // return ChatBubble(
+        //   contentWidget: Consumer(
+        //     builder: (context, ref, child) {
+        //       final reply =
+        //           ref.watch(promptReplyProvider(id: prompt.id!));
+
+        //       return Text(
+        //         reply,
+        //         style: context.shadTextTheme.list.copyWith(
+        //           color: context.shadColor.primary,
+        //         ),
+        //         textAlign: TextAlign.start,
+        //       );
+        //     },
+        //   ),
+        // );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
     );

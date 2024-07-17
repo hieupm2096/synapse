@@ -31,4 +31,25 @@ final class IsarPromptLDS implements IPromptLDS {
 
     return res;
   }
+
+  @override
+  Future<PromptModel> updatePrompt({required PromptModel data}) async {
+    await _client.writeTxn(
+      () async {
+        await _client.promptModels.put(data);
+      },
+    );
+
+    return data;
+  }
+  
+  @override
+  Future<PromptModel?> getPrompt({required int id}) async {
+    final res = await _client.promptModels
+        .filter()
+        .idEqualTo(id)
+        .findFirst();
+
+    return res;
+  }
 }
