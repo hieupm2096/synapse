@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:loggy/loggy.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
+import 'package:synapse/feature/chat/widget/chat_item_action.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
@@ -8,7 +10,6 @@ class ChatBubble extends StatelessWidget {
     this.content,
     this.contentWidget,
     this.onPressed,
-    this.onLongPressed,
     this.isLeft = true,
   });
 
@@ -17,14 +18,12 @@ class ChatBubble extends StatelessWidget {
     String? content,
     Widget? child,
     VoidCallback? onPressed,
-    VoidCallback? onLongPressed,
   }) =>
       ChatBubble(
         key: key,
         content: content,
         contentWidget: child,
         onPressed: onPressed,
-        onLongPressed: onLongPressed,
       );
 
   factory ChatBubble.right({
@@ -32,43 +31,45 @@ class ChatBubble extends StatelessWidget {
     String? content,
     Widget? contentWidget,
     VoidCallback? onPressed,
-    VoidCallback? onLongPressed,
   }) =>
       ChatBubble(
         key: key,
         content: content,
         contentWidget: contentWidget,
         onPressed: onPressed,
-        onLongPressed: onLongPressed,
         isLeft: false,
       );
 
   final String? content;
   final Widget? contentWidget;
   final VoidCallback? onPressed;
-  final VoidCallback? onLongPressed;
   final bool isLeft;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onLongPress: () {
-        logDebug('onLongPressed');
-        // TODO(hieupm): show popover with copy action
-      },
-      child: CupertinoButton(
-        padding: EdgeInsets.zero,
-        minSize: 0,
-        onPressed: () {
-          FocusScope.of(context).unfocus();
-          onPressed?.call();
+    final isEmpty = content?.isEmpty ?? true;
+
+    return Container(
+      alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+      padding: EdgeInsets.only(
+        left: isLeft ? 0 : 24,
+        right: isLeft ? 24 : 0,
+      ),
+      child: ChatItemAction(
+        enabled: !isEmpty,
+        onLongPressed: () {
+          if (isEmpty) return;
+
+          Clipboard.setData(ClipboardData(text: content!));
         },
-        child: Container(
-          padding: EdgeInsets.only(
-            left: isLeft ? 0 : 24,
-            right: isLeft ? 24 : 0,
-          ),
-          alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+        child: CupertinoButton(
+          padding: EdgeInsets.zero,
+          minSize: 0,
+          onPressed: () {
+            logDebug('onChatPressed');
+            FocusScope.of(context).unfocus();
+            onPressed?.call();
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(

@@ -101,11 +101,11 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
                   ),
                 ],
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               Text(
                 'The data could be inaccurate.',
                 style: context.shadTextTheme.muted.copyWith(
-                  fontSize: 12,
+                  fontSize: 11,
                   // fontStyle: FontStyle.italic,
                 ),
               ),
