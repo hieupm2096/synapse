@@ -1,14 +1,17 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:synapse/app/app.dart';
+import 'package:synapse/app/provider/provider.dart';
+import 'package:synapse/core/extension/ext.dart';
+import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
 import 'package:synapse/feature/chat/provider/create_prompt_provider.dart';
 import 'package:synapse/feature/chat/provider/list_prompt_provider.dart';
 import 'package:synapse/feature/chat/provider/prompt_reply_provider.dart';
-import 'package:synapse/feature/chat/provider/update_prompt_provider.dart';
 import 'package:synapse/feature/chat/widget/list_chat.dart';
 import 'package:synapse/feature/chat/widget/list_chat_error.dart';
 import 'package:synapse/feature/chat/widget/list_chat_loading.dart';
 import 'package:synapse/feature/chat/widget/type_and_send.dart';
+import 'package:uuid/uuid.dart';
 
 class ListChatContainer extends ConsumerWidget {
   const ListChatContainer({
@@ -29,53 +32,61 @@ class ListChatContainer extends ConsumerWidget {
           if (next.hasValue && next.value != null) {
             final prompt = next.value!;
 
-            ref
-                .read(listPromptProvider(conversationId).notifier)
-                .createPrompt(data: prompt);
-
             final isHuman = prompt.isHuman ?? true;
 
-            final llmModel = ref.read(currentLlmProvider).value;
+            final llmModelId = ref.read(currentLlmProvider).value?.id;
 
-            if (llmModel == null) return;
+            if (llmModelId == null) return;
 
-            // if the message is not from human, which means it's reply,
-            // trigger inference
-            if (!isHuman) {
-              final message = previous?.value?.text;
+            if (isHuman) {
+              ref
+                  .read(listPromptProvider(conversationId).notifier)
+                  .createPrompt(data: prompt);
 
-              if (message == null) return;
+              final reply = PromptModel(
+                conversationId: conversationId,
+                id: const Uuid().v4().fastHash,
+                createdAt: DateTime.now(),
+                createdBy: llmModelId,
+                isHuman: false,
+              );
 
               ref
-                  .read(promptReplyProvider(id: prompt.id!).notifier)
-                  .startInference(
-                    message: message,
-                    conversationId: conversationId,
-                    llmModel: llmModel,
-                  );
-            } else {
-              // if the message is from human, we create a blank reply using
-              // createChatProvider
+                  .read(listPromptProvider(conversationId).notifier)
+                  .createPrompt(data: reply);
 
-              ref.read(createPromptProvider.notifier).createPrompt(
-                    text: 'Generating...',
-                    createdBy: llmModel.id!,
-                    conversationId: conversationId,
-                    isHuman: false,
-                  );
+              ref
+                  .read(promptReplyProvider.notifier)
+                  .startInference(id: reply.id!, message: prompt.text!);
             }
           }
         },
       )
       ..listen(
-        updatePromptProvider,
+        promptReplyProvider,
         (previous, next) {
-          if (next.hasValue && next.value != null) {
-            final prompt = next.value!;
+          final id = next.id;
+          final isDone = next.status == PromptReplyStatus.done;
+
+          if (id != null) {
+            final reply = ref
+                .read(listPromptProvider(conversationId))
+                .value
+                ?.firstWhereOrNull((e) => e.id == next.id);
+
+            if (reply == null) return;
+
+            final newReply = reply.copyWith(text: next.message);
 
             ref
                 .read(listPromptProvider(conversationId).notifier)
-                .updatePrompt(data: prompt);
+                .updatePrompt(data: newReply);
+
+            if (isDone) {
+              ref
+                  .read(createPromptProvider.notifier)
+                  .createPromptByPrompt(data: newReply);
+            }
           }
         },
       );

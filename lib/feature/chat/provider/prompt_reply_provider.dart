@@ -4,21 +4,61 @@ import 'package:fllama/fllama.dart';
 import 'package:loggy/loggy.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:synapse/feature/chat/provider/update_prompt_provider.dart';
-import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
+import 'package:synapse/app/provider/current_llm/current_llm_provider.dart';
 
 part 'prompt_reply_provider.g.dart';
 
-@riverpod
+enum PromptReplyStatus { initial, inProgress, done }
+
+final class PromptReplyEntity {
+  const PromptReplyEntity({
+    required this.status,
+    this.id,
+    this.message,
+  });
+
+  final String? message;
+  final PromptReplyStatus status;
+  final int? id;
+
+  PromptReplyEntity copyWith({
+    String? message,
+    PromptReplyStatus? status,
+    int? id,
+  }) {
+    return PromptReplyEntity(
+      message: message ?? this.message,
+      status: status ?? this.status,
+      id: id ?? this.id,
+    );
+  }
+}
+
+@Riverpod(keepAlive: true)
 class PromptReply extends _$PromptReply {
   @override
-  String build({required int id}) => '';
+  PromptReplyEntity build() {
+    // ref.onDispose(stopInference);
+
+    return const PromptReplyEntity(status: PromptReplyStatus.initial);
+  }
+
+  // cache request id to cancel later - this function does not work correctly
+  // int? _requestId;
 
   Future<void> startInference({
+    required int id,
     required String message,
-    required int conversationId,
-    required LlmModel llmModel,
   }) async {
+    // change state
+    state = PromptReplyEntity(id: id, status: PromptReplyStatus.inProgress);
+
+    // get current llm model
+    final llmModel = ref.read(currentLlmProvider).value;
+
+    if (llmModel == null) return;
+
+    // get llm model path
     final relativePath = llmModel.path;
 
     if (relativePath == null) return;
@@ -27,39 +67,49 @@ class PromptReply extends _$PromptReply {
 
     final absolutePath = '${directory.path}/$relativePath';
 
-    final request = FllamaInferenceRequest(
-      maxTokens: 256,
-      input: message,
-      numGpuLayers: 99,
+    // start inference
+    final request = OpenAiRequest(
       modelPath: absolutePath,
-      penaltyFrequency: 0,
-      // Don't use below 1.1, LLMs without a repeat penalty
-      // will repeat the same token.
-      penaltyRepeat: 1.1,
-      topP: 1,
-      contextSize: 2048,
-      // Don't use 0.0, some models will repeat
-      // the same token.
-      temperature: 0.1,
-      logger: (log) {
-        logDebug('[llama.cpp] $log');
-      },
+      maxTokens: 256,
+      numGpuLayers: 99,
+      messages: [
+        Message(
+          Role.system,
+          '''
+          You are an AI assistant that helps people find information.
+          You should always maintain a professional tone and avoid discussing personal opinions on politics.
+          You should answer the question in shortest form possible.
+          If you don't understand the question, answer you don't understand.
+          If you don't know the answer for the question, answer you don't know.
+          ''',
+        ),
+        Message(Role.user, message),
+      ],
+      temperature: 0.5,
+      logger: (log) => logDebug('[llama.cpp] $log'),
     );
 
-    unawaited(fllamaInference(request, _listener));
+    // _requestId =
+    await fllamaChat(
+      request,
+      (response, done) {
+        state = PromptReplyEntity(
+          id: id,
+          message: response.trim(),
+          status: done ? PromptReplyStatus.done : PromptReplyStatus.inProgress,
+        );
+
+        if (done) {
+          ref.invalidateSelf();
+        }
+      },
+    );
   }
 
-  void _listener(String response, bool done) {
-    logInfo('[llama] $response');
+  // this function does not work correctly
+  // void stopInference() {
+  //   if (_requestId == null) return;
 
-    // update prompt in local db
-    if (done) {
-      ref
-          .read(updatePromptProvider.notifier)
-          .updatePrompt(id: id, message: response);
-    }
-
-    // update the text value
-    state = response;
-  }
+  //   fllamaCancelInference(_requestId!);
+  // }
 }

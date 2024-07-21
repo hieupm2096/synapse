@@ -3,6 +3,7 @@ import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
 import 'package:synapse/feature/chat/widget/chat_bubble.dart';
 import 'package:synapse/feature/chat/widget/headline.dart';
+import 'package:synapse/shared/widget/widget.dart';
 
 class ListChat extends StatelessWidget {
   const ListChat({
@@ -29,7 +30,7 @@ class ListChat extends StatelessWidget {
         16,
         16,
         16,
-        88 + context.mediaQuery.viewPadding.bottom,
+        114 + context.mediaQuery.viewPadding.bottom,
       ),
       itemCount: reversedData.length,
       itemBuilder: (context, index) {
@@ -37,34 +38,13 @@ class ListChat extends StatelessWidget {
 
         final isHuman = prompt.isHuman ?? true;
 
+        final isNotEmpty = prompt.text?.isNotEmpty ?? false;
+
         return ChatBubble(
-          content: prompt.text,
+          contentWidget: isNotEmpty ? null : const ChatGenerating(),
+          content: isNotEmpty ? prompt.text : null,
           isLeft: !isHuman,
         );
-
-        // if (isHuman) {
-        //   return ChatBubble(
-        //     content: prompt.text,
-        //     isLeft: false,
-        //   );
-        // }
-
-        // return ChatBubble(
-        //   contentWidget: Consumer(
-        //     builder: (context, ref, child) {
-        //       final reply =
-        //           ref.watch(promptReplyProvider(id: prompt.id!));
-
-        //       return Text(
-        //         reply,
-        //         style: context.shadTextTheme.list.copyWith(
-        //           color: context.shadColor.primary,
-        //         ),
-        //         textAlign: TextAlign.start,
-        //       );
-        //     },
-        //   ),
-        // );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
     );

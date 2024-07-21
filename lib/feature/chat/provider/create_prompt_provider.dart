@@ -36,4 +36,18 @@ class CreatePrompt extends _$CreatePrompt {
       },
     );
   }
+
+  Future<void> createPromptByPrompt({required PromptModel data}) async {
+    final res =
+        await ref.read(promptRepositoryProvider).createPrompt(data: data);
+
+    res.when(
+      success: (success) {
+        state = AsyncData(success);
+      },
+      failure: (failure) {
+        state = AsyncError(failure, StackTrace.current);
+      },
+    );
+  }
 }

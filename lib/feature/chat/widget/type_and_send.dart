@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/app.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/provider/create_prompt_provider.dart';
+import 'package:synapse/feature/chat/provider/prompt_reply_provider.dart';
 import 'package:synapse/feature/chat/widget/chat_input.dart';
 
 class TypeAndSend extends ConsumerStatefulWidget {
@@ -22,16 +23,6 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
 
   final TextEditingController _controller = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   _controller.addListener(
-  //     () {
-  //       _onChange(_controller.text);
-  //     },
-  //   );
-  //   super.initState();
-  // }
-
   @override
   void dispose() {
     _controller.dispose();
@@ -40,6 +31,8 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
 
   @override
   Widget build(BuildContext context) {
+    final asyncPromptStatus = ref.watch(promptReplyProvider).status;
+
     return Container(
       padding: const EdgeInsets.fromLTRB(8, 8, 4, 8),
       decoration: BoxDecoration(
@@ -49,39 +42,72 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
       child: SafeArea(
         child: CallbackShortcuts(
           bindings: {
-            const SingleActivator(LogicalKeyboardKey.enter): _onSend,
+            const SingleActivator(LogicalKeyboardKey.enter):
+                asyncPromptStatus != PromptReplyStatus.inProgress
+                    ? _onSend
+                    : () {},
           },
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: ChatInput(controller: _controller),
-                ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 4),
+                      child: ChatInput(
+                        enabled:
+                            asyncPromptStatus != PromptReplyStatus.inProgress,
+                        controller: _controller,
+                      ),
+                    ),
+                  ),
+                  ShadButton.ghost(
+                    onPressed: asyncPromptStatus != PromptReplyStatus.inProgress
+                        ? _onSend
+                        : null,
+                    icon: const Icon(LucideIcons.sendHorizontal, size: 22)
+                        .animate(
+                          target:
+                              asyncPromptStatus != PromptReplyStatus.inProgress
+                                  ? 0
+                                  : 1,
+                          autoPlay: false,
+                        )
+                        .swap(
+                          duration: 500.ms,
+                          builder: (context, child) {
+                            return Container(
+                              width: 16,
+                              height: 16,
+                              decoration: BoxDecoration(
+                                color: context.shadColor.primary,
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                                .animate(
+                                  onPlay: (controller) =>
+                                      controller.repeat(reverse: true),
+                                )
+                                .scaleXY(
+                                  duration: 1000.milliseconds,
+                                  begin: 0.9,
+                                  end: 1.1,
+                                );
+                          },
+                        ),
+                    size: ShadButtonSize.lg,
+                  ),
+                ],
               ),
-              // ShadButton.ghost(
-              //   onPressed: () {},
-              //   icon: const Icon(
-              //     LucideIcons.paperclip,
-              //     size: 22,
-              //   ),
-              // ),
-              // if (_isTextEmpty)
-              //   ShadButton.ghost(
-              //     onPressed: () {},
-              //     icon: const Icon(LucideIcons.mic),
-              //   )
-              // else
-              //   ShadButton.ghost(
-              //     onPressed: _onSend,
-              //     icon: const Icon(LucideIcons.sendHorizontal, size: 22),
-              //     size: ShadButtonSize.lg,
-              //   ),
-              ShadButton.ghost(
-                onPressed: _onSend,
-                icon: const Icon(LucideIcons.sendHorizontal, size: 22),
-                size: ShadButtonSize.lg,
+              const SizedBox(height: 4),
+              Text(
+                'The data could be inaccurate.',
+                style: context.shadTextTheme.muted.copyWith(
+                  fontSize: 12,
+                  // fontStyle: FontStyle.italic,
+                ),
               ),
             ],
           ),
@@ -128,4 +154,10 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
           isHuman: true,
         );
   }
+
+  // void _onCancel() {
+  //   logDebug('onCancel');
+
+  //   ref.read(promptReplyProvider.notifier).stopInference();
+  // }
 }

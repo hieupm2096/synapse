@@ -5,14 +5,17 @@ import 'package:synapse/core/extension/build_context_ext.dart';
 class ChatInput extends StatelessWidget {
   const ChatInput({
     required this.controller,
+    required this.enabled,
     super.key,
   });
 
+  final bool enabled;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return ShadInput(
+      enabled: enabled,
       decoration: ShadDecoration(
         border: ShadBorder(
           width: 0,

@@ -42,13 +42,10 @@ final class IsarPromptLDS implements IPromptLDS {
 
     return data;
   }
-  
+
   @override
   Future<PromptModel?> getPrompt({required int id}) async {
-    final res = await _client.promptModels
-        .filter()
-        .idEqualTo(id)
-        .findFirst();
+    final res = await _client.promptModels.filter().idEqualTo(id).findFirst();
 
     return res;
   }

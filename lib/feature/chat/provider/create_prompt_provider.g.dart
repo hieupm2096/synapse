@@ -6,7 +6,7 @@ part of 'create_prompt_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$createPromptHash() => r'a6ca70d430ea4710cc0c0d9d32de8ba87e1231d6';
+String _$createPromptHash() => r'd05fefb08643921f12ffe1b166f4eb26eccbef37';
 
 /// See also [CreatePrompt].
 @ProviderFor(CreatePrompt)
