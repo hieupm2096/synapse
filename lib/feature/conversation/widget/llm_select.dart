@@ -15,7 +15,22 @@ class LlmSelect extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncLlm = ref.watch(listLLMAsyncNotifierProvider);
 
-    final asyncCurrentLlm = ref.watch(currentLlmModelProvider);
+    final asyncCurrentLlm = ref.watch(currentLlmProvider);
+
+    ref.listen(
+      currentLlmProvider,
+      (previous, next) {
+        if (next.hasError && next.error != null) {
+          context.shadToaster.show(
+            const ShadToast.destructive(
+              title: Text('Uh oh! Something went wrong'),
+              description: Text('There was a problem with your request'),
+              showCloseIconOnlyWhenHovered: false,
+            ),
+          );
+        }
+      },
+    );
 
     return Row(
       children: [
@@ -24,7 +39,7 @@ class LlmSelect extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             initialValue: asyncCurrentLlm.value,
             onChanged: (value) {
-              ref.read(currentLlmModelProvider.notifier).setLlmModel(value);
+              ref.read(currentLlmProvider.notifier).setLlmModel(value);
             },
             placeholder: Row(
               children: [
@@ -68,6 +83,9 @@ class LlmSelect extends ConsumerWidget {
                 style: context.shadTextTheme.small.copyWith(
                   fontWeight: FontWeight.w600,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.fade,
+                softWrap: false,
               );
             },
           ),

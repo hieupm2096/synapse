@@ -59,7 +59,10 @@ class ChatBubble extends StatelessWidget {
       child: CupertinoButton(
         padding: EdgeInsets.zero,
         minSize: 0,
-        onPressed: () {},
+        onPressed: () {
+          FocusScope.of(context).unfocus();
+          onPressed?.call();
+        },
         child: Container(
           padding: EdgeInsets.only(
             left: isLeft ? 0 : 24,
@@ -87,7 +90,7 @@ class ChatBubble extends StatelessWidget {
                         ? context.shadColor.primary
                         : context.shadColor.background,
                   ),
-                  textAlign: isLeft ? TextAlign.start : TextAlign.end,
+                  textAlign: TextAlign.start,
                 ),
           ),
         ),

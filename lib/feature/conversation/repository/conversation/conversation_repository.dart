@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:simple_result/simple_result.dart';
+import 'package:synapse/app/constant/constant.dart';
+import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/conversation/data_source/conversation_lds/conversation_lds.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 
@@ -71,18 +73,19 @@ final class ConversationRepository {
   }
 
   Future<Result<ConversationModel, Exception>> createConversation({
+    required String userId,
     required String llmId,
   }) async {
     try {
-      // TODO(hieupm): get current login user or anonymous user and apply to
-      // created by field
+      final createdDate = DateTime.now();
 
       final res = await _conversationLDS.createConversation(
         data: ConversationModel(
-          title: 'New chat',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
+          title: createdDate.format(Constant.ddMMyyyyHHmm),
+          createdAt: createdDate,
+          updatedAt: createdDate,
           llmId: llmId,
+          createdBy: userId,
         ),
       );
 

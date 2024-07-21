@@ -29,4 +29,6 @@ class CurrentConversation extends _$CurrentConversation {
 
     state = AsyncValue.data(newData);
   }
+
+  int? get currentConversationId => state.value?.id;
 }

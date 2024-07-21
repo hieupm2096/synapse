@@ -3,12 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/app.dart';
-import 'package:synapse/core/extension/build_context_ext.dart';
-import 'package:synapse/feature/chat/chat.dart';
+import 'package:synapse/app/provider/provider.dart';
+import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/conversation/provider/create_conversation_provider.dart';
-import 'package:synapse/feature/conversation/provider/current_conversation_provider.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
-import 'package:synapse/feature/conversation/widget/list_conversation.dart';
+import 'package:synapse/feature/conversation/widget/list_conversation.dart'
+    as widget;
 import 'package:synapse/feature/conversation/widget/list_conversation_empty.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_loading.dart';
 import 'package:synapse/shared/widget/misc/common_error_widget.dart';
@@ -18,23 +19,16 @@ class ListConversationContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentLlmId =
-        ref.watch(currentLlmModelProvider.select((value) => value.value?.id));
+    final currentLlmId = ref.watch(currentLlmProvider).value?.id;
 
-    final currentConversationAsyncNotifier =
-        currentConversationProvider(llmId: currentLlmId);
+    final currentUserId = ref.read(currentUserProvider).value?.id;
 
-    final listConversationAsyncNotifier =
-        listConversationAsyncNotifierProvider(llmId: currentLlmId);
-
-    final createConversationAsyncNotifier =
-        createConversationAsyncNotifierProvider(llmId: currentLlmId);
-
-    final asyncConversations = ref.watch(listConversationAsyncNotifier);
+    final asyncConversations =
+        ref.watch(listConversationProvider(llmId: currentLlmId));
 
     ref
       ..listen(
-        listConversationAsyncNotifier,
+        listConversationProvider(llmId: currentLlmId),
         (previous, next) {
           if (next.isLoading) {
             // DO NOTHING
@@ -50,7 +44,7 @@ class ListConversationContainer extends ConsumerWidget {
         },
       )
       ..listen(
-        createConversationAsyncNotifier,
+        createConversationProvider(llmId: currentLlmId),
         (previous, next) {
           if (next.isLoading) {
             // DO NOTHING
@@ -65,26 +59,23 @@ class ListConversationContainer extends ConsumerWidget {
           } else if (next.hasValue && next.value != null) {
             // add new conversation to list
             ref
-                .read(listConversationAsyncNotifier.notifier)
+                .read(listConversationProvider(llmId: currentLlmId).notifier)
                 .addConversation(conversation: next.value!);
 
             // set current conversation
             ref
-                .read(currentConversationAsyncNotifier.notifier)
+                .read(currentConversationProvider(llmId: currentLlmId).notifier)
                 .setCurrentConversation(data: next.value!);
-
-            // routing
-            // context.go(ChatPage.route);
           }
         },
       )
       ..listen(
-        currentConversationAsyncNotifier,
+        currentConversationProvider(llmId: currentLlmId),
         (previous, next) {
           if (next.isLoading) {
             // DO NOTHING
           } else if (next.hasValue && next.value != null) {
-            context.go(ChatPage.route);
+            context.go('${ListConversationPage.route}/${next.value?.id}');
           } else if (next.hasError && next.error != null) {
             context.shadToaster.show(
               const ShadToast.destructive(
@@ -102,17 +93,22 @@ class ListConversationContainer extends ConsumerWidget {
         if (data.isEmpty) {
           return ListConversationEmpty(
             onCreateConversation: () {
+              if (currentUserId == null) return;
+
               ref
-                  .read(createConversationAsyncNotifier.notifier)
-                  .createConversation();
+                  .read(
+                    createConversationProvider(llmId: currentLlmId).notifier,
+                  )
+                  .createConversation(userId: currentUserId);
             },
           );
         }
 
-        return ListConversation(conversations: data);
+        return widget.ListConversation(conversations: data);
       },
       error: (error, stackTrace) => CommonErrorWidget(
-        onRetry: () => ref.invalidate(listConversationAsyncNotifier),
+        onRetry: () =>
+            ref.invalidate(listConversationProvider(llmId: currentLlmId)),
       ),
       loading: () => const ListConversationLoading(),
     );

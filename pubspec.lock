@@ -265,6 +265,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  fllama:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "711df2e7af49988ca5c804cb2e086917262f374c"
+      url: "https://github.com/Telosnex/fllama.git"
+    source: git
+    version: "0.0.1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -337,10 +346,10 @@ packages:
     dependency: transitive
     description:
       name: freezed_annotation
-      sha256: f9f6597ac43cc262fa7d7f2e65259a6060c23a560525d1f2631be374540f2a9b
+      sha256: c2e2d632dd9b8a2b7751117abcfc2b4888ecfe181bd9fca7170d9ef02e595fe2
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.3"
+    version: "2.4.4"
   frontend_server_client:
     dependency: transitive
     description:
@@ -361,10 +370,10 @@ packages:
     dependency: "direct main"
     description:
       name: go_router
-      sha256: cdae1b9c8bd7efadcef6112e81c903662ef2ce105cbd220a04bbb7c3425b5554
+      sha256: "39dd52168d6c59984454183148dc3a5776960c61083adfc708cc79a7b3ce1ba8"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.0"
+    version: "14.2.1"
   graphs:
     dependency: transitive
     description:
@@ -373,6 +382,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  html_unescape:
+    dependency: transitive
+    description:
+      name: html_unescape
+      sha256: "15362d7a18f19d7b742ef8dcb811f5fd2a2df98db9f80ea393c075189e0b61e3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   http:
     dependency: transitive
     description:
@@ -437,6 +454,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.0+1"
+  jinja:
+    dependency: transitive
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "64ae6b873223203c1843b1d62561174908761d3c"
+      url: "https://github.com/Telosnex/jinja.dart.git"
+    source: git
+    version: "0.6.0-dev.16"
   js:
     dependency: transitive
     description:
@@ -721,10 +747,10 @@ packages:
     dependency: "direct main"
     description:
       name: shadcn_ui
-      sha256: "7a8b125ce99aac6d71384228b379142047fdd420065fabbfe5eb82248fac75b4"
+      sha256: "48f279f804a58857012ddb9c5ef014f6f22a4d2c4d35aad1e817a58e07bbeb1e"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.2"
+    version: "0.6.3"
   shelf:
     dependency: transitive
     description:
@@ -850,6 +876,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  textwrap:
+    dependency: transitive
+    description:
+      name: textwrap
+      sha256: "780b164d83dfed30b475b1310d288145c5e0109193c3c507cf015d38e4adc844"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   time:
     dependency: transitive
     description:
@@ -902,10 +936,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "7068716403343f6ba4969b4173cbf3b84fc768042124bc2c011e5d782b24fe89"
+      sha256: e43b677296fadce447e987a2f519dcf5f6d1e527dc35d01ffab4fff5b8a7063e
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.0"
+    version: "6.3.1"
   url_launcher_linux:
     dependency: transitive
     description:

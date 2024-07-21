@@ -7,7 +7,7 @@ part of 'current_conversation_provider.dart';
 // **************************************************************************
 
 String _$currentConversationHash() =>
-    r'e78246d426abbfaf25fd77dd83e314ffebb4b9f5';
+    r'fd38a456a4330c55101a893c1caff0c86fd9b2de';
 
 /// Copied from Dart SDK
 class _SystemHash {

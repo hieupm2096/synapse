@@ -6,7 +6,7 @@ part of 'download_llm_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadLlmHash() => r'020ba06287c734b7ece3b9190e2327aa7708a049';
+String _$downloadLlmHash() => r'992bf234a3e6297b43048cc4aeecec064b78938f';
 
 /// See also [DownloadLlm].
 @ProviderFor(DownloadLlm)

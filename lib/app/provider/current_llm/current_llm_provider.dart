@@ -5,7 +5,7 @@ import 'package:synapse/feature/llm/repository/llm_repository.dart';
 part 'current_llm_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class CurrentLlmModel extends _$CurrentLlmModel {
+class CurrentLlm extends _$CurrentLlm {
   @override
   FutureOr<LlmModel?> build() async {
     final res = await ref.read(llmRepositoryProvider).getCurrentLlmModel();
@@ -26,7 +26,8 @@ class CurrentLlmModel extends _$CurrentLlmModel {
       success: (success) {
         return AsyncData(success);
       },
-      failure: (failure) => AsyncError(failure, StackTrace.current),
+      failure: (failure) =>
+          AsyncError(failure, StackTrace.current)..copyWithPrevious(state),
     );
   }
 }

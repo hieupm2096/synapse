@@ -1,8 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/app.dart';
-import 'package:synapse/app/provider/current_user/current_user_provider.dart';
-import 'package:synapse/feature/conversation/provider/current_conversation_provider.dart';
 import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
 
 part 'splash_page_provider.g.dart';
@@ -15,7 +13,13 @@ final class NoLlm extends SplashLoadedResult {}
 
 final class NoUser extends SplashLoadedResult {}
 
-final class SplashLoadedSuccess extends SplashLoadedResult {}
+final class NoConversation extends SplashLoadedResult {}
+
+final class SplashLoadedSuccess extends SplashLoadedResult {
+  SplashLoadedSuccess({required this.conversationId});
+
+  final int conversationId;
+}
 
 @Riverpod(keepAlive: true)
 FutureOr<SplashLoadedResult> splashPage(SplashPageRef ref) async {
@@ -23,7 +27,7 @@ FutureOr<SplashLoadedResult> splashPage(SplashPageRef ref) async {
 
   // onboard
   final data = await Future.wait([
-    ref.watch(currentLlmModelProvider.future),
+    ref.watch(currentLlmProvider.future),
     ref.watch(currentUserProvider.future),
   ]);
 
@@ -36,9 +40,16 @@ FutureOr<SplashLoadedResult> splashPage(SplashPageRef ref) async {
 
   final llmId = currentLlm.id;
 
+  int? conversationId;
+
   if (llmId != null) {
-    await ref.watch(CurrentConversationProvider(llmId: llmId).future);
+    final currentConversation =
+        await ref.watch(CurrentConversationProvider(llmId: llmId).future);
+
+    conversationId = currentConversation?.id;
   }
 
-  return SplashLoadedSuccess();
+  if (conversationId == null) return NoConversation();
+
+  return SplashLoadedSuccess(conversationId: conversationId);
 }

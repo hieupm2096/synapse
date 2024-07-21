@@ -6,7 +6,7 @@ part of 'splash_page_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$splashPageHash() => r'16ad7b857ab5c7544bee3c2a6bae885fa2837169';
+String _$splashPageHash() => r'0be08dec1037423f6711642a4c5bc9b83730b8f2';
 
 /// See also [splashPage].
 @ProviderFor(splashPage)

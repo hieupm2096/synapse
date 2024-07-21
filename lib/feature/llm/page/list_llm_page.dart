@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/widget/list_llm_container.dart';
@@ -15,7 +14,7 @@ class ListLlmPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        leading: context.canPop() ? const ShadBackButton() : null,
+        leading: const ShadBackButton(),
         actions: [
           ShadButton.ghost(
             onPressed: () {},

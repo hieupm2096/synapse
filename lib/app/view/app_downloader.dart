@@ -3,9 +3,7 @@ import 'package:background_downloader/background_downloader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loggy/loggy.dart';
-import 'package:synapse/core/extension/build_context_ext.dart';
-import 'package:synapse/core/extension/shadcn_ext.dart';
-import 'package:synapse/core/service/download_manager.dart';
+import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/provider/download_llm_provider.dart';
 import 'package:synapse/shared/shared.dart';
 

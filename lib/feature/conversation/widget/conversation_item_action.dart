@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/app.dart';
+import 'package:synapse/app/provider/provider.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 import 'package:synapse/feature/conversation/provider/list_conversation_provider.dart';
@@ -33,11 +34,7 @@ class _ConversationItemActionState
 
   @override
   Widget build(BuildContext context) {
-    final currentLlmId =
-        ref.watch(currentLlmModelProvider.select((value) => value.value?.id));
-
-    final listConversationAsyncNotifier =
-        listConversationAsyncNotifierProvider(llmId: currentLlmId);
+    final currentLlmId = ref.watch(currentLlmProvider).value?.id;
 
     void onRename() {
       _controller.toggle();
@@ -70,7 +67,9 @@ class _ConversationItemActionState
                 final newData = widget.data.copyWith(title: newTitle);
 
                 ref
-                    .read(listConversationAsyncNotifier.notifier)
+                    .read(
+                      listConversationProvider(llmId: currentLlmId).notifier,
+                    )
                     .updateConversation(data: newData);
               },
             ),
@@ -114,7 +113,9 @@ class _ConversationItemActionState
                 dialogContext.pop();
 
                 ref
-                    .read(listConversationAsyncNotifier.notifier)
+                    .read(
+                      listConversationProvider(llmId: currentLlmId).notifier,
+                    )
                     .removeConversation(id: widget.data.id!);
               },
             ),
@@ -126,13 +127,13 @@ class _ConversationItemActionState
     return ShadPopover(
       controller: _controller,
       padding: EdgeInsets.zero,
-      showDuration: const Duration(milliseconds: 100),
-      waitDuration: const Duration(milliseconds: 100),
       decoration: ShadDecoration(
         border: ShadBorder(radius: BorderRadius.circular(12)),
       ),
       popover: (context) {
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             ShadButton.ghost(
               onPressed: onRename,

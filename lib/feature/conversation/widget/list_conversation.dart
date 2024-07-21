@@ -15,7 +15,9 @@ class ListConversation extends StatelessWidget {
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       itemBuilder: (context, index) {
-        return ConversationItem(conversation: conversations[index]);
+        return ConversationItem(
+          conversation: conversations[index],
+        );
       },
       itemCount: conversations.length,
     );

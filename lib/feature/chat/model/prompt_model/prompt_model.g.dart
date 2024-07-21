@@ -32,13 +32,18 @@ const PromptModelSchema = CollectionSchema(
       name: r'createdBy',
       type: IsarType.string,
     ),
-    r'repliedId': PropertySchema(
+    r'isHuman': PropertySchema(
       id: 3,
+      name: r'isHuman',
+      type: IsarType.bool,
+    ),
+    r'repliedId': PropertySchema(
+      id: 4,
       name: r'repliedId',
       type: IsarType.string,
     ),
     r'text': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'text',
       type: IsarType.string,
     )
@@ -93,8 +98,9 @@ void _promptModelSerialize(
   writer.writeLong(offsets[0], object.conversationId);
   writer.writeDateTime(offsets[1], object.createdAt);
   writer.writeString(offsets[2], object.createdBy);
-  writer.writeString(offsets[3], object.repliedId);
-  writer.writeString(offsets[4], object.text);
+  writer.writeBool(offsets[3], object.isHuman);
+  writer.writeString(offsets[4], object.repliedId);
+  writer.writeString(offsets[5], object.text);
 }
 
 PromptModel _promptModelDeserialize(
@@ -108,8 +114,9 @@ PromptModel _promptModelDeserialize(
     createdAt: reader.readDateTimeOrNull(offsets[1]),
     createdBy: reader.readStringOrNull(offsets[2]),
     id: id,
-    repliedId: reader.readStringOrNull(offsets[3]),
-    text: reader.readStringOrNull(offsets[4]),
+    isHuman: reader.readBoolOrNull(offsets[3]),
+    repliedId: reader.readStringOrNull(offsets[4]),
+    text: reader.readStringOrNull(offsets[5]),
   );
   return object;
 }
@@ -128,8 +135,10 @@ P _promptModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBoolOrNull(offset)) as P;
     case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -599,6 +608,34 @@ extension PromptModelQueryFilter
   }
 
   QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      isHumanIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'isHuman',
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
+      isHumanIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'isHuman',
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition> isHumanEqualTo(
+      bool? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isHuman',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterFilterCondition>
       repliedIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -946,6 +983,18 @@ extension PromptModelQuerySortBy
     });
   }
 
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> sortByIsHuman() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHuman', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> sortByIsHumanDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHuman', Sort.desc);
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QAfterSortBy> sortByRepliedId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repliedId', Sort.asc);
@@ -1022,6 +1071,18 @@ extension PromptModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> thenByIsHuman() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHuman', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PromptModel, PromptModel, QAfterSortBy> thenByIsHumanDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isHuman', Sort.desc);
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QAfterSortBy> thenByRepliedId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'repliedId', Sort.asc);
@@ -1068,6 +1129,12 @@ extension PromptModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<PromptModel, PromptModel, QDistinct> distinctByIsHuman() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isHuman');
+    });
+  }
+
   QueryBuilder<PromptModel, PromptModel, QDistinct> distinctByRepliedId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1109,6 +1176,12 @@ extension PromptModelQueryProperty
     });
   }
 
+  QueryBuilder<PromptModel, bool?, QQueryOperations> isHumanProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isHuman');
+    });
+  }
+
   QueryBuilder<PromptModel, String?, QQueryOperations> repliedIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'repliedId');
@@ -1135,6 +1208,7 @@ PromptModel _$PromptModelFromJson(Map<String, dynamic> json) => PromptModel(
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
+      isHuman: json['isHuman'] as bool?,
     );
 
 Map<String, dynamic> _$PromptModelToJson(PromptModel instance) =>
@@ -1145,4 +1219,5 @@ Map<String, dynamic> _$PromptModelToJson(PromptModel instance) =>
       'text': instance.text,
       'repliedId': instance.repliedId,
       'createdAt': instance.createdAt?.toIso8601String(),
+      'isHuman': instance.isHuman,
     };
