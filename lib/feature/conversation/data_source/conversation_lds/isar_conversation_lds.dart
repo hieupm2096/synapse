@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
 import 'package:synapse/feature/conversation/data_source/conversation_lds/conversation_lds.dart';
 import 'package:synapse/feature/conversation/model/conversation_model/conversation_model.dart';
 
@@ -60,7 +61,21 @@ final class IsarConversationLDS implements IConversationLDS {
     final conversation = await getConversation(id: id);
     final res = await _client.writeTxn(
       () async {
-        return _client.conversationModels.delete(id);
+        final relatedPrompt = await _client.promptModels
+            .filter()
+            .conversationIdEqualTo(id)
+            .findAll();
+
+        final res = await Future.wait(
+          [
+            _client.conversationModels.delete(id),
+            _client.promptModels.deleteAll(
+              relatedPrompt.map((e) => e.id).whereType<int>().toList(),
+            ),
+          ],
+        );
+
+        return (res[0] as bool) && res[1] == relatedPrompt.length;
       },
     );
     if (!res) throw Exception('unexpected');
