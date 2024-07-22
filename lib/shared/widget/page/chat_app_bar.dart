@@ -20,12 +20,9 @@ class ChatAppBar extends AppBar {
 
   @override
   Widget? get leading => ShadButton.ghost(
-        icon: const Padding(
-          padding: EdgeInsets.only(top: 6),
-          child: Icon(
-            LucideIcons.columns2,
-            size: 24,
-          ),
+        icon: const Icon(
+          LucideIcons.columns2,
+          size: 24,
         ),
         onPressed: onLeadingPressed,
       );
