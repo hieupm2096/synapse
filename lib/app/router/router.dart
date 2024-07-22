@@ -7,6 +7,7 @@ import 'package:synapse/feature/chat/chat.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/llm.dart';
 import 'package:synapse/feature/onboard/onboard.dart';
+import 'package:synapse/feature/setting/setting.dart';
 import 'package:synapse/feature/splash/splash.dart';
 
 part 'router.g.dart';
@@ -61,6 +62,10 @@ Raw<GoRouter> goRouter(GoRouterRef ref) {
       GoRoute(
         path: ListLlmPage.route,
         builder: (context, state) => const ListLlmPage(),
+      ),
+      GoRoute(
+        path: SettingPage.route,
+        builder: (context, state) => const SettingPage(),
       ),
     ],
   );

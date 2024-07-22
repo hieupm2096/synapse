@@ -72,6 +72,7 @@ class PromptReply extends _$PromptReply {
       modelPath: absolutePath,
       maxTokens: 256,
       numGpuLayers: 99,
+      
       messages: [
         Message(
           Role.system,
