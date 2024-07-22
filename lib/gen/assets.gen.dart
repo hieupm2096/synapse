@@ -45,12 +45,26 @@ class $AssetsJsonGen {
   List<String> get values => [llm];
 }
 
+class $AssetsLogoGen {
+  const $AssetsLogoGen();
+
+  /// File path: assets/logo/icon.png
+  AssetGenImage get icon => const AssetGenImage('assets/logo/icon.png');
+
+  /// File path: assets/logo/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/logo/logo.png');
+
+  /// List of all assets
+  List<AssetGenImage> get values => [icon, logo];
+}
+
 class Assets {
   Assets._();
 
   static const $AssetsFixtureGen fixture = $AssetsFixtureGen();
   static const $AssetsImageGen image = $AssetsImageGen();
   static const $AssetsJsonGen json = $AssetsJsonGen();
+  static const $AssetsLogoGen logo = $AssetsLogoGen();
 }
 
 class AssetGenImage {
