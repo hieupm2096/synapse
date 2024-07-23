@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/setting/widget/ai_section.dart';
+import 'package:synapse/feature/setting/widget/app_info.dart';
 import 'package:synapse/feature/setting/widget/app_section.dart';
 import 'package:synapse/shared/shared.dart';
 
@@ -54,6 +55,12 @@ class SettingPage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               const AiSection(),
+
+              const SizedBox(height: 32),
+
+              // App info
+              AppInfo(),
+              const SizedBox(height: 12),
             ],
           ),
         ),
