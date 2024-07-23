@@ -75,11 +75,11 @@ class ChatBubble extends StatelessWidget {
             decoration: BoxDecoration(
               color: isLeft
                   ? context.shadColor.background
-                  : context.shadColor.primary,
+                  : context.shadColor.accent,
               border: Border.all(
                 color: isLeft
                     ? context.shadColor.border
-                    : context.shadColor.primary,
+                    : context.shadColor.border,
               ),
               borderRadius: BorderRadius.circular(12),
             ),
@@ -89,7 +89,7 @@ class ChatBubble extends StatelessWidget {
                   style: context.shadTextTheme.list.copyWith(
                     color: isLeft
                         ? context.shadColor.primary
-                        : context.shadColor.background,
+                        : context.shadColor.accentForeground,
                   ),
                   textAlign: TextAlign.start,
                 ),

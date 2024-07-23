@@ -17,7 +17,7 @@ class AiSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
       decoration: BoxDecoration(
-        color: context.shadColor.accent,
+        color: context.shadColor.accent.withOpacity(0.8),
         borderRadius: BorderRadius.circular(12),
       ),
       child: const Column(

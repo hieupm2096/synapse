@@ -90,12 +90,12 @@ class LlmSelect extends ConsumerWidget {
             },
           ),
         ),
-        ShadButton.ghost(
+        ShadButton.outline(
           onPressed: () {
             context.push(ListLlmPage.route);
           },
           icon: const Icon(
-            LucideIcons.chevronRight,
+            LucideIcons.ganttChart,
             size: 20,
           ),
         ),
