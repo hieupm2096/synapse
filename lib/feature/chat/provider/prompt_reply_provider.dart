@@ -5,6 +5,7 @@ import 'package:loggy/loggy.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synapse/app/provider/current_llm/current_llm_provider.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
 part 'prompt_reply_provider.g.dart';
 
@@ -69,9 +70,6 @@ class PromptReply extends _$PromptReply {
 
     // start inference
     final request = OpenAiRequest(
-      modelPath: absolutePath,
-      maxTokens: 256,
-      numGpuLayers: 99,
       messages: [
         Message(
           Role.system,
@@ -85,7 +83,17 @@ class PromptReply extends _$PromptReply {
         ),
         Message(Role.user, message),
       ],
-      temperature: 0.5,
+      modelPath: absolutePath,
+      numGpuLayers: 99,
+      maxTokens: 256,
+
+      // ai setting
+      contextSize: ref.read(contextWindowNotifierProvider).value ?? 2048,
+      temperature: ref.read(temperatureNotifierProvider).value ?? 0.7,
+      topP: ref.read(topPNotifierProvider).value ?? 1.0,
+      frequencyPenalty: ref.read(frequencyPNotifierProvider).value ?? 0.0,
+      presencePenalty: ref.read(presencePNotifierProvider).value ?? 1.1,
+
       logger: (log) => logDebug('[llama.cpp] $log'),
     );
 

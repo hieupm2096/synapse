@@ -6,7 +6,7 @@ part of 'prompt_reply_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$promptReplyHash() => r'e24cf78d2fa0756aed4a497e0fbea9256d6956ec';
+String _$promptReplyHash() => r'3d96339afbd538e14f91cabe27d6e3593ae956b5';
 
 /// See also [PromptReply].
 @ProviderFor(PromptReply)
