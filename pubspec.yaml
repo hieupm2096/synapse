@@ -4,7 +4,7 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: "^3.3.0"
+  sdk: '^3.3.0'
 
 dependencies:
   animated_text_kit: ^4.2.2
@@ -40,8 +40,10 @@ dependencies:
   uuid: ^4.4.2
 dev_dependencies:
   build_runner:
+  flutter_native_splash: ^2.4.1
   flutter_test:
     sdk: flutter
+  icons_launcher: ^2.1.7
   isar_generator: ^3.1.0+1
   json_serializable: ^6.8.0
   mocktail: ^1.0.4
@@ -55,6 +57,7 @@ flutter:
     - assets/fixture/
     - assets/json/
     - assets/image/
+    - assets/logo/
 
 flutter_gen:
   output: lib/gen/ # Optional (default: lib/gen/)
@@ -66,3 +69,23 @@ flutter_gen:
     flare_flutter: true
     rive: true
     lottie: true
+
+icons_launcher:
+  image_path: 'assets/logo/icon.png'
+  platforms:
+    android:
+      enable: true
+    ios:
+      enable: true
+
+flutter_native_splash:
+  image: assets/logo/logo.png
+  color: '#ffffff'
+  image_dark: assets/logo/logo-dark.png
+  color_dark: '#121212'
+
+  android_12:
+    image: assets/logo/logo.png
+    icon_background_color: '#ffffff'
+    image_dark: assets/logo/logo-dark.png
+    icon_background_color_dark: '#121212'
