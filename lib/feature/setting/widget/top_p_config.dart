@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
 class TopPConfig extends StatefulWidget {
   const TopPConfig({super.key});
@@ -10,8 +12,6 @@ class TopPConfig extends StatefulWidget {
 }
 
 class _TopPConfigState extends State<TopPConfig> {
-  var _topP = 100.0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,24 +39,48 @@ class _TopPConfigState extends State<TopPConfig> {
             const SizedBox(width: 20),
             SizedBox(
               width: 32,
-              child: Text(
-                (_topP / 100).toStringAsFixed(1),
-                style: context.shadTextTheme.large,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final asyncTopP = ref.watch(topPNotifierProvider);
+
+                  return asyncTopP.when(
+                    data: (data) {
+                      return Text(
+                        data.toStringAsFixed(1),
+                        style: context.shadTextTheme.large,
+                      );
+                    },
+                    error: (error, stackTrace) => const SizedBox.shrink(),
+                    loading: SizedBox.shrink,
+                  );
+                },
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        ShadSlider(
-          initialValue: _topP,
-          divisions: 9,
-          min: 10,
-          max: 100,
-          trackHeight: 2,
-          onChanged: (value) {
-            setState(() {
-              _topP = value;
-            });
+        Consumer(
+          builder: (context, ref, child) {
+            final asyncTopP = ref.watch(topPNotifierProvider);
+
+            return asyncTopP.when(
+              data: (val) {
+                return ShadSlider(
+                  initialValue: (val * 100).roundToDouble(),
+                  divisions: 9,
+                  min: 10,
+                  max: 100,
+                  trackHeight: 2,
+                  onChanged: (value) {
+                    ref
+                        .read(topPNotifierProvider.notifier)
+                        .saveTopP(value / 100);
+                  },
+                );
+              },
+              error: (error, stackTrace) => const SizedBox.shrink(),
+              loading: () => const SizedBox.shrink(),
+            );
           },
         ),
       ],

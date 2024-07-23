@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
 class ContextWindowConfig extends StatefulWidget {
   const ContextWindowConfig({super.key});
@@ -10,8 +12,6 @@ class ContextWindowConfig extends StatefulWidget {
 }
 
 class _ContextWindowConfigState extends State<ContextWindowConfig> {
-  var _contextWindow = 2048;
-
   final _popoverController = ShadPopoverController();
 
   @override
@@ -51,44 +51,47 @@ class _ContextWindowConfigState extends State<ContextWindowConfig> {
             border: ShadBorder(radius: BorderRadius.circular(12)),
           ),
           popover: (context) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _ContextWindowButton(
-                  value: 4096,
-                  selected: _contextWindow == 4096,
-                  onTap: () {
-                    _popoverController.toggle();
+            return Consumer(
+              builder: (context, ref, child) {
+                final val = ref.watch(contextWindowNotifierProvider).value;
 
-                    setState(() {
-                      _contextWindow = 4096;
-                    });
-                  },
-                ),
-                _ContextWindowButton(
-                  value: 2048,
-                  selected: _contextWindow == 2048,
-                  onTap: () {
-                    _popoverController.toggle();
-
-                    setState(() {
-                      _contextWindow = 2048;
-                    });
-                  },
-                ),
-                _ContextWindowButton(
-                  value: 1024,
-                  selected: _contextWindow == 1024,
-                  onTap: () {
-                    _popoverController.toggle();
-
-                    setState(() {
-                      _contextWindow = 1024;
-                    });
-                  },
-                ),
-              ],
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _ContextWindowButton(
+                      value: 4096,
+                      selected: val == 4096,
+                      onTap: () {
+                        _popoverController.toggle();
+                        ref
+                            .read(contextWindowNotifierProvider.notifier)
+                            .saveContextWindow(4096);
+                      },
+                    ),
+                    _ContextWindowButton(
+                      value: 2048,
+                      selected: val == 2048,
+                      onTap: () {
+                        _popoverController.toggle();
+                        ref
+                            .read(contextWindowNotifierProvider.notifier)
+                            .saveContextWindow(2048);
+                      },
+                    ),
+                    _ContextWindowButton(
+                      value: 1024,
+                      selected: val == 1024,
+                      onTap: () {
+                        _popoverController.toggle();
+                        ref
+                            .read(contextWindowNotifierProvider.notifier)
+                            .saveContextWindow(1024);
+                      },
+                    ),
+                  ],
+                );
+              },
             );
           },
           child: CupertinoButton(
@@ -98,9 +101,16 @@ class _ContextWindowConfigState extends State<ContextWindowConfig> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  _contextWindow.toString(),
-                  style: context.shadTextTheme.large,
+                Consumer(
+                  builder: (context, ref, child) {
+                    final value =
+                        ref.watch(contextWindowNotifierProvider).value;
+
+                    return Text(
+                      value?.toString() ?? 'N/A',
+                      style: context.shadTextTheme.large,
+                    );
+                  },
                 ),
                 const SizedBox(width: 6),
                 const Padding(

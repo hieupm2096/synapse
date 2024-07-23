@@ -1,16 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
-class TemperatureConfig extends StatefulWidget {
+class TemperatureConfig extends StatelessWidget {
   const TemperatureConfig({super.key});
-
-  @override
-  State<TemperatureConfig> createState() => _TemperatureConfigState();
-}
-
-class _TemperatureConfigState extends State<TemperatureConfig> {
-  var _temperature = 70.0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +54,49 @@ class _TemperatureConfigState extends State<TemperatureConfig> {
             const SizedBox(width: 20),
             SizedBox(
               width: 32,
-              child: Text(
-                (_temperature / 100).toStringAsFixed(1),
-                style: context.shadTextTheme.large,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final asyncTemperature =
+                      ref.watch(temperatureNotifierProvider);
+
+                  return asyncTemperature.when(
+                    data: (data) {
+                      return Text(
+                        data.toStringAsFixed(1),
+                        style: context.shadTextTheme.large,
+                      );
+                    },
+                    error: (error, stackTrace) => const SizedBox.shrink(),
+                    loading: SizedBox.shrink,
+                  );
+                },
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        ShadSlider(
-          initialValue: _temperature,
-          divisions: 9,
-          min: 10,
-          max: 100,
-          trackHeight: 2,
-          onChanged: (value) {
-            setState(() {
-              _temperature = value;
-            });
+        Consumer(
+          builder: (context, ref, child) {
+            final asyncTemperature = ref.watch(temperatureNotifierProvider);
+
+            return asyncTemperature.when(
+              data: (val) {
+                return ShadSlider(
+                  initialValue: (val * 100).roundToDouble(),
+                  divisions: 9,
+                  min: 10,
+                  max: 100,
+                  trackHeight: 2,
+                  onChanged: (value) {
+                    ref
+                        .read(temperatureNotifierProvider.notifier)
+                        .saveTemperature(value / 100);
+                  },
+                );
+              },
+              error: (error, stackTrace) => const SizedBox.shrink(),
+              loading: SizedBox.shrink,
+            );
           },
         ),
       ],

@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
-class FreqPenaltyConfig extends StatefulWidget {
+class FreqPenaltyConfig extends StatelessWidget {
   const FreqPenaltyConfig({super.key});
-
-  @override
-  State<FreqPenaltyConfig> createState() => _FreqPenaltyConfigState();
-}
-
-class _FreqPenaltyConfigState extends State<FreqPenaltyConfig> {
-  var _freqPenalty = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -58,24 +53,42 @@ class _FreqPenaltyConfigState extends State<FreqPenaltyConfig> {
             const SizedBox(width: 20),
             SizedBox(
               width: 32,
-              child: Text(
-                (_freqPenalty / 100).toStringAsFixed(1),
-                style: context.shadTextTheme.large,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final val = ref.watch(frequencyPNotifierProvider).value;
+
+                  return Text(
+                    val == null ? '-' : val.toStringAsFixed(1),
+                    style: context.shadTextTheme.large,
+                  );
+                },
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        ShadSlider(
-          initialValue: _freqPenalty,
-          divisions: 11,
-          min: 0,
-          max: 110,
-          trackHeight: 2,
-          onChanged: (value) {
-            setState(() {
-              _freqPenalty = value;
-            });
+        Consumer(
+          builder: (context, ref, child) {
+            final asyncFreqP = ref.watch(frequencyPNotifierProvider);
+
+            return asyncFreqP.when(
+              data: (data) {
+                return ShadSlider(
+                  initialValue: (data * 100).roundToDouble(),
+                  divisions: 11,
+                  min: 0,
+                  max: 110,
+                  trackHeight: 2,
+                  onChanged: (value) {
+                    ref
+                        .read(frequencyPNotifierProvider.notifier)
+                        .saveFrequencyPenalty(value / 100);
+                  },
+                );
+              },
+              error: (error, stackTrace) => const SizedBox.shrink(),
+              loading: SizedBox.shrink,
+            );
           },
         ),
       ],

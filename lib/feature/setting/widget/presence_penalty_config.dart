@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
+import 'package:synapse/feature/setting/provider/ai_setting_provider.dart';
 
-class PresencePenaltyConfig extends StatefulWidget {
+class PresencePenaltyConfig extends StatelessWidget {
   const PresencePenaltyConfig({super.key});
-
-  @override
-  State<PresencePenaltyConfig> createState() => _PresencePenaltyConfigState();
-}
-
-class _PresencePenaltyConfigState extends State<PresencePenaltyConfig> {
-  var _presencePenalty = 110.0;
 
   @override
   Widget build(BuildContext context) {
@@ -59,24 +54,42 @@ class _PresencePenaltyConfigState extends State<PresencePenaltyConfig> {
             const SizedBox(width: 20),
             SizedBox(
               width: 32,
-              child: Text(
-                (_presencePenalty / 100).toStringAsFixed(1),
-                style: context.shadTextTheme.large,
+              child: Consumer(
+                builder: (context, ref, child) {
+                  final val = ref.watch(presencePNotifierProvider).value ?? 0;
+
+                  return Text(
+                    val.toStringAsFixed(1),
+                    style: context.shadTextTheme.large,
+                  );
+                },
               ),
             ),
           ],
         ),
         const SizedBox(height: 20),
-        ShadSlider(
-          initialValue: _presencePenalty,
-          divisions: 11,
-          min: 0,
-          max: 110,
-          trackHeight: 2,
-          onChanged: (value) {
-            setState(() {
-              _presencePenalty = value;
-            });
+        Consumer(
+          builder: (context, ref, child) {
+            final asyncPresenceP = ref.watch(presencePNotifierProvider);
+
+            return asyncPresenceP.when(
+              data: (data) {
+                return ShadSlider(
+                  initialValue: (data * 100).roundToDouble(),
+                  divisions: 11,
+                  min: 0,
+                  max: 110,
+                  trackHeight: 2,
+                  onChanged: (value) {
+                    ref
+                        .read(presencePNotifierProvider.notifier)
+                        .savePresencePenalty(value / 100);
+                  },
+                );
+              },
+              error: (error, stackTrace) => const SizedBox.shrink(),
+              loading: SizedBox.shrink,
+            );
           },
         ),
       ],
