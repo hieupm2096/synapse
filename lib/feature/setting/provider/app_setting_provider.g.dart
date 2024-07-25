@@ -6,7 +6,7 @@ part of 'app_setting_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$darkModeHash() => r'e1a0d19c36f2463caeb5c7a236fe8c1d36e4a7d7';
+String _$darkModeHash() => r'e34f3619479db8f5a2416551f5e72beb457cb392';
 
 /// See also [DarkMode].
 @ProviderFor(DarkMode)
