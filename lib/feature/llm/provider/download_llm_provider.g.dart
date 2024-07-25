@@ -6,7 +6,7 @@ part of 'download_llm_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadLlmHash() => r'42b1d2258ae1e570e2d6ea57db011fba7dbe9b8d';
+String _$downloadLlmHash() => r'92be339843276e8f6d78dfaafc39b70874de1f4a';
 
 /// See also [DownloadLlm].
 @ProviderFor(DownloadLlm)
@@ -21,7 +21,7 @@ final downloadLlmProvider =
 );
 
 typedef _$DownloadLlm = AsyncNotifier<DownloadLlmState>;
-String _$overallProgressHash() => r'a2f3ec2e7dc36f520091f154d34b6c2e832f0c59';
+String _$overallProgressHash() => r'35ca965ea066b555eac34dfa135136c9de737bc5';
 
 /// See also [OverallProgress].
 @ProviderFor(OverallProgress)
@@ -37,7 +37,7 @@ final overallProgressProvider =
 );
 
 typedef _$OverallProgress = Notifier<double>;
-String _$downloadProgressHash() => r'f3e0d783a8ec4c125fd7d4072fad5dfc9005ea9b';
+String _$downloadProgressHash() => r'672b4bff5315746545a815851be3a594ee5dcdbf';
 
 /// Copied from Dart SDK
 class _SystemHash {
