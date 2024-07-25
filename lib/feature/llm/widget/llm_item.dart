@@ -80,6 +80,7 @@ class LlmItem extends StatelessWidget {
           llmId: model.id!,
           url: model.downloadUrl!,
           downloaded: model.isAvailable,
+          path: model.path,
         ),
       ],
     );
@@ -117,11 +118,13 @@ class _DownloadButton extends ConsumerWidget {
     required this.llmId,
     required this.url,
     required this.downloaded,
+    this.path,
   });
 
   final String llmId;
   final String url;
   final bool downloaded;
+  final String? path;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -129,13 +132,29 @@ class _DownloadButton extends ConsumerWidget {
         ref.watch(downloadLlmProvider).value?.taskSet.contains(llmId);
 
     if (downloaded) {
-      return ShadButton.ghost(
-        onPressed: () {},
-        foregroundColor: context.shadColor.destructive,
-        hoverForegroundColor: context.shadColor.destructive,
-        icon: const Icon(
-          LucideIcons.trash2,
+      // disable clear data function
+      // return ShadButton.ghost(
+      //   onPressed: () {
+      //     if (path == null) return;
+
+      //     ref.read(clearLlmProvider.notifier).clearLlm(llmId, path!);
+      //   },
+      //   foregroundColor: context.shadColor.destructive,
+      //   hoverForegroundColor: context.shadColor.destructive,
+      //   icon: const Icon(
+      //     LucideIcons.trash2,
+      //     size: 20,
+      //   ),
+      // );
+
+      return Container(
+        width: 44,
+        height: 44,
+        alignment: Alignment.center,
+        child: Icon(
+          LucideIcons.check,
           size: 20,
+          color: context.shadColor.success,
         ),
       );
     }

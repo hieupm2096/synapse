@@ -43,9 +43,9 @@ class LlmModel extends Equatable {
   final String? downloadUrl;
   final String? path;
 
-  bool get isAvailable => path != null;
+  bool get isAvailable => path != null && path!.isNotEmpty;
 
-  bool get isExternal => url != null;
+  bool get isExternal => url != null && url!.isNotEmpty;
 
   Map<String, dynamic> toJson() => _$LlmModelToJson(this);
 
