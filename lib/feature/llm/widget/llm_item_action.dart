@@ -173,7 +173,7 @@ class _DownloadButton extends ConsumerWidget {
         onPressed: () {
           controller.toggle();
 
-          ref.read(downloadLlmProvider.notifier).cancelDownload(llmId: llmId);
+          ref.read(downloadLlmProvider.notifier).cancelDownload(taskId: llmId);
         },
         width: 150,
         foregroundColor: context.shadColor.destructive,

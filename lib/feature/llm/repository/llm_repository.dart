@@ -104,10 +104,15 @@ final class LlmRepository {
   }
 
   Future<Result<LlmModel, Exception>> updateLlmModel({
-    required LlmModel data,
+    required String id,
+    required String relativePath,
   }) async {
     try {
-      final res = await _llmLDS.updateLlmModel(data: data);
+      final data = await _llmLDS.getLlmModel(llmId: id);
+
+      final res = await _llmLDS.updateLlmModel(
+        data: data.copyWith(path: relativePath),
+      );
 
       return Result.success(res);
     } on Exception catch (e) {

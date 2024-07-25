@@ -23,7 +23,7 @@ final contextWindowNotifierProvider =
 );
 
 typedef _$ContextWindowNotifier = AsyncNotifier<int>;
-String _$topPNotifierHash() => r'ccba4bd7c06ddcd49b3d5492de8a6c80b4fe90ad';
+String _$topPNotifierHash() => r'73d9ce94e3e2f74a21cc7e6c4d7e76f5756a576b';
 
 /// See also [TopPNotifier].
 @ProviderFor(TopPNotifier)
@@ -39,7 +39,7 @@ final topPNotifierProvider =
 
 typedef _$TopPNotifier = AsyncNotifier<double>;
 String _$temperatureNotifierHash() =>
-    r'300c45ce48828b7d7956fa7edae9deb5130ac771';
+    r'2b4f29eba8892ab880c823d4fa0d257127625a8c';
 
 /// See also [TemperatureNotifier].
 @ProviderFor(TemperatureNotifier)
@@ -56,7 +56,7 @@ final temperatureNotifierProvider =
 
 typedef _$TemperatureNotifier = AsyncNotifier<double>;
 String _$frequencyPNotifierHash() =>
-    r'851484dc21b37a54abdd275e7840cc994e716d87';
+    r'ad4a533141ad1c8e3d93dec751fbcea4732ef1e9';
 
 /// See also [FrequencyPNotifier].
 @ProviderFor(FrequencyPNotifier)
@@ -72,7 +72,7 @@ final frequencyPNotifierProvider =
 );
 
 typedef _$FrequencyPNotifier = AsyncNotifier<double>;
-String _$presencePNotifierHash() => r'277efae7e79630a705e91d85825d3408f8156642';
+String _$presencePNotifierHash() => r'05c13c47df7324b6fa2a8f32ed177c7a737e2b2e';
 
 /// See also [PresencePNotifier].
 @ProviderFor(PresencePNotifier)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:synapse/app/view/downloader_button.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/conversation/widget/list_conversation_container.dart';
 import 'package:synapse/feature/conversation/widget/llm_select.dart';
@@ -27,6 +28,7 @@ class ListConversationPage extends StatelessWidget {
           child: Divider(height: 0.1),
         ),
       ),
+      floatingActionButton: const DownloaderButton(),
       body: GestureDetector(
         onTap: FocusScope.of(context).unfocus,
         child: const CustomScrollView(

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:background_downloader/background_downloader.dart';
 import 'package:loggy/loggy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -53,66 +56,30 @@ final class CancelDownloadLlmFailure extends DownloadLlmState {
 class DownloadLlm extends _$DownloadLlm {
   @override
   FutureOr<DownloadLlmState> build() async {
-    ref.read(fileDownloaderProvider).registerCallbacks(
-      taskStatusCallback: (update) async {
-        logDebug(
-          'Status update for ${update.task} with status ${update.status}',
-        );
-
-        // TODO(hieupm): recheck when to remove task from task set
-        if (update.status != TaskStatus.complete) return;
-
-        final task = update.task;
-
-        final taskId = task.taskId;
-
-        final taskSet = (state.value?.taskSet ?? {})..remove(taskId);
-
-        // update UI
-        state = AsyncData(DownloadLlmSuccess(taskSet: taskSet, llmId: taskId));
-
-        // update repository data
-        final getLlmModelRes =
-            await ref.read(llmRepositoryProvider).getLlmModel(
-                  id: taskId,
-                );
-
-        final llmModel = getLlmModelRes.success;
-
-        if (llmModel == null) {
-          logError('unexpected_error: could not find llm model');
-          return;
+    ref.read(fileDownloaderProvider).updates.listen(
+      (event) {
+        switch (event) {
+          case TaskStatusUpdate():
+            _onTaskStatusUpdate(event);
+          case TaskProgressUpdate():
+            _onTaskProgressUpdate(event);
         }
-
-        final absolutePath = await task.filePath();
-
-        final relativePath = absolutePath.split('/').last;
-
-        final newLlmModel = llmModel.copyWith(path: relativePath);
-
-        final updateLlmModelRes = await ref
-            .read(llmRepositoryProvider)
-            .updateLlmModel(data: newLlmModel);
-
-        final updatedLlmModel = updateLlmModelRes.success;
-
-        if (updatedLlmModel == null) {
-          logError('unexpected_error: could not update llm model');
-          return;
-        }
-
-        await ref
-            .read(listLLMAsyncNotifierProvider.notifier)
-            .updateLlmModel(data: updatedLlmModel);
       },
     );
 
-    final records = await ref
+    final runningRecs = await ref
         .read(fileDownloaderProvider)
         .database
         .allRecordsWithStatus(TaskStatus.running);
 
-    return DownloadLlmInitial(taskSet: records.map((e) => e.taskId).toSet());
+    final pausedRecs = await ref
+        .read(fileDownloaderProvider)
+        .database
+        .allRecordsWithStatus(TaskStatus.paused);
+
+    return DownloadLlmInitial(
+      taskSet: [...runningRecs, ...pausedRecs].map((e) => e.taskId).toSet(),
+    );
   }
 
   Future<void> downloadLlmModel({
@@ -140,23 +107,121 @@ class DownloadLlm extends _$DownloadLlm {
   }
 
   Future<void> cancelDownload({
-    required String llmId,
+    required String taskId,
   }) async {
     final taskSet = state.value?.taskSet ?? {};
 
-    if (!taskSet.contains(llmId)) return;
+    if (!taskSet.contains(taskId)) return;
 
     state = const AsyncLoading();
 
-    final res = await ref.read(fileDownloaderProvider).cancelTaskWithId(llmId);
+    final res = await ref.read(fileDownloaderProvider).cancelTaskWithId(taskId);
 
     if (!res) {
       state = AsyncError(Exception('unexpected'), StackTrace.current);
       return;
     }
 
-    taskSet.remove(llmId);
+    taskSet.remove(taskId);
+
+    ref.invalidate(downloadProgressProvider(taskId));
+
+    ref.read(overallProgressProvider.notifier).removeTask(taskId);
 
     state = AsyncData(CancelDownloadLlmSuccess(taskSet: taskSet));
+  }
+
+  Future<void> _onTaskStatusUpdate(TaskStatusUpdate event) async {
+    logDebug('Status update: ${event.task} - ${event.status}');
+
+    final task = event.task;
+
+    final taskId = task.taskId;
+
+    // If download task is not complete, do nothing
+    // The cancel operation already performed in cancel function
+    if (event.status != TaskStatus.complete) return;
+
+    // Handle complete task
+    final taskSets = (state.value?.taskSet ?? {})..remove(taskId);
+
+    ref.read(overallProgressProvider.notifier).removeTask(taskId);
+
+    if (taskSets.isEmpty) {
+      ref.invalidate(overallProgressProvider);
+    }
+
+    ref.invalidate(downloadProgressProvider(taskId));
+
+    // update UI
+    state = AsyncData(DownloadLlmSuccess(taskSet: taskSets, llmId: taskId));
+
+    // update repository data
+    final absolutePath = await task.filePath();
+
+    final relativePath = absolutePath.split('/').last;
+
+    final updatedLlmRes = await ref
+        .read(llmRepositoryProvider)
+        .updateLlmModel(id: taskId, relativePath: relativePath);
+
+    if (updatedLlmRes.success == null) {
+      return;
+    }
+
+    await ref
+        .read(listLLMAsyncNotifierProvider.notifier)
+        .updateLlmModel(data: updatedLlmRes.success!);
+  }
+
+  Future<void> _onTaskProgressUpdate(
+    TaskProgressUpdate event,
+  ) async {
+    logDebug('Progress update: ${event.task} - ${event.progress}');
+
+    final taskId = event.task.taskId;
+
+    if (event.progress >= 0) {
+      ref
+          .read(downloadProgressProvider(taskId).notifier)
+          .updateProgress(event.progress);
+
+      ref
+          .read(overallProgressProvider.notifier)
+          .updateProgress(taskId, event.progress);
+    }
+  }
+}
+
+@Riverpod(keepAlive: true)
+class OverallProgress extends _$OverallProgress {
+  final _progressMap = <String, double>{};
+
+  @override
+  double build() => 0;
+
+  void updateProgress(String taskId, double progress) {
+    _progressMap[taskId] = progress;
+
+    state = _progressMap.values.reduce(max);
+  }
+
+  void removeTask(String taskId) {
+    _progressMap.remove(taskId);
+
+    if (_progressMap.isEmpty) {
+      ref.invalidateSelf();
+    }
+  }
+}
+
+@Riverpod(keepAlive: true)
+class DownloadProgress extends _$DownloadProgress {
+  @override
+  double build(String taskId) => 0;
+
+  // ignore: use_setters_to_change_properties
+  void updateProgress(double value) {
+    state = value;
   }
 }
