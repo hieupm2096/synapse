@@ -2,12 +2,12 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/app/app.dart';
 import 'package:synapse/feature/llm/model/llm_model/llm_model.dart';
+import 'package:synapse/feature/llm/repository/llm_repository.dart';
+import 'package:synapse/feature/setting/provider/app_setting_provider.dart';
 
 part 'splash_page_provider.g.dart';
 
 sealed class SplashLoadedResult {}
-
-final class NotOnboarded extends SplashLoadedResult {}
 
 final class NoLlm extends SplashLoadedResult {}
 
@@ -29,6 +29,10 @@ FutureOr<SplashLoadedResult> splashPage(SplashPageRef ref) async {
   final data = await Future.wait([
     ref.watch(currentLlmProvider.future),
     ref.watch(currentUserProvider.future),
+    ref.watch(darkModeProvider.future),
+
+    // seed llm data
+    ref.read(llmRepositoryProvider).seedLlmModel(),
   ]);
 
   final currentLlm = data[0] as LlmModel?;
