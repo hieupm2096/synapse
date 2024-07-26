@@ -8,7 +8,7 @@ class ChatBubble extends StatelessWidget {
   const ChatBubble({
     super.key,
     this.content,
-    this.contentWidget,
+    this.child,
     this.onPressed,
     this.isLeft = true,
   });
@@ -22,26 +22,26 @@ class ChatBubble extends StatelessWidget {
       ChatBubble(
         key: key,
         content: content,
-        contentWidget: child,
         onPressed: onPressed,
+        child: child,
       );
 
   factory ChatBubble.right({
     Key? key,
     String? content,
-    Widget? contentWidget,
+    Widget? child,
     VoidCallback? onPressed,
   }) =>
       ChatBubble(
         key: key,
         content: content,
-        contentWidget: contentWidget,
         onPressed: onPressed,
         isLeft: false,
+        child: child,
       );
 
   final String? content;
-  final Widget? contentWidget;
+  final Widget? child;
   final VoidCallback? onPressed;
   final bool isLeft;
 
@@ -62,10 +62,8 @@ class ChatBubble extends StatelessWidget {
 
           Clipboard.setData(ClipboardData(text: content!));
         },
-        child: CupertinoButton(
-          padding: EdgeInsets.zero,
-          minSize: 0,
-          onPressed: () {
+        child: GestureDetector(
+          onTap: () {
             logDebug('onChatPressed');
             FocusScope.of(context).unfocus();
             onPressed?.call();
@@ -83,7 +81,7 @@ class ChatBubble extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: contentWidget ??
+            child: child ??
                 Text(
                   content ?? '',
                   style: context.shadTextTheme.list.copyWith(

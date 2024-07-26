@@ -63,9 +63,8 @@ class ListChat extends StatelessWidget {
             }
 
             return ChatBubble(
-              contentWidget:
-                  (isLoading && !isNotEmpty) ? const ChatLoading() : null,
               content: isNotEmpty ? prompt.text : null,
+              child: (isLoading && !isNotEmpty) ? const ChatLoading() : null,
             );
           },
         );

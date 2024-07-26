@@ -4,11 +4,15 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 class ChatAppBar extends AppBar {
   ChatAppBar({
     super.key,
+    this.showLeading = true,
+    this.showSetting = true,
     this.onLeadingPressed,
-    super.title,
     this.onSettingPressed,
+    super.title,
   });
 
+  final bool showLeading;
+  final bool showSetting;
   final VoidCallback? onLeadingPressed;
   final VoidCallback? onSettingPressed;
 
@@ -19,24 +23,28 @@ class ChatAppBar extends AppBar {
   double? get scrolledUnderElevation => 0;
 
   @override
-  Widget? get leading => ShadButton.ghost(
-        icon: const Icon(
-          LucideIcons.columns2,
-          size: 24,
-        ),
-        onPressed: onLeadingPressed,
-      );
-
-  @override
-  List<Widget>? get actions => [
-        ShadButton.ghost(
+  Widget? get leading => showLeading
+      ? ShadButton.ghost(
           icon: const Icon(
-            LucideIcons.settings,
+            LucideIcons.columns2,
             size: 24,
           ),
-          onPressed: onSettingPressed,
-        ),
-      ];
+          onPressed: onLeadingPressed,
+        )
+      : null;
+
+  @override
+  List<Widget>? get actions => showSetting
+      ? [
+          ShadButton.ghost(
+            icon: const Icon(
+              LucideIcons.settings,
+              size: 24,
+            ),
+            onPressed: onSettingPressed,
+          ),
+        ]
+      : null;
 
   @override
   PreferredSizeWidget? get bottom => const PreferredSize(
