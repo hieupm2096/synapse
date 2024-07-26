@@ -35,4 +35,12 @@ class ListLLMAsyncNotifier extends _$ListLLMAsyncNotifier {
 
     state = AsyncData(listLlm);
   }
+
+  Future<void> addLlmModel({required LlmModel data}) async {
+    state = const AsyncLoading();
+
+    final listLlm = (state.value ?? [])..add(data);
+
+    state = AsyncData(listLlm);
+  }
 }

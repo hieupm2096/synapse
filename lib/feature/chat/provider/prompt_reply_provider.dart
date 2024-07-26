@@ -60,13 +60,24 @@ class PromptReply extends _$PromptReply {
     if (llmModel == null) return;
 
     // get llm model path
-    final relativePath = llmModel.path;
+    var relativePath = '';
+    var absolutePath = '';
 
-    if (relativePath == null) return;
+    final path = llmModel.path;
 
-    final directory = await getApplicationDocumentsDirectory();
+    if (path == null) return;
 
-    final absolutePath = '${directory.path}/$relativePath';
+    if (path.contains('/')) {
+      absolutePath = path;
+    } else {
+      relativePath = path;
+    }
+
+    if (absolutePath == '') {
+      final directory = await getApplicationDocumentsDirectory();
+
+      absolutePath = '${directory.path}/$relativePath';
+    }
 
     // start inference
     final request = OpenAiRequest(

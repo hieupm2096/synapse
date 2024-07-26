@@ -49,7 +49,7 @@ class LlmItem extends StatelessWidget {
                       model.author!,
                       style: context.shadTextTheme.muted,
                     ),
-                  if (model.author != null && model.parameters != null)
+                  if (model.author != null)
                     const Icon(
                       LucideIcons.dot,
                       size: 12,
@@ -74,14 +74,29 @@ class LlmItem extends StatelessWidget {
             ],
           ),
         ),
+
         // LlmItemAction(data: model),
+
         const SizedBox(width: 16),
-        _DownloadButton(
-          llmId: model.id!,
-          url: model.downloadUrl!,
-          downloaded: model.isAvailable,
-          path: model.path,
-        ),
+
+        if (model.isAvailable)
+          Container(
+            width: 44,
+            height: 44,
+            alignment: Alignment.center,
+            child: Icon(
+              LucideIcons.check,
+              size: 20,
+              color: context.shadColor.success,
+            ),
+          )
+        else if (model.downloadUrl != null)
+          _ActionButton(
+            llmId: model.id!,
+            url: model.downloadUrl!,
+            // downloaded: model.isAvailable,
+            path: model.path,
+          ),
       ],
     );
   }
@@ -113,17 +128,17 @@ class LlmItem extends StatelessWidget {
   }
 }
 
-class _DownloadButton extends ConsumerWidget {
-  const _DownloadButton({
+class _ActionButton extends ConsumerWidget {
+  const _ActionButton({
     required this.llmId,
     required this.url,
-    required this.downloaded,
+    // required this.downloaded,
     this.path,
   });
 
   final String llmId;
   final String url;
-  final bool downloaded;
+  // final bool downloaded;
   final String? path;
 
   @override
@@ -131,33 +146,23 @@ class _DownloadButton extends ConsumerWidget {
     final isDownloading =
         ref.watch(downloadLlmProvider).value?.taskSet.contains(llmId);
 
-    if (downloaded) {
-      // disable clear data function
-      // return ShadButton.ghost(
-      //   onPressed: () {
-      //     if (path == null) return;
+    // if (downloaded) {
+    // disable clear data function
+    // return ShadButton.ghost(
+    //   onPressed: () {
+    //     if (path == null) return;
 
-      //     ref.read(clearLlmProvider.notifier).clearLlm(llmId, path!);
-      //   },
-      //   foregroundColor: context.shadColor.destructive,
-      //   hoverForegroundColor: context.shadColor.destructive,
-      //   icon: const Icon(
-      //     LucideIcons.trash2,
-      //     size: 20,
-      //   ),
-      // );
+    //     ref.read(clearLlmProvider.notifier).clearLlm(llmId, path!);
+    //   },
+    //   foregroundColor: context.shadColor.destructive,
+    //   hoverForegroundColor: context.shadColor.destructive,
+    //   icon: const Icon(
+    //     LucideIcons.trash2,
+    //     size: 20,
+    //   ),
+    // );
 
-      return Container(
-        width: 44,
-        height: 44,
-        alignment: Alignment.center,
-        child: Icon(
-          LucideIcons.check,
-          size: 20,
-          color: context.shadColor.success,
-        ),
-      );
-    }
+    // }
 
     if (isDownloading == null) {
       return const SizedBox.shrink();
