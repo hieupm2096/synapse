@@ -6,12 +6,12 @@ part of 'prompt_reply_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$promptReplyHash() => r'c6c66302d0349f8f8e7316a13103c025e5d652c0';
+String _$promptReplyHash() => r'5d3f7fb00653d52850fc13214aa77a8a9f6cb6e1';
 
 /// See also [PromptReply].
 @ProviderFor(PromptReply)
 final promptReplyProvider =
-    NotifierProvider<PromptReply, PromptReplyEntity>.internal(
+    AutoDisposeNotifierProvider<PromptReply, PromptReplyEntity>.internal(
   PromptReply.new,
   name: r'promptReplyProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final promptReplyProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$PromptReply = Notifier<PromptReplyEntity>;
+typedef _$PromptReply = AutoDisposeNotifier<PromptReplyEntity>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

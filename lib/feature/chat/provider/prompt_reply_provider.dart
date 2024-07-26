@@ -33,19 +33,24 @@ final class PromptReplyEntity {
       id: id ?? this.id,
     );
   }
+
+  @override
+  String toString() {
+    return 'id: $id - message: $message - status: $status';
+  }
 }
 
-@Riverpod(keepAlive: true)
+@riverpod
 class PromptReply extends _$PromptReply {
   @override
   PromptReplyEntity build() {
-    // ref.onDispose(stopInference);
+    ref.onDispose(stopInference);
 
     return const PromptReplyEntity(status: PromptReplyStatus.initial);
   }
 
   // cache request id to cancel later - this function does not work correctly
-  // int? _requestId;
+  int? _requestId;
 
   Future<void> startInference({
     required int id,
@@ -108,8 +113,7 @@ class PromptReply extends _$PromptReply {
       logger: (log) => logDebug('[llama.cpp] $log'),
     );
 
-    // _requestId =
-    await fllamaChat(
+    _requestId = await fllamaChat(
       request,
       (response, done) {
         state = PromptReplyEntity(
@@ -126,9 +130,9 @@ class PromptReply extends _$PromptReply {
   }
 
   // this function does not work correctly
-  // void stopInference() {
-  //   if (_requestId == null) return;
+  void stopInference() {
+    if (_requestId == null) return;
 
-  //   fllamaCancelInference(_requestId!);
-  // }
+    fllamaCancelInference(_requestId!);
+  }
 }

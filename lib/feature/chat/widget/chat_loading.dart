@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/core/core.dart';
 
-class ChatGenerating extends StatelessWidget {
-  const ChatGenerating({super.key});
+class ChatLoading extends StatelessWidget {
+  const ChatLoading({super.key});
 
   @override
   Widget build(BuildContext context) {

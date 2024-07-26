@@ -79,6 +79,8 @@ class ListLlmContainer extends ConsumerWidget {
             ref
                 .read(listLLMAsyncNotifierProvider.notifier)
                 .addLlmModel(data: next.value!);
+
+            context.go(ListConversationPage.route);
           }
         },
       );

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/model/prompt_model/prompt_model.dart';
+import 'package:synapse/feature/chat/provider/prompt_reply_provider.dart';
 import 'package:synapse/feature/chat/widget/chat_bubble.dart';
+import 'package:synapse/feature/chat/widget/chat_loading.dart';
 import 'package:synapse/feature/chat/widget/headline.dart';
-import 'package:synapse/shared/widget/widget.dart';
 
 class ListChat extends StatelessWidget {
   const ListChat({
@@ -40,10 +42,32 @@ class ListChat extends StatelessWidget {
 
         final isNotEmpty = prompt.text?.isNotEmpty ?? false;
 
-        return ChatBubble(
-          contentWidget: isNotEmpty ? null : const ChatGenerating(),
-          content: isNotEmpty ? prompt.text : null,
-          isLeft: !isHuman,
+        if (isHuman) {
+          return ChatBubble(content: prompt.text, isLeft: false);
+        }
+
+        return Consumer(
+          builder: (context, ref, child) {
+            final replyEntity = ref.watch(promptReplyProvider);
+
+            final isCurrentReply = prompt.id == replyEntity.id;
+            final isLoading =
+                replyEntity.status == PromptReplyStatus.inProgress;
+
+            if (!isCurrentReply) {
+              return ChatBubble(
+                content: isNotEmpty
+                    ? prompt.text
+                    : 'Error: Could not generate response',
+              );
+            }
+
+            return ChatBubble(
+              contentWidget:
+                  (isLoading && !isNotEmpty) ? const ChatLoading() : null,
+              content: isNotEmpty ? prompt.text : null,
+            );
+          },
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
