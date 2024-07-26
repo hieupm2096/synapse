@@ -119,4 +119,16 @@ final class LlmRepository {
       return Result.failure(e);
     }
   }
+
+  Future<Result<LlmModel, Exception>> createLlmModel({
+    required LlmModel model,
+  }) async {
+    try {
+      final data = await _llmLDS.createLlmModel(data: model);
+
+      return Result.success(data);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
 }

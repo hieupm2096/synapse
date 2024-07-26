@@ -7,9 +7,3 @@ part 'file_downloader.g.dart';
 
 @Riverpod(keepAlive: true)
 FileDownloader fileDownloader(FileDownloaderRef ref) => FileDownloader();
-
-@Riverpod(keepAlive: true)
-class MyDownloader extends _$MyDownloader {
-  @override
-  Set<int> build() => {};
-}
