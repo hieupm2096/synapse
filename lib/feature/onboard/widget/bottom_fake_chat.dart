@@ -11,7 +11,7 @@ class BottomFakeChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 8, 4, 8),
+      padding: const EdgeInsets.fromLTRB(8, 8, 16, 8),
       decoration: BoxDecoration(
         color: context.shadColor.background,
         border: Border(top: BorderSide(color: context.shadColor.border)),
@@ -27,12 +27,11 @@ class BottomFakeChat extends StatelessWidget {
                   child: ChatInput(enabled: false),
                 ),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 12),
               Padding(
                 padding: EdgeInsets.only(bottom: 4),
                 child: ChatGenerating(),
               ),
-              SizedBox(width: 4),
             ],
           ),
           const SizedBox(height: 6),

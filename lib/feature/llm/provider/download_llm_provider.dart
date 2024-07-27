@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:background_downloader/background_downloader.dart';
 import 'package:loggy/loggy.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:synapse/app/app.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/llm/provider/list_llm_provider.dart';
 import 'package:synapse/feature/llm/repository/llm_repository.dart';
@@ -68,19 +69,42 @@ class DownloadLlm extends _$DownloadLlm {
       },
     );
 
-    final runningRecs = await ref
-        .read(fileDownloaderProvider)
-        .database
-        .allRecordsWithStatus(TaskStatus.running);
+    final recs = await Future.wait([
+      ref
+          .read(fileDownloaderProvider)
+          .database
+          .allRecordsWithStatus(TaskStatus.running),
+      ref
+          .read(fileDownloaderProvider)
+          .database
+          .allRecordsWithStatus(TaskStatus.paused),
+    ]);
 
-    final pausedRecs = await ref
-        .read(fileDownloaderProvider)
-        .database
-        .allRecordsWithStatus(TaskStatus.paused);
+    final taskRecs = [...recs[0], ...recs[1]];
+    final taskSet = <String>{};
 
-    return DownloadLlmInitial(
-      taskSet: [...runningRecs, ...pausedRecs].map((e) => e.taskId).toSet(),
-    );
+    for (final rec in taskRecs) {
+      final resumable =
+          await ref.read(fileDownloaderProvider).taskCanResume(rec.task);
+
+      if (!resumable) {
+        await ref.read(fileDownloaderProvider).cancelTaskWithId(rec.taskId);
+      } else {
+        final resumeRes = await ref.read(fileDownloaderProvider).resume(
+              DownloadTask(
+                url: rec.task.url,
+                taskId: rec.taskId,
+                updates: Updates.statusAndProgress,
+              ),
+            );
+
+        if (resumeRes) {
+          taskSet.add(rec.taskId);
+        }
+      }
+    }
+
+    return DownloadLlmInitial(taskSet: taskSet);
   }
 
   Future<void> downloadLlmModel({
@@ -197,6 +221,10 @@ class DownloadLlm extends _$DownloadLlm {
     await ref
         .read(listLLMAsyncNotifierProvider.notifier)
         .updateLlmModel(data: updatedLlmRes.success!);
+
+    await ref
+        .read(currentLlmProvider.notifier)
+        .setLlmModel(updatedLlmRes.success!);
   }
 
   Future<void> _onTaskProgressUpdate(
