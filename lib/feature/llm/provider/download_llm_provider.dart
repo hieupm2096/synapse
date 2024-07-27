@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:background_downloader/background_downloader.dart';
 import 'package:loggy/loggy.dart';
@@ -51,6 +50,8 @@ final class CancelDownloadLlmFailure extends DownloadLlmState {
 
   final Exception error;
 }
+
+typedef XProgress = (double, Duration?);
 
 @Riverpod(keepAlive: true)
 class DownloadLlm extends _$DownloadLlm {
@@ -104,6 +105,30 @@ class DownloadLlm extends _$DownloadLlm {
     final taskSet = (state.value?.taskSet ?? {})..add(llmId);
 
     state = AsyncData(EnqueueLlmSuccess(taskSet: taskSet));
+  }
+
+  Future<void> downloadDefaultLlmModel() async {
+    state = const AsyncLoading();
+
+    final getModelRes = await ref.read(llmRepositoryProvider).getLlmModels();
+
+    getModelRes.when(
+      success: (success) {
+        final id = success.firstOrNull?.id;
+        final downloadUrl = success.firstOrNull?.downloadUrl;
+
+        if (id == null || downloadUrl == null) {
+          state = AsyncError(Exception('unexpected'), StackTrace.current);
+
+          return;
+        }
+
+        downloadLlmModel(url: downloadUrl, llmId: id);
+      },
+      failure: (failure) {
+        state = AsyncError(failure, StackTrace.current);
+      },
+    );
   }
 
   Future<void> cancelDownload({
@@ -184,26 +209,34 @@ class DownloadLlm extends _$DownloadLlm {
     if (event.progress >= 0) {
       ref
           .read(downloadProgressProvider(taskId).notifier)
-          .updateProgress(event.progress);
+          .updateProgress((event.progress, event.timeRemaining));
 
       ref
           .read(overallProgressProvider.notifier)
-          .updateProgress(taskId, event.progress);
+          .updateProgress(taskId, (event.progress, event.timeRemaining));
     }
   }
 }
 
 @Riverpod(keepAlive: true)
 class OverallProgress extends _$OverallProgress {
-  final _progressMap = <String, double>{};
+  final _progressMap = <String, XProgress>{};
 
   @override
-  double build() => 0;
+  XProgress build() => (0, null);
 
-  void updateProgress(String taskId, double progress) {
+  void updateProgress(String taskId, XProgress progress) {
     _progressMap[taskId] = progress;
 
-    state = _progressMap.values.reduce(max);
+    var maxKey = _progressMap.keys.first;
+
+    for (final e in _progressMap.entries) {
+      if (e.value.$1 > _progressMap[maxKey]!.$1) {
+        maxKey = e.key;
+      }
+    }
+
+    state = _progressMap[maxKey]!;
   }
 
   void removeTask(String taskId) {
@@ -218,10 +251,10 @@ class OverallProgress extends _$OverallProgress {
 @Riverpod(keepAlive: true)
 class DownloadProgress extends _$DownloadProgress {
   @override
-  double build(String taskId) => 0;
+  XProgress build(String taskId) => (0, null);
 
   // ignore: use_setters_to_change_properties
-  void updateProgress(double value) {
+  void updateProgress(XProgress value) {
     state = value;
   }
 }

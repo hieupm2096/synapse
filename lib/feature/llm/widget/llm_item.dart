@@ -169,7 +169,7 @@ class _ActionButton extends ConsumerWidget {
     } else if (isDownloading) {
       final asyncProgress = ref.watch(DownloadProgressProvider(llmId));
 
-      final progress = asyncProgress >= 0 ? asyncProgress : 0.0;
+      final progress = asyncProgress.$1 >= 0 ? asyncProgress.$1 : 0.0;
 
       return TweenAnimationBuilder<double>(
         tween: Tween(begin: 0, end: progress),
