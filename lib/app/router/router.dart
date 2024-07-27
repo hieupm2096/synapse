@@ -17,7 +17,9 @@ final class GoNavigationObserver extends NavigatorObserver {
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    backStack.add(route.settings.name ?? '');
+    final routeName = route.settings.name ?? '';
+
+    backStack.add(routeName);
 
     logDebug(backStack.toString());
   }

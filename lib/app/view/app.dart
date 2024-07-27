@@ -15,7 +15,7 @@ class App extends ConsumerWidget {
 
     final darkMode = ref.watch(darkModeProvider).value ?? false;
 
-    return ShadApp.router(
+    return ShadApp.materialRouter(
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         physics: const BouncingScrollPhysics(),
       ),

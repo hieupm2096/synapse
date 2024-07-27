@@ -22,13 +22,13 @@ class SplashPage extends ConsumerWidget {
       (previous, next) {
         switch (next.valueOrNull) {
           case SplashLoadedSuccess(:final conversationId):
-            context.go('${ListConversationPage.route}/$conversationId');
+            context.replace('${ListConversationPage.route}/$conversationId');
           case NoConversation():
-            context.go(ListConversationPage.route);
+            context.replace(ListConversationPage.route);
           case NoLlm():
-            context.go(OnboardPage.route);
+            context.replace(OnboardPage.route);
           case _:
-            context.go(ListLlmPage.route);
+            context.replace(ListLlmPage.route);
         }
       },
     );
