@@ -7,6 +7,7 @@ import 'package:synapse/app/app.dart';
 import 'package:synapse/core/extension/build_context_ext.dart';
 import 'package:synapse/feature/chat/provider/create_prompt_provider.dart';
 import 'package:synapse/feature/chat/provider/prompt_reply_provider.dart';
+import 'package:synapse/feature/chat/widget/chat_generating.dart';
 import 'package:synapse/feature/chat/widget/chat_input.dart';
 
 class TypeAndSend extends ConsumerStatefulWidget {
@@ -77,25 +78,7 @@ class _TypeAndSendState extends ConsumerState<TypeAndSend> {
                         )
                         .swap(
                           duration: 500.ms,
-                          builder: (context, child) {
-                            return Container(
-                              width: 16,
-                              height: 16,
-                              decoration: BoxDecoration(
-                                color: context.shadColor.primary,
-                                shape: BoxShape.circle,
-                              ),
-                            )
-                                .animate(
-                                  onPlay: (controller) =>
-                                      controller.repeat(reverse: true),
-                                )
-                                .scaleXY(
-                                  duration: 1000.milliseconds,
-                                  begin: 0.9,
-                                  end: 1.1,
-                                );
-                          },
+                          builder: (context, child) => const ChatGenerating(),
                         ),
                     size: ShadButtonSize.lg,
                   ),

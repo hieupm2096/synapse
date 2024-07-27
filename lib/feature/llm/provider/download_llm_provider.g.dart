@@ -6,7 +6,7 @@ part of 'download_llm_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$downloadLlmHash() => r'92be339843276e8f6d78dfaafc39b70874de1f4a';
+String _$downloadLlmHash() => r'394d2afb5db44eb0343d028444c1f694432f5556';
 
 /// See also [DownloadLlm].
 @ProviderFor(DownloadLlm)
@@ -21,12 +21,12 @@ final downloadLlmProvider =
 );
 
 typedef _$DownloadLlm = AsyncNotifier<DownloadLlmState>;
-String _$overallProgressHash() => r'35ca965ea066b555eac34dfa135136c9de737bc5';
+String _$overallProgressHash() => r'33558b6b0a9ef837014931b55d4536e3ad358c12';
 
 /// See also [OverallProgress].
 @ProviderFor(OverallProgress)
 final overallProgressProvider =
-    NotifierProvider<OverallProgress, double>.internal(
+    NotifierProvider<OverallProgress, XProgress>.internal(
   OverallProgress.new,
   name: r'overallProgressProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -36,8 +36,8 @@ final overallProgressProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$OverallProgress = Notifier<double>;
-String _$downloadProgressHash() => r'672b4bff5315746545a815851be3a594ee5dcdbf';
+typedef _$OverallProgress = Notifier<XProgress>;
+String _$downloadProgressHash() => r'3edc44d579678bf9db92976d3c607d90f9248819';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -60,10 +60,10 @@ class _SystemHash {
   }
 }
 
-abstract class _$DownloadProgress extends BuildlessNotifier<double> {
+abstract class _$DownloadProgress extends BuildlessNotifier<XProgress> {
   late final String taskId;
 
-  double build(
+  XProgress build(
     String taskId,
   );
 }
@@ -73,7 +73,7 @@ abstract class _$DownloadProgress extends BuildlessNotifier<double> {
 const downloadProgressProvider = DownloadProgressFamily();
 
 /// See also [DownloadProgress].
-class DownloadProgressFamily extends Family<double> {
+class DownloadProgressFamily extends Family<XProgress> {
   /// See also [DownloadProgress].
   const DownloadProgressFamily();
 
@@ -112,7 +112,7 @@ class DownloadProgressFamily extends Family<double> {
 
 /// See also [DownloadProgress].
 class DownloadProgressProvider
-    extends NotifierProviderImpl<DownloadProgress, double> {
+    extends NotifierProviderImpl<DownloadProgress, XProgress> {
   /// See also [DownloadProgress].
   DownloadProgressProvider(
     String taskId,
@@ -143,7 +143,7 @@ class DownloadProgressProvider
   final String taskId;
 
   @override
-  double runNotifierBuild(
+  XProgress runNotifierBuild(
     covariant DownloadProgress notifier,
   ) {
     return notifier.build(
@@ -168,7 +168,7 @@ class DownloadProgressProvider
   }
 
   @override
-  NotifierProviderElement<DownloadProgress, double> createElement() {
+  NotifierProviderElement<DownloadProgress, XProgress> createElement() {
     return _DownloadProgressProviderElement(this);
   }
 
@@ -186,13 +186,13 @@ class DownloadProgressProvider
   }
 }
 
-mixin DownloadProgressRef on NotifierProviderRef<double> {
+mixin DownloadProgressRef on NotifierProviderRef<XProgress> {
   /// The parameter `taskId` of this provider.
   String get taskId;
 }
 
 class _DownloadProgressProviderElement
-    extends NotifierProviderElement<DownloadProgress, double>
+    extends NotifierProviderElement<DownloadProgress, XProgress>
     with DownloadProgressRef {
   _DownloadProgressProviderElement(super.provider);
 

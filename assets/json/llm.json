@@ -12,47 +12,5 @@
     "url": "https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf",
     "downloadUrl": "https://huggingface.co/microsoft/Phi-3-mini-4k-instruct-gguf/resolve/main/Phi-3-mini-4k-instruct-q4.gguf",
     "available": false
-  },
-  {
-    "id": "bartowski/gemma-2-9b-it-GGUF",
-    "author": "bartowski",
-    "lastModified": "2024-07-04T09:59:52.000Z",
-    "sha": "714c785c6d867e1e014ca60914e60c832afea458",
-    "createdAt": "2024-06-27T15:42:48.000Z",
-    "modelId": "bartowski/gemma-2-9b-it-GGUF",
-    "parameters": "9.24B params",
-    "size": "5.76GB",
-    "architecture": "gemma2",
-    "url": "https://huggingface.co/bartowski/gemma-2-9b-it-GGUF",
-    "downloadUrl": "https://huggingface.co/bartowski/gemma-2-9b-it-GGUF/resolve/main/gemma-2-9b-it-Q4_K_M.gguf",
-    "available": false
-  },
-  {
-    "id": "M4-ai/TinyMistral-248M-v2-Instruct-GGUF",
-    "author": "M4-ai",
-    "lastModified": "2024-02-03T20:17:48.000Z",
-    "sha": "114104e33976dc4e499866d2b5951c8558fa8d14",
-    "createdAt": "2024-02-03T20:05:47.000Z",
-    "modelId": "M4-ai/TinyMistral-248M-v2-Instruct-GGUF",
-    "parameters": "248M params",
-    "size": "105MB",
-    "architecture": "llama",
-    "url": "https://huggingface.co/M4-ai/TinyMistral-248M-v2-Instruct-GGUF",
-    "downloadUrl": "https://huggingface.co/M4-ai/TinyMistral-248M-v2-Instruct-GGUF/resolve/main/TinyMistral-248M-v2-Instruct.Q2_K.gguf?download=true",
-    "available": false
-  },
-  {
-    "id": "mradermacher/DistilGPT2-TinyStories-GGUF",
-    "author": "mradermacher",
-    "lastModified": "2024-06-26T11:04:24.000Z",
-    "sha": "689085ad6206494d19b9c3ef3720b3d977bb613c",
-    "createdAt": "2024-06-26T11:02:31.000Z",
-    "modelId": "mradermacher/DistilGPT2-TinyStories-GGUF",
-    "parameters": "N/A",
-    "size": "85MB",
-    "architecture": "gpt-2",
-    "url": "https://huggingface.co/mradermacher/DistilGPT2-TinyStories-GGUF",
-    "downloadUrl": "https://huggingface.co/mradermacher/DistilGPT2-TinyStories-GGUF/resolve/main/DistilGPT2-TinyStories.Q4_K_M.gguf",
-    "available": false
   }
 ]

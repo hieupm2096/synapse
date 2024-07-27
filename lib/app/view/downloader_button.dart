@@ -19,7 +19,7 @@ class DownloaderButton extends ConsumerWidget {
     final asyncOverallProgress = ref.watch(overallProgressProvider);
 
     return TweenAnimationBuilder<double>(
-      tween: Tween(begin: 0, end: asyncOverallProgress),
+      tween: Tween(begin: 0, end: asyncOverallProgress.$1),
       duration: Durations.short4,
       curve: Curves.easeInOut,
       builder: (_, value, child) {

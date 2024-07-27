@@ -34,31 +34,31 @@ class ListChatContainer extends ConsumerWidget {
 
             final isHuman = prompt.isHuman ?? true;
 
+            if (!isHuman) return;
+
             final llmModelId = ref.read(currentLlmProvider).value?.id;
 
             if (llmModelId == null) return;
 
-            if (isHuman) {
-              ref
-                  .read(listPromptProvider(conversationId).notifier)
-                  .createPrompt(data: prompt);
+            ref
+                .read(listPromptProvider(conversationId).notifier)
+                .createPrompt(data: prompt);
 
-              final reply = PromptModel(
-                conversationId: conversationId,
-                id: const Uuid().v4().fastHash,
-                createdAt: DateTime.now(),
-                createdBy: llmModelId,
-                isHuman: false,
-              );
+            final reply = PromptModel(
+              conversationId: conversationId,
+              id: const Uuid().v4().fastHash,
+              createdAt: DateTime.now(),
+              createdBy: llmModelId,
+              isHuman: false,
+            );
 
-              ref
-                  .read(listPromptProvider(conversationId).notifier)
-                  .createPrompt(data: reply);
+            ref
+                .read(listPromptProvider(conversationId).notifier)
+                .createPrompt(data: reply);
 
-              ref
-                  .read(promptReplyProvider.notifier)
-                  .startInference(id: reply.id!, message: prompt.text!);
-            }
+            ref
+                .read(promptReplyProvider.notifier)
+                .startInference(id: reply.id!, message: prompt.text!);
           }
         },
       )

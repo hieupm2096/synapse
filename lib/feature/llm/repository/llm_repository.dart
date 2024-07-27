@@ -28,18 +28,23 @@ final class LlmRepository {
   final ILlmLDS _jsonLlmLDS;
   final IKVPLocalDS _kvpLDS;
 
-  Future<Result<List<LlmModel>, Exception>> getLlmModels() async {
+  Future<Result<bool, Exception>> seedLlmModel() async {
     try {
-      final res = await _llmLDS.getLlmModels();
-
-      if (res.isNotEmpty) return Result.success(res);
-
-      // seeding data
       final data = await _jsonLlmLDS.getLlmModels();
 
       await _llmLDS.createLlmModels(data: data);
 
-      return Result.success(data);
+      return const Result.success(true);
+    } on Exception catch (e) {
+      return Result.failure(e);
+    }
+  }
+
+  Future<Result<List<LlmModel>, Exception>> getLlmModels() async {
+    try {
+      final res = await _llmLDS.getLlmModels();
+
+      return Result.success(res);
     } on Exception catch (e) {
       return Result.failure(e);
     }

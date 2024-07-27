@@ -6,7 +6,7 @@ part of 'pick_llm_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$pickLlmHash() => r'4d56920be2e2f7e904b44975546228c1352f02a7';
+String _$pickLlmHash() => r'0f70ef59909a4984bd778cb45afa0720034e3eaf';
 
 /// See also [PickLlm].
 @ProviderFor(PickLlm)

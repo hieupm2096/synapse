@@ -30,7 +30,7 @@ class PickLlm extends _$PickLlm {
 
     final model = LlmModel(
       id: file.name,
-      author: 'user',
+      author: 'User',
       modelId: file.name,
       path: file.path,
       size: file.size.getFileSize(),

@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/llm.dart';
+import 'package:synapse/feature/onboard/page/onboard_page.dart';
+import 'package:synapse/feature/setting/provider/app_setting_provider.dart';
 import 'package:synapse/feature/splash/provider/splash_page_provider.dart';
 import 'package:synapse/gen/assets.gen.dart';
 
@@ -23,6 +25,8 @@ class SplashPage extends ConsumerWidget {
             context.go('${ListConversationPage.route}/$conversationId');
           case NoConversation():
             context.go(ListConversationPage.route);
+          case NoLlm():
+            context.go(OnboardPage.route);
           case _:
             context.go(ListLlmPage.route);
         }
@@ -43,18 +47,29 @@ class SplashPage extends ConsumerWidget {
           Container(
             height: 200,
             alignment: Alignment.center,
-            child: Assets.logo.logo
-                .image(
-                  fit: BoxFit.cover,
-                  height: 32,
-                )
-                .animate(delay: 250.ms)
-                .fade(begin: 0, end: 1, duration: 500.ms)
-                .moveY(
-                  begin: 0,
-                  end: -16,
-                  duration: 500.ms,
-                ),
+            child: Consumer(
+              builder: (context, ref, child) {
+                final asyncDarkMode =
+                    ref.watch(darkModeProvider).value ?? false;
+
+                return (asyncDarkMode
+                        ? Assets.logo.logoDark.image(
+                            fit: BoxFit.cover,
+                            height: 32,
+                          )
+                        : Assets.logo.logo.image(
+                            fit: BoxFit.cover,
+                            height: 32,
+                          ))
+                    .animate(delay: 250.ms)
+                    .fade(begin: 0, end: 1, duration: 500.ms)
+                    .moveY(
+                      begin: 0,
+                      end: -16,
+                      duration: 500.ms,
+                    );
+              },
+            ),
           ),
         ],
       ),
