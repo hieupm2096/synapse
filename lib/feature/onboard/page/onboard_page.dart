@@ -24,32 +24,54 @@ class OnboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(
-      pickLlmProvider,
-      (previous, next) {
-        if (next.hasError && next.error != null) {
-          if (next.error?.toString() == 'invalid') {
-            context.shadToaster.show(
-              ShadToast.destructive(
-                title: const Text('Invalid file'),
-                description: const Text('File must has GGUF format.'),
-                titleStyle: context.shadTextTheme.small,
-                duration: 2.seconds,
-                showCloseIconOnlyWhenHovered: false,
-              ),
-            );
+    ref
+      ..listen(
+        pickLlmProvider,
+        (previous, next) {
+          if (next.hasError && next.error != null) {
+            if (next.error?.toString() == 'invalid') {
+              context.shadToaster.show(
+                ShadToast.destructive(
+                  title: const Text('Invalid file'),
+                  description: const Text('File must has GGUF format.'),
+                  titleStyle: context.shadTextTheme.small,
+                  duration: 2.seconds,
+                  showCloseIconOnlyWhenHovered: false,
+                ),
+              );
+            }
+          } else if (next.hasValue && next.value != null) {
+            ref
+                .read(listLLMAsyncNotifierProvider.notifier)
+                .addLlmModel(data: next.value!);
+
+            ref.read(currentLlmProvider.notifier).setLlmModel(next.value!);
+
+            context.go(ListConversationPage.route);
           }
-        } else if (next.hasValue && next.value != null) {
-          ref
-              .read(listLLMAsyncNotifierProvider.notifier)
-              .addLlmModel(data: next.value!);
+        },
+      )
+      ..listen(
+        downloadLlmProvider,
+        (previous, next) {
+          if (next.hasValue && next.value != null) {
+            final value = next.value;
 
-          ref.read(currentLlmProvider.notifier).setLlmModel(next.value!);
+            if (value is DownloadLlmSuccess) {
+              context.shadToaster.show(
+                ShadToast(
+                  description: Text('${value.llmId} downloaded successfully'),
+                  duration: 2.seconds,
+                  showCloseIconOnlyWhenHovered: false,
+                ),
+              );
 
-          context.go(ListConversationPage.route);
-        }
-      },
-    );
+              // go to ListConversationPage
+              context.go(ListConversationPage.route);
+            }
+          }
+        },
+      );
 
     final asyncDownloadLlm = ref.watch(downloadLlmProvider);
 
@@ -73,11 +95,13 @@ class OnboardPage extends ConsumerWidget {
                   return Column(
                     children: [
                       IntroBubbleChat(
-                        onDownloadTap: () {
-                          ref
-                              .read(downloadLlmProvider.notifier)
-                              .downloadDefaultLlmModel();
-                        },
+                        onDownloadTap: asyncDownloadLlm.valueOrNull != null
+                            ? () {
+                                ref
+                                    .read(downloadLlmProvider.notifier)
+                                    .downloadDefaultLlmModel();
+                              }
+                            : null,
                         onSelectTap: () {
                           ref.read(pickLlmProvider.notifier).pickLlm();
                         },

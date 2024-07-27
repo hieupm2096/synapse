@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:synapse/app/provider/current_llm/current_llm_provider.dart';
 import 'package:synapse/core/core.dart';
 import 'package:synapse/feature/conversation/conversation.dart';
 import 'package:synapse/feature/llm/provider/download_llm_provider.dart';
@@ -79,6 +80,8 @@ class ListLlmContainer extends ConsumerWidget {
             ref
                 .read(listLLMAsyncNotifierProvider.notifier)
                 .addLlmModel(data: next.value!);
+
+            ref.read(currentLlmProvider.notifier).setLlmModel(next.value!);
 
             context.go(ListConversationPage.route);
           }

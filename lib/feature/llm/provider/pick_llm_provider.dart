@@ -28,6 +28,14 @@ class PickLlm extends _$PickLlm {
       return;
     }
 
+    final duplicate =
+        await ref.read(llmRepositoryProvider).getLlmModel(id: file.name);
+
+    if (duplicate.isSuccess) {
+      state = AsyncError(Exception('existed'), StackTrace.current);
+      return;
+    }
+
     final model = LlmModel(
       id: file.name,
       author: 'User',
