@@ -843,10 +843,10 @@ packages:
     dependency: "direct main"
     description:
       name: shadcn_ui
-      sha256: "149fa3ee87ea69e2b62858c26f3b7046b4d2356f073a621d4a64dc2afdfe87cd"
+      sha256: "53e488904f4e428abd7d503ecf5fad6aa77dd3215e603752abfd4df2fa4dc3c0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.1"
+    version: "0.7.2"
   shelf:
     dependency: transitive
     description:
