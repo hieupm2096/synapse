@@ -11,7 +11,7 @@ dependencies:
   background_downloader: ^8.5.2
   collection: ^1.18.0
   equatable: ^2.0.5
-  file_picker: ^8.0.6
+  file_picker: ^8.0.7
   fllama:
     git:
       url: https://github.com/Telosnex/fllama.git
